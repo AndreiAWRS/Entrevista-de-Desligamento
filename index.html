@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>ENTREVISTA DE DESLIGAMENTO</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
@@ -9,80 +9,53 @@
     header { background: #dc3545; color: #fff; padding: 20px; text-align: center; }
     header h1 { margin: 0; font-size: 28px; text-transform: uppercase; }
 
-    nav { 
-      background: #333; 
-      overflow: hidden; 
-      display: none; 
-    }
-    nav ul { 
-      list-style-type: none; 
-      margin: 0; 
-      padding: 0; 
-    }
-    nav li { 
-      float: left; 
-      position: relative; 
-    }
-    nav li a { 
-      display: block; 
-      color: #fff; 
-      text-align: center; 
-      padding: 14px 20px; 
-      text-decoration: none; 
-      font-weight: 500;
-    }
-    nav li a:hover { 
-      background-color: #111; 
-    }
-
-    /* Estilo específico para o botão SAIR */
-    nav li .sair {
-      background: #dc3545 !important;
-      margin: 4px 8px;
-      padding: 10px 18px !important;
-      border-radius: 4px;
-    }
-    nav li .sair:hover {
-      background: #a71d2a !important;
-    }
-
-    nav li ul { 
-      display: none; 
-      position: absolute; 
-      background-color: #444; 
-      min-width: 160px; 
-      z-index: 1; 
-    }
+    /* Menu */
+    nav { background: #333; overflow: hidden; display: none; }
+    nav ul { list-style: none; margin: 0; padding: 0; }
+    nav li { float: left; position: relative; }
+    nav li a { display: block; color: #fff; padding: 14px 20px; text-decoration: none; font-weight: 500; }
+    nav li a:hover { background: #111; }
+    nav li ul { display: none; position: absolute; background: #444; min-width: 160px; z-index: 2; }
     nav li ul li { float: none; }
     nav li ul li a { padding: 12px 16px; }
     nav li:hover ul { display: block; }
 
+    /* Botão sair */
+    .sair { background: #dc3545 !important; margin: 8px; padding: 10px 14px; border-radius: 4px; }
+    .sair:hover { background: #a71d2a !important; }
+
     .container { max-width: 900px; margin: 30px auto; padding: 20px; }
-    .card { background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); padding: 20px; margin-bottom: 30px; }
-    h2 { color: #007bff; }
-    input, textarea { margin: 8px 0; padding: 10px; width: 100%; border: 1px solid #ccc; border-radius: 4px; }
+    .card { background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); padding: 20px; margin-bottom: 30px; }
+    h2 { color: #007bff; margin-top: 0; }
+    input, textarea { margin: 8px 0; padding: 10px; width: 100%; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
     button { margin-top: 10px; padding: 10px 15px; background: #007bff; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
     button:hover { background: #0056b3; }
+    .welcome { color: #fff; padding: 14px 20px; float: right; font-weight: 500; }
+    .clearfix::after { content: ""; clear: both; display: table; }
+    ul.simple { padding-left: 18px; }
+    label { display:block; margin-top:10px; font-weight:600; }
   </style>
 </head>
 <body>
-<header>
+
+<header class="clearfix">
   <h1>ENTREVISTA DE DESLIGAMENTO</h1>
 </header>
 
-<!-- Tela de Login -->
+<!-- Login -->
 <div class="container" id="loginCard">
   <div class="card">
     <h2>Login</h2>
-    <input type="text" id="loginUser" placeholder="Usuário">
-    <input type="password" id="loginPass" placeholder="Senha">
-    <button onclick="login()">Entrar</button>
+    <input type="text" id="loginUser" placeholder="Usuário" autocomplete="username">
+    <input type="password" id="loginPass" placeholder="Senha" autocomplete="current-password">
+    <button id="btnEntrar">Entrar</button>
   </div>
 </div>
 
-<!-- Menu -->
+<!-- Menu (inicialmente escondido) -->
 <nav id="menuNav">
-  <ul id="menuMaster">
+  <!-- menu para master -->
+  <ul id="menuMaster" style="display:none;">
     <li><a href="#">CRIAR</a>
       <ul>
         <li><a href="#" onclick="mostrar('usuarios')">Usuários</a></li>
@@ -100,25 +73,278 @@
       </ul>
     </li>
     <li style="float:right"><a href="#" class="sair" onclick="logout()">SAIR</a></li>
+    <li style="float:right"><span id="bemvindo" class="welcome"></span></li>
   </ul>
 
-  <ul id="menuUser">
+  <!-- menu para usuário comum -->
+  <ul id="menuUser" style="display:none;">
     <li><a href="#">FORMULÁRIO</a>
       <ul>
         <li><a href="#" onclick="mostrar('formulario')">Formulário</a></li>
       </ul>
     </li>
     <li style="float:right"><a href="#" class="sair" onclick="logout()">SAIR</a></li>
+    <li style="float:right"><span id="bemvindoUser" class="welcome"></span></li>
   </ul>
 </nav>
 
-<!-- Resto do conteúdo permanece igual -->
+<!-- Conteúdo -->
 <div class="container">
-  <!-- ... (usuários, perguntas, formulário, dashboard) ... -->
+
+  <!-- Usuários (criação/lista) -->
+  <div class="card" id="usuarios" style="display:none;">
+    <h2>Criar Usuário</h2>
+    <label>Login do usuário</label>
+    <input type="text" id="novoUser" placeholder="Login do usuário">
+    <label>Senha do usuário</label>
+    <input type="password" id="novoPass" placeholder="Senha do usuário">
+    <button onclick="criarUsuario()">Criar Usuário</button>
+
+    <h2 style="margin-top:20px">Usuários existentes</h2>
+    <ul id="listaUsuarios" class="simple"></ul>
+  </div>
+
+  <!-- Perguntas -->
+  <div class="card" id="perguntas" style="display:none;">
+    <h2>Perguntas</h2>
+    <label>Nova Pergunta</label>
+    <input type="text" id="novaPergunta" placeholder="Digite a pergunta">
+    <button onclick="adicionarPergunta()">Adicionar Pergunta</button>
+
+    <h2 style="margin-top:20px">Lista de Perguntas</h2>
+    <ul id="listaPerguntas" class="simple"></ul>
+  </div>
+
+  <!-- Formulário -->
+  <div class="card" id="formulario" style="display:none;">
+    <h2>Formulário</h2>
+    <form id="formEntrevista"></form>
+    <button onclick="salvarRespostas()">Enviar Respostas</button>
+  </div>
+
+  <!-- Dashboard -->
+  <div class="card" id="dashboard" style="display:none;">
+    <h2>Dashboard</h2>
+    <canvas id="graficoRespostas" width="800" height="300"></canvas>
+  </div>
+
 </div>
 
 <script>
-  // ... (todo o JavaScript permanece o mesmo da versão anterior) ...
+  // Dados em memória (protótipo)
+  let usuarios = [{ login: "andrei", senha: "#Andrei1996", master: true }];
+  let perguntas = ["Como você avalia sua experiência na empresa?", "O que poderia ser melhorado?"];
+  let respostas = [];
+  let usuarioLogado = null;
+
+  // Elementos
+  const loginCard = document.getElementById('loginCard');
+  const menuNav = document.getElementById('menuNav');
+  const menuMaster = document.getElementById('menuMaster');
+  const menuUser = document.getElementById('menuUser');
+  const bemvindo = document.getElementById('bemvindo');
+  const bemvindoUser = document.getElementById('bemvindoUser');
+
+  // Entrar ao clicar ou pressionar Enter
+  document.getElementById('btnEntrar').addEventListener('click', login);
+  document.getElementById('loginPass').addEventListener('keydown', function(e){
+    if(e.key === 'Enter') login();
+  });
+
+  function login(){
+    const user = document.getElementById("loginUser").value.trim();
+    const pass = document.getElementById("loginPass").value;
+    if(!user || !pass){
+      alert("Preencha usuário e senha.");
+      return;
+    }
+    const encontrado = usuarios.find(u => u.login === user && u.senha === pass);
+    if(!encontrado){
+      alert("Usuário ou senha inválidos!");
+      return;
+    }
+
+    usuarioLogado = encontrado;
+    // esconder login e mostrar menu apropriado
+    loginCard.style.display = 'none';
+    menuNav.style.display = 'block';
+    if(encontrado.master){
+      menuMaster.style.display = 'block';
+      menuUser.style.display = 'none';
+      bemvindo.textContent = "Bem-vindo, " + capitalize(encontrado.login);
+      bemvindoUser.textContent = "";
+    } else {
+      menuMaster.style.display = 'none';
+      menuUser.style.display = 'block';
+      bemvindoUser.textContent = "Bem-vindo, " + capitalize(encontrado.login);
+      bemvindo.textContent = "";
+      // mostrar formulário automaticamente para usuário comum
+      mostrar('formulario');
+    }
+    // limpar campos de login
+    document.getElementById("loginUser").value = "";
+    document.getElementById("loginPass").value = "";
+  }
+
+  function logout(){
+    usuarioLogado = null;
+    // esconder menus e seções, voltar ao login
+    menuNav.style.display = 'none';
+    menuMaster.style.display = 'none';
+    menuUser.style.display = 'none';
+    loginCard.style.display = 'block';
+    mostrar(''); // esconde todas as seções
+    bemvindo.textContent = "";
+    bemvindoUser.textContent = "";
+  }
+
+  function mostrar(secao){
+    const ids = ["usuarios","perguntas","formulario","dashboard"];
+    ids.forEach(id => {
+      const el = document.getElementById(id);
+      if(el) el.style.display = 'none';
+    });
+    if(secao){
+      const el = document.getElementById(secao);
+      if(el) el.style.display = 'block';
+      if(secao === 'perguntas' || secao === 'formulario') renderizarPerguntas();
+      if(secao === 'usuarios') renderizarUsuarios();
+      if(secao === 'dashboard') gerarGrafico();
+    }
+  }
+
+  function capitalize(s){
+    if(!s) return s;
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  }
+
+  // Perguntas
+  function adicionarPergunta(){
+    const nova = document.getElementById('novaPergunta').value.trim();
+    if(!nova){ alert("Digite a pergunta."); return; }
+    perguntas.push(nova);
+    document.getElementById('novaPergunta').value = "";
+    renderizarPerguntas();
+    alert("Pergunta adicionada.");
+  }
+
+  function renderizarPerguntas(){
+    const lista = document.getElementById('listaPerguntas');
+    const form = document.getElementById('formEntrevista');
+    if(lista) lista.innerHTML = "";
+    if(form) form.innerHTML = "";
+
+    perguntas.forEach((p, i) => {
+      if(lista){
+        const li = document.createElement('li');
+        li.textContent = p;
+        lista.appendChild(li);
+      }
+      if(form){
+        const label = document.createElement('label');
+        label.textContent = p;
+        const textarea = document.createElement('textarea');
+        textarea.id = 'resposta_' + i;
+        textarea.rows = 3;
+        form.appendChild(label);
+        form.appendChild(textarea);
+      }
+    });
+  }
+
+  // Usuários
+  function criarUsuario(){
+    if(!usuarioLogado || !usuarioLogado.master){
+      alert("Apenas master pode criar usuários.");
+      return;
+    }
+    const novoUser = document.getElementById('novoUser').value.trim();
+    const novoPass = document.getElementById('novoPass').value;
+    if(!novoUser || !novoPass){ alert("Preencha login e senha!"); return; }
+    if(usuarios.some(u => u.login === novoUser)){
+      alert("Usuário já existe.");
+      return;
+    }
+    usuarios.push({ login: novoUser, senha: novoPass, master: false });
+    document.getElementById('novoUser').value = "";
+    document.getElementById('novoPass').value = "";
+    renderizarUsuarios();
+    alert("Usuário criado com sucesso!");
+  }
+
+  function renderizarUsuarios(){
+    const lista = document.getElementById('listaUsuarios');
+    lista.innerHTML = "";
+    usuarios.forEach(u => {
+      const li = document.createElement('li');
+      li.textContent = u.login + (u.master ? " (master)" : "");
+      lista.appendChild(li);
+    });
+  }
+
+  // Respostas e gráfico
+  function salvarRespostas(){
+    if(!usuarioLogado){
+      alert("Faça login para enviar respostas.");
+      return;
+    }
+    const respostaAtual = perguntas.map((p, i) => {
+      const el = document.getElementById('resposta_' + i);
+      return el ? el.value.trim() : "";
+    });
+    // simples validação: pelo menos uma resposta preenchida
+    if(respostaAtual.every(r => r === "")){
+      alert("Preencha pelo menos uma resposta antes de enviar.");
+      return;
+    }
+    respostas.push(respostaAtual);
+    // limpar formulário
+    perguntas.forEach((p, i) => {
+      const el = document.getElementById('resposta_' + i);
+      if(el) el.value = "";
+    });
+    alert("Respostas salvas!");
+  }
+
+  function gerarGrafico(){
+    const canvas = document.getElementById('graficoRespostas');
+    if(!canvas) return;
+    const ctx = canvas.getContext('2d');
+    // contar respostas não vazias por pergunta
+    const dados = perguntas.map((p, i) => respostas.filter(r => r[i] && r[i].length > 0).length);
+
+    // destruir gráfico anterior se existir (evita sobreposição)
+    if(window._chartInstance){
+      window._chartInstance.destroy();
+    }
+
+    window._chartInstance = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: perguntas,
+        datasets: [{
+          label: 'Número de respostas',
+          data: dados,
+          backgroundColor: 'rgba(220,53,69,0.7)'
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+          title: { display: true, text: 'Respostas por Pergunta' }
+        },
+        scales: {
+          y: { beginAtZero: true, precision: 0 }
+        }
+      }
+    });
+  }
+
+  // Inicialização: renderiza listas básicas
+  renderizarPerguntas();
+  renderizarUsuarios();
 </script>
+
 </body>
 </html>
