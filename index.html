@@ -11,36 +11,38 @@
 
     /* Menu */
     nav { background: #333; overflow: visible; display: none; }
-    nav .menu-row { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; }
-    nav ul { list-style: none; margin: 0; padding: 0; display: flex; align-items: center; }
-    nav li { position: relative; }
-    nav > .menu-row > ul > li { margin-right: 6px; }
-    nav li a { display: block; color: #fff; padding: 12px 18px; text-decoration: none; font-weight: 500; white-space: nowrap; }
-    nav li a:hover { background: #111; }
+    .menu-row { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; gap: 12px; padding: 6px 12px; }
+    .menu-left { display:flex; gap:6px; align-items:center; }
+    .menu-left ul { list-style: none; margin: 0; padding: 0; display:flex; gap:6px; align-items:center; }
+    .menu-left li { position: relative; }
+    .menu-left li a { display: block; color: #fff; padding: 12px 18px; text-decoration: none; font-weight: 500; white-space: nowrap; }
+    .menu-left li a:hover { background: #111; border-radius:4px; }
 
     /* Submenu: hidden by default, shown on hover or when .open */
-    nav li ul.submenu {
+    ul.submenu {
       display: none;
       position: absolute;
-      top: 100%;
+      top: calc(100% + 6px);
       left: 0;
       background: #444;
       min-width: 180px;
       z-index: 50;
-      border-radius: 4px;
+      border-radius: 6px;
       box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+      padding: 6px 0;
     }
-    nav li ul.submenu li a { padding: 10px 14px; color: #fff; }
-    nav li:hover > ul.submenu { display: block; } /* hover para desktop */
-    nav li.open > ul.submenu { display: block; }  /* clique para touch */
+    ul.submenu li { float: none; }
+    ul.submenu li a { padding: 10px 14px; color: #fff; display:block; }
+    .menu-left li:hover > ul.submenu { display: block; } /* hover desktop */
+    .menu-left li.open > ul.submenu { display: block; }  /* click/toggle */
 
-    /* Botão sair e bem-vindo à direita */
+    /* Right side */
     .menu-right { margin-left: auto; display:flex; align-items:center; gap:8px; }
     .sair { background: #dc3545; color: #fff; padding: 8px 12px; border-radius: 4px; text-decoration: none; }
     .sair:hover { background: #a71d2a; }
-
     .welcome { color: #fff; padding: 8px 12px; font-weight: 600; }
 
+    /* Conteúdo */
     .container { max-width: 900px; margin: 30px auto; padding: 20px; }
     .card { background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); padding: 20px; margin-bottom: 30px; }
     h2 { color: #007bff; margin-top: 0; }
@@ -49,11 +51,13 @@
     button:hover { background: #0056b3; }
     ul.simple { padding-left: 18px; }
     label { display:block; margin-top:10px; font-weight:600; }
+
     /* responsividade simples */
     @media (max-width: 720px) {
-      nav .menu-row { padding: 6px; }
-      nav ul { flex-wrap: wrap; }
-      nav li ul.submenu { position: static; box-shadow: none; border-radius: 0; }
+      .menu-row { padding: 6px; flex-wrap:wrap; }
+      ul.submenu { position: static; box-shadow: none; border-radius: 0; margin-top:6px; }
+      .menu-left ul { flex-wrap:wrap; }
+      .menu-right { width:100%; justify-content:flex-end; margin-top:6px; }
     }
   </style>
 </head>
@@ -76,48 +80,50 @@
 <!-- Menu -->
 <nav id="menuNav" aria-label="Menu principal">
   <div class="menu-row">
-    <!-- menu master -->
-    <ul id="menuMaster" style="display:none;">
-      <li class="has-sub">
-        <a href="#" class="menu-link">CRIAR</a>
-        <ul class="submenu">
-          <li><a href="#" data-show="usuarios">Usuários</a></li>
-        </ul>
-      </li>
+    <div class="menu-left">
+      <!-- menu master -->
+      <ul id="menuMaster" style="display:none;">
+        <li class="has-sub">
+          <a href="#" class="menu-link">CRIAR</a>
+          <ul class="submenu">
+            <li><a href="#" class="submenu-link" data-show="usuarios">Usuários</a></li>
+          </ul>
+        </li>
 
-      <li class="has-sub">
-        <a href="#" class="menu-link">FORMULÁRIO</a>
-        <ul class="submenu">
-          <li><a href="#" data-show="perguntas">Perguntas</a></li>
-          <li><a href="#" data-show="formulario">Formulário</a></li>
-        </ul>
-      </li>
+        <li class="has-sub">
+          <a href="#" class="menu-link">FORMULÁRIO</a>
+          <ul class="submenu">
+            <li><a href="#" class="submenu-link" data-show="perguntas">Perguntas</a></li>
+            <li><a href="#" class="submenu-link" data-show="formulario">Formulário</a></li>
+          </ul>
+        </li>
 
-      <li class="has-sub">
-        <a href="#" class="menu-link">DASHBOARD</a>
-        <ul class="submenu">
-          <li><a href="#" data-show="dashboard">Gráficos</a></li>
-        </ul>
-      </li>
-    </ul>
+        <li class="has-sub">
+          <a href="#" class="menu-link">DASHBOARD</a>
+          <ul class="submenu">
+            <li><a href="#" class="submenu-link" data-show="dashboard">Gráficos</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <!-- menu usuário comum -->
+      <ul id="menuUser" style="display:none;">
+        <li class="has-sub">
+          <a href="#" class="menu-link">FORMULÁRIO</a>
+          <ul class="submenu">
+            <li><a href="#" class="submenu-link" data-show="formulario">Formulário</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
 
     <!-- direita: bem-vindo e sair -->
-    <div class="menu-right" style="display:none;" id="menuRightMaster">
+    <div class="menu-right" id="menuRightMaster" style="display:none;">
       <span id="bemvindo" class="welcome"></span>
       <a href="#" class="sair" id="logoutMaster">SAIR</a>
     </div>
 
-    <!-- menu usuário comum -->
-    <ul id="menuUser" style="display:none;">
-      <li class="has-sub">
-        <a href="#" class="menu-link">FORMULÁRIO</a>
-        <ul class="submenu">
-          <li><a href="#" data-show="formulario">Formulário</a></li>
-        </ul>
-      </li>
-    </ul>
-
-    <div class="menu-right" style="display:none;" id="menuRightUser">
+    <div class="menu-right" id="menuRightUser" style="display:none;">
       <span id="bemvindoUser" class="welcome"></span>
       <a href="#" class="sair" id="logoutUser">SAIR</a>
     </div>
@@ -384,47 +390,42 @@
     });
   }
 
-  // --- Código para habilitar clique em itens com submenu (touch / click) ---
-  // adiciona comportamento de toggle ao clicar no item pai
-  document.addEventListener('click', function(e){
-    // se clicou em um link do submenu que tem data-show, mostra a seção
-    const targetShow = e.target.closest('[data-show]');
-    if(targetShow){
+  // --- Comportamento de clique/hover do menu ---
+  // 1) clique em links do submenu abre a seção
+  document.querySelectorAll('.submenu-link').forEach(a=>{
+    a.addEventListener('click', function(e){
       e.preventDefault();
-      const sec = targetShow.getAttribute('data-show');
+      e.stopPropagation();
+      const sec = this.getAttribute('data-show');
       mostrar(sec);
-      // fecha todos os submenus
       closeAllSubmenus();
-      return;
-    }
+    });
+  });
 
-    // se clicou em um item pai (link de menu com submenu)
-    const parent = e.target.closest('nav li.has-sub > a, nav li.has-sub');
-    if(parent){
-      // se o clique foi no link do menu (pai), toggle do li
-      const li = e.target.closest('li.has-sub');
-      if(li){
-        // se já aberto, fecha; se fechado, abre e fecha os outros
-        const isOpen = li.classList.contains('open');
-        closeAllSubmenus();
-        if(!isOpen) li.classList.add('open');
-        e.preventDefault();
-        return;
-      }
-    }
-
-    // clique fora do menu fecha submenus
-    if(!e.target.closest('nav')){
+  // 2) toggle do submenu ao clicar no link pai (apenas quando clicar no link pai)
+  document.querySelectorAll('.menu-left > ul > li.has-sub > a.menu-link').forEach(link=>{
+    link.addEventListener('click', function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      const li = this.closest('li.has-sub');
+      if(!li) return;
+      const isOpen = li.classList.contains('open');
       closeAllSubmenus();
-    }
+      if(!isOpen) li.classList.add('open');
+    });
+  });
+
+  // 3) fechar submenus ao clicar fora
+  document.addEventListener('click', function(e){
+    if(!e.target.closest('nav')) closeAllSubmenus();
   });
 
   function closeAllSubmenus(){
     document.querySelectorAll('nav li.has-sub.open').forEach(li => li.classList.remove('open'));
   }
 
-  // evita que clique em submenu feche imediatamente por propagação
-  document.querySelectorAll('nav li ul.submenu').forEach(ul => {
+  // evita que clique dentro do submenu feche por propagação
+  document.querySelectorAll('nav ul.submenu').forEach(ul => {
     ul.addEventListener('click', function(e){ e.stopPropagation(); });
   });
 
