@@ -203,3 +203,30 @@
 
   function criarUsuario(){
     const novoUser = document.getElementBy
+  function criarUsuario(){
+    const novoUser = document.getElementById("novoUser").value;
+    const novoPass = document.getElementById("novoPass").value;
+    if(novoUser && novoPass){
+      usuarios.push({login:novoUser, senha:novoPass, master:false});
+      document.getElementById("novoUser").value="";
+      document.getElementById("novoPass").value="";
+      renderizarUsuarios();
+      alert("Usuário criado com sucesso!");
+    } else {
+      alert("Preencha login e senha!");
+    }
+  }
+
+  function renderizarUsuarios(){
+    const lista = document.getElementById("listaUsuarios");
+    lista.innerHTML="";
+    usuarios.forEach(u=>{
+      const li=document.createElement("li");
+      li.textContent = u.login + (u.master?" (master)":"");
+      lista.appendChild(li);
+    });
+  }
+</script>
+
+</body>
+</html>
