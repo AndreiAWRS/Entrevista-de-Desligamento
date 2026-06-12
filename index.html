@@ -10,19 +10,36 @@
     header h1 { margin: 0; font-size: 28px; text-transform: uppercase; }
 
     /* Menu */
-    nav { background: #333; overflow: hidden; display: none; }
-    nav ul { list-style: none; margin: 0; padding: 0; }
-    nav li { float: left; position: relative; }
-    nav li a { display: block; color: #fff; padding: 14px 20px; text-decoration: none; font-weight: 500; }
+    nav { background: #333; overflow: visible; display: none; }
+    nav .menu-row { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; }
+    nav ul { list-style: none; margin: 0; padding: 0; display: flex; align-items: center; }
+    nav li { position: relative; }
+    nav > .menu-row > ul > li { margin-right: 6px; }
+    nav li a { display: block; color: #fff; padding: 12px 18px; text-decoration: none; font-weight: 500; white-space: nowrap; }
     nav li a:hover { background: #111; }
-    nav li ul { display: none; position: absolute; background: #444; min-width: 160px; z-index: 2; }
-    nav li ul li { float: none; }
-    nav li ul li a { padding: 12px 16px; }
-    nav li:hover ul { display: block; }
 
-    /* Botão sair */
-    .sair { background: #dc3545 !important; margin: 8px; padding: 10px 14px; border-radius: 4px; }
-    .sair:hover { background: #a71d2a !important; }
+    /* Submenu: hidden by default, shown on hover or when .open */
+    nav li ul.submenu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: #444;
+      min-width: 180px;
+      z-index: 50;
+      border-radius: 4px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+    }
+    nav li ul.submenu li a { padding: 10px 14px; color: #fff; }
+    nav li:hover > ul.submenu { display: block; } /* hover para desktop */
+    nav li.open > ul.submenu { display: block; }  /* clique para touch */
+
+    /* Botão sair e bem-vindo à direita */
+    .menu-right { margin-left: auto; display:flex; align-items:center; gap:8px; }
+    .sair { background: #dc3545; color: #fff; padding: 8px 12px; border-radius: 4px; text-decoration: none; }
+    .sair:hover { background: #a71d2a; }
+
+    .welcome { color: #fff; padding: 8px 12px; font-weight: 600; }
 
     .container { max-width: 900px; margin: 30px auto; padding: 20px; }
     .card { background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); padding: 20px; margin-bottom: 30px; }
@@ -30,15 +47,19 @@
     input, textarea { margin: 8px 0; padding: 10px; width: 100%; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
     button { margin-top: 10px; padding: 10px 15px; background: #007bff; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
     button:hover { background: #0056b3; }
-    .welcome { color: #fff; padding: 14px 20px; float: right; font-weight: 500; }
-    .clearfix::after { content: ""; clear: both; display: table; }
     ul.simple { padding-left: 18px; }
     label { display:block; margin-top:10px; font-weight:600; }
+    /* responsividade simples */
+    @media (max-width: 720px) {
+      nav .menu-row { padding: 6px; }
+      nav ul { flex-wrap: wrap; }
+      nav li ul.submenu { position: static; box-shadow: none; border-radius: 0; }
+    }
   </style>
 </head>
 <body>
 
-<header class="clearfix">
+<header>
   <h1>ENTREVISTA DE DESLIGAMENTO</h1>
 </header>
 
@@ -52,40 +73,55 @@
   </div>
 </div>
 
-<!-- Menu (inicialmente escondido) -->
-<nav id="menuNav">
-  <!-- menu para master -->
-  <ul id="menuMaster" style="display:none;">
-    <li><a href="#">CRIAR</a>
-      <ul>
-        <li><a href="#" onclick="mostrar('usuarios')">Usuários</a></li>
-      </ul>
-    </li>
-    <li><a href="#">FORMULÁRIO</a>
-      <ul>
-        <li><a href="#" onclick="mostrar('perguntas')">Perguntas</a></li>
-        <li><a href="#" onclick="mostrar('formulario')">Formulário</a></li>
-      </ul>
-    </li>
-    <li><a href="#">DASHBOARD</a>
-      <ul>
-        <li><a href="#" onclick="mostrar('dashboard')">Gráficos</a></li>
-      </ul>
-    </li>
-    <li style="float:right"><a href="#" class="sair" onclick="logout()">SAIR</a></li>
-    <li style="float:right"><span id="bemvindo" class="welcome"></span></li>
-  </ul>
+<!-- Menu -->
+<nav id="menuNav" aria-label="Menu principal">
+  <div class="menu-row">
+    <!-- menu master -->
+    <ul id="menuMaster" style="display:none;">
+      <li class="has-sub">
+        <a href="#" class="menu-link">CRIAR</a>
+        <ul class="submenu">
+          <li><a href="#" data-show="usuarios">Usuários</a></li>
+        </ul>
+      </li>
 
-  <!-- menu para usuário comum -->
-  <ul id="menuUser" style="display:none;">
-    <li><a href="#">FORMULÁRIO</a>
-      <ul>
-        <li><a href="#" onclick="mostrar('formulario')">Formulário</a></li>
-      </ul>
-    </li>
-    <li style="float:right"><a href="#" class="sair" onclick="logout()">SAIR</a></li>
-    <li style="float:right"><span id="bemvindoUser" class="welcome"></span></li>
-  </ul>
+      <li class="has-sub">
+        <a href="#" class="menu-link">FORMULÁRIO</a>
+        <ul class="submenu">
+          <li><a href="#" data-show="perguntas">Perguntas</a></li>
+          <li><a href="#" data-show="formulario">Formulário</a></li>
+        </ul>
+      </li>
+
+      <li class="has-sub">
+        <a href="#" class="menu-link">DASHBOARD</a>
+        <ul class="submenu">
+          <li><a href="#" data-show="dashboard">Gráficos</a></li>
+        </ul>
+      </li>
+    </ul>
+
+    <!-- direita: bem-vindo e sair -->
+    <div class="menu-right" style="display:none;" id="menuRightMaster">
+      <span id="bemvindo" class="welcome"></span>
+      <a href="#" class="sair" id="logoutMaster">SAIR</a>
+    </div>
+
+    <!-- menu usuário comum -->
+    <ul id="menuUser" style="display:none;">
+      <li class="has-sub">
+        <a href="#" class="menu-link">FORMULÁRIO</a>
+        <ul class="submenu">
+          <li><a href="#" data-show="formulario">Formulário</a></li>
+        </ul>
+      </li>
+    </ul>
+
+    <div class="menu-right" style="display:none;" id="menuRightUser">
+      <span id="bemvindoUser" class="welcome"></span>
+      <a href="#" class="sair" id="logoutUser">SAIR</a>
+    </div>
+  </div>
 </nav>
 
 <!-- Conteúdo -->
@@ -142,6 +178,8 @@
   const menuNav = document.getElementById('menuNav');
   const menuMaster = document.getElementById('menuMaster');
   const menuUser = document.getElementById('menuUser');
+  const menuRightMaster = document.getElementById('menuRightMaster');
+  const menuRightUser = document.getElementById('menuRightUser');
   const bemvindo = document.getElementById('bemvindo');
   const bemvindoUser = document.getElementById('bemvindoUser');
 
@@ -169,13 +207,17 @@
     loginCard.style.display = 'none';
     menuNav.style.display = 'block';
     if(encontrado.master){
-      menuMaster.style.display = 'block';
+      menuMaster.style.display = 'flex';
       menuUser.style.display = 'none';
+      menuRightMaster.style.display = 'flex';
+      menuRightUser.style.display = 'none';
       bemvindo.textContent = "Bem-vindo, " + capitalize(encontrado.login);
       bemvindoUser.textContent = "";
     } else {
       menuMaster.style.display = 'none';
-      menuUser.style.display = 'block';
+      menuUser.style.display = 'flex';
+      menuRightMaster.style.display = 'none';
+      menuRightUser.style.display = 'flex';
       bemvindoUser.textContent = "Bem-vindo, " + capitalize(encontrado.login);
       bemvindo.textContent = "";
       // mostrar formulário automaticamente para usuário comum
@@ -186,12 +228,17 @@
     document.getElementById("loginPass").value = "";
   }
 
+  // logout
+  document.getElementById('logoutMaster').addEventListener('click', function(e){ e.preventDefault(); logout(); });
+  document.getElementById('logoutUser').addEventListener('click', function(e){ e.preventDefault(); logout(); });
+
   function logout(){
     usuarioLogado = null;
-    // esconder menus e seções, voltar ao login
     menuNav.style.display = 'none';
     menuMaster.style.display = 'none';
     menuUser.style.display = 'none';
+    menuRightMaster.style.display = 'none';
+    menuRightUser.style.display = 'none';
     loginCard.style.display = 'block';
     mostrar(''); // esconde todas as seções
     bemvindo.textContent = "";
@@ -292,13 +339,11 @@
       const el = document.getElementById('resposta_' + i);
       return el ? el.value.trim() : "";
     });
-    // simples validação: pelo menos uma resposta preenchida
     if(respostaAtual.every(r => r === "")){
       alert("Preencha pelo menos uma resposta antes de enviar.");
       return;
     }
     respostas.push(respostaAtual);
-    // limpar formulário
     perguntas.forEach((p, i) => {
       const el = document.getElementById('resposta_' + i);
       if(el) el.value = "";
@@ -310,10 +355,8 @@
     const canvas = document.getElementById('graficoRespostas');
     if(!canvas) return;
     const ctx = canvas.getContext('2d');
-    // contar respostas não vazias por pergunta
     const dados = perguntas.map((p, i) => respostas.filter(r => r[i] && r[i].length > 0).length);
 
-    // destruir gráfico anterior se existir (evita sobreposição)
     if(window._chartInstance){
       window._chartInstance.destroy();
     }
@@ -340,6 +383,50 @@
       }
     });
   }
+
+  // --- Código para habilitar clique em itens com submenu (touch / click) ---
+  // adiciona comportamento de toggle ao clicar no item pai
+  document.addEventListener('click', function(e){
+    // se clicou em um link do submenu que tem data-show, mostra a seção
+    const targetShow = e.target.closest('[data-show]');
+    if(targetShow){
+      e.preventDefault();
+      const sec = targetShow.getAttribute('data-show');
+      mostrar(sec);
+      // fecha todos os submenus
+      closeAllSubmenus();
+      return;
+    }
+
+    // se clicou em um item pai (link de menu com submenu)
+    const parent = e.target.closest('nav li.has-sub > a, nav li.has-sub');
+    if(parent){
+      // se o clique foi no link do menu (pai), toggle do li
+      const li = e.target.closest('li.has-sub');
+      if(li){
+        // se já aberto, fecha; se fechado, abre e fecha os outros
+        const isOpen = li.classList.contains('open');
+        closeAllSubmenus();
+        if(!isOpen) li.classList.add('open');
+        e.preventDefault();
+        return;
+      }
+    }
+
+    // clique fora do menu fecha submenus
+    if(!e.target.closest('nav')){
+      closeAllSubmenus();
+    }
+  });
+
+  function closeAllSubmenus(){
+    document.querySelectorAll('nav li.has-sub.open').forEach(li => li.classList.remove('open'));
+  }
+
+  // evita que clique em submenu feche imediatamente por propagação
+  document.querySelectorAll('nav li ul.submenu').forEach(ul => {
+    ul.addEventListener('click', function(e){ e.stopPropagation(); });
+  });
 
   // Inicialização: renderiza listas básicas
   renderizarPerguntas();
