@@ -52,6 +52,14 @@
     .user-actions button { margin-left:6px; background:#dc3545; color:#fff; border:none; padding:6px 8px; border-radius:4px; cursor:pointer; }
     .user-actions button:hover { background:#a71d2a; }
 
+    table.users-table { width:100%; border-collapse: collapse; margin-top:12px; }
+    table.users-table th, table.users-table td { border: 1px solid #e6e6e6; padding: 8px 10px; text-align:left; }
+    table.users-table th { background:#f7f7f7; font-weight:700; }
+
+    .question-row { display:flex; justify-content:space-between; align-items:center; gap:8px; padding:6px 0; border-bottom:1px solid #eee; }
+    .question-actions button { margin-left:6px; background:#dc3545; color:#fff; border:none; padding:6px 8px; border-radius:4px; cursor:pointer; }
+    .question-actions button:hover { background:#a71d2a; }
+
     @media (max-width: 720px) {
       .menu-row { padding: 6px; flex-wrap:wrap; }
       ul.submenu { position: static; box-shadow: none; border-radius: 0; margin-top:6px; }
@@ -70,7 +78,6 @@
     <input type="text" id="loginUser" placeholder="Usuário (ex: andrei)" autocomplete="username">
     <input type="password" id="loginPass" placeholder="Senha" autocomplete="current-password">
     <button id="btnEntrar">Entrar</button>
-    <p style="margin-top:10px;color:#666;font-size:13px;">Dica: usuário master padrão: <strong>andrei</strong> / senha <strong>#Andrei1996</strong></p>
   </div>
 </div>
 
@@ -153,8 +160,13 @@
     </select>
     <button onclick="criarUsuario()">Criar Usuário</button>
 
-    <h2 style="margin-top:20px">Usuários existentes</h2>
-    <div id="listaUsuarios" class="simple"></div>
+    <h2 style="margin-top:20px">USUÁRIOS</h2>
+    <table class="users-table" id="usersTable">
+      <thead>
+        <tr><th>USUÁRIO</th><th>GRUPO</th><th>AÇÕES</th></tr>
+      </thead>
+      <tbody id="usersTbody"></tbody>
+    </table>
   </div>
 
   <div class="card" id="perguntas" style="display:none;">
@@ -164,7 +176,7 @@
     <button onclick="adicionarPergunta()">Adicionar Pergunta</button>
 
     <h2 style="margin-top:20px">Lista de Perguntas</h2>
-    <ul id="listaPerguntas" class="simple"></ul>
+    <div id="listaPerguntas" class="simple"></div>
   </div>
 
   <div class="card" id="formulario" style="display:none;">
@@ -180,55 +192,39 @@
 </div>
 
 <script type="module">
-/*
-  Frontend completo com suporte a:
-  - Firebase (opcional): se configurar firebaseConfig abaixo, o app usará Auth + Firestore.
-  - Fallback local: se Firebase não estiver configurado ou usuário não existir no Firebase, há um usuário local MASTER:
-      username: andrei
-      senha: #Andrei1996
-  - Login por username (procura em collection 'usernames' no Firestore) ou por username local.
-  - Roles: MASTER, OPERADORES, USUARIOS
-  - MASTER pode criar/excluir usuários (exclusão remove perfil Firestore; remoção do Auth requer Cloud Function admin).
-  - Submenus fecham ao clicar em opção.
+/* Frontend com opções Firebase (opcional) e fallback local.
+   Ajustes solicitados: menu left/right, excluir perguntas (MASTER),
+   tabela de usuários com cabeçalhos USUÁRIO / GRUPO, sem dica de senha.
 */
 
-/* =========================
-   CONFIGURAÇÃO FIREBASE
-   Substitua os valores abaixo pelo seu firebaseConfig.
-   Se preferir não usar Firebase, deixe como null.
-   ========================= */
+/* ====== CONFIGURAÇÃO FIREBASE (opcional) ======
+   Se quiser usar Firebase, preencha o objeto abaixo.
+   Caso contrário, deixe como null ou com apiKey=null.
+*/
 const firebaseConfig = {
   apiKey: null,
   authDomain: null,
-  projectId: null,
-  // se usar Firebase, preencha todos os campos do seu config
+  projectId: null
 };
 
-/* =========================
-   Inicialização condicional do Firebase (modular SDK)
-   ========================= */
 let fb = null;
 if (firebaseConfig && firebaseConfig.apiKey) {
-  // importa dinamicamente a SDK modular
   const { initializeApp } = await import('https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js');
   const { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } = await import('https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js');
-  const { getFirestore, doc, setDoc, getDoc, collection, addDoc, getDocs, query, where, deleteDoc } = await import('https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js');
+  const { getFirestore, doc, setDoc, getDoc, collection, addDoc, getDocs, deleteDoc } = await import('https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js');
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  fb = { auth, db, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, doc, setDoc, getDoc, collection, addDoc, getDocs, query, where, deleteDoc };
+  fb = { auth, db, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, doc, setDoc, getDoc, collection, addDoc, getDocs, deleteDoc };
 }
 
-/* =========================
-   Estado local e elementos
-   ========================= */
+/* ====== Estado e fallback local ====== */
 let usuarioLogado = null;
-let perguntas = [];
+let perguntas = []; // array de objetos { id, text }
 let respostas = [];
 
-// fallback local users (in-memory) — garante acesso imediato
 let localUsers = [
   { username: 'andrei', password: '#Andrei1996', role: 'MASTER' }
 ];
@@ -246,66 +242,49 @@ const bemvindoUser = document.getElementById('bemvindoUser');
 document.getElementById('btnEntrar').addEventListener('click', handleLogin);
 document.getElementById('loginPass').addEventListener('keydown', function(e){ if(e.key === 'Enter') handleLogin(); });
 
-/* =========================
-   Login: aceita username (sem @) ou email (se Firebase configurado)
-   - Se Firebase configurado: busca usernames/{username} para mapear para email
-   - Se não encontrado ou Firebase não configurado: tenta login local (in-memory)
-   ========================= */
+/* ====== Login (username or email) ====== */
 async function handleLogin(){
   const loginInput = document.getElementById('loginUser').value.trim();
   const password = document.getElementById('loginPass').value;
   if(!loginInput || !password){ alert('Preencha usuário e senha.'); return; }
 
-  // se Firebase configurado, tente autenticar via Firebase
   if(fb){
     try {
       let emailToUse = loginInput;
-      // se não contém @, trata como username e busca usernames/{username}
-      if(!emailToUse.includes('@')) {
+      if(!emailToUse.includes('@')){
         const snap = await fb.getDoc(fb.doc(fb.db, 'usernames', emailToUse));
-        if(!snap.exists()){
-          throw new Error('Usuário não encontrado no Firebase.');
-        }
-        const data = snap.data();
-        emailToUse = data.email;
+        if(!snap.exists()) throw new Error('Usuário não encontrado no Firebase.');
+        const map = snap.data();
+        emailToUse = map.email;
       }
-      // autentica
       await fb.signInWithEmailAndPassword(fb.auth, emailToUse, password);
-      // carrega perfil: preferimos doc users/{uid} ou users/{email}
-      // tentamos por usernames mapping para obter uid
+
+      // carregar perfil
       let profile = null;
-      if(!loginInput.includes('@')) {
+      if(!loginInput.includes('@')){
         const snap = await fb.getDoc(fb.doc(fb.db, 'usernames', loginInput));
-        if(snap.exists()) {
+        if(snap.exists()){
           const map = snap.data();
-          const userDoc = await fb.getDoc(fb.doc(fb.db, 'users', map.uid));
+          const userDoc = await fb.getDoc(fb.doc(fb.db, 'users', map.email));
           if(userDoc.exists()) profile = userDoc.data();
-          else {
-            // fallback: try users/{email}
-            const userDoc2 = await fb.getDoc(fb.doc(fb.db, 'users', map.email));
-            if(userDoc2.exists()) profile = userDoc2.data();
-          }
         }
       } else {
         const userDoc = await fb.getDoc(fb.doc(fb.db, 'users', loginInput));
         if(userDoc.exists()) profile = userDoc.data();
       }
-      if(!profile){
-        alert('Autenticado, mas perfil não encontrado no Firestore. Contate o administrador.');
-        await fb.signOut(fb.auth);
-        return;
-      }
-      // set usuarioLogado
-      usuarioLogado = { email: profile.email || loginInput, role: profile.role || 'USUARIOS', uid: profile.uid || null };
+
+      if(!profile){ alert('Autenticado, mas perfil não encontrado no Firestore.'); await fb.signOut(fb.auth); return; }
+
+      usuarioLogado = { email: profile.email, role: profile.role, username: profile.username || profile.email.split('@')[0] };
       onLogin();
       return;
     } catch(err){
       console.warn('Firebase login falhou:', err);
-      // tenta fallback local abaixo
+      // fallback to local below
     }
   }
 
-  // fallback local: procura em localUsers por username
+  // fallback local
   const found = localUsers.find(u => u.username === loginInput && u.password === password);
   if(found){
     usuarioLogado = { username: found.username, role: found.role, local: true };
@@ -316,15 +295,12 @@ async function handleLogin(){
   alert('Usuário ou senha inválidos.');
 }
 
-/* =========================
-   Pós-login: mostra menus conforme role
-   ========================= */
+/* ====== Pós-login: mostrar menus conforme role ====== */
 function onLogin(){
   loginCard.style.display = 'none';
   menuNav.style.display = 'block';
 
   const role = usuarioLogado.role || 'USUARIOS';
-
   if(role === 'MASTER'){
     menuMaster.style.display = 'flex';
     menuOperadores.style.display = 'none';
@@ -349,21 +325,21 @@ function onLogin(){
     mostrar('formulario');
   }
 
-  // carregar perguntas e usuários (do Firestore se disponível, senão local)
   if(fb){
     carregarPerguntas().then(renderizarPerguntas);
-    renderizarUsuarios(); // will fetch from Firestore inside
+    renderizarUsuarios();
   } else {
-    // fallback: perguntas iniciais locais
-    perguntas = ["Como você avalia sua experiência na empresa?", "O que poderia ser melhorado?"];
+    // local perguntas
+    perguntas = [
+      { id: 'q1', text: "Como você avalia sua experiência na empresa?" },
+      { id: 'q2', text: "O que poderia ser melhorado?" }
+    ];
     renderizarPerguntas();
     renderizarUsuarios();
   }
 }
 
-/* =========================
-   Logout
-   ========================= */
+/* ====== Logout ====== */
 document.getElementById('logoutMaster').addEventListener('click', async (e)=>{ e.preventDefault(); await doLogout(); });
 document.getElementById('logoutUser').addEventListener('click', async (e)=>{ e.preventDefault(); await doLogout(); });
 
@@ -382,9 +358,7 @@ async function doLogout(){
   mostrar('');
 }
 
-/* =========================
-   Perguntas: Firestore or local
-   ========================= */
+/* ====== Perguntas: adicionar, listar, excluir ====== */
 async function adicionarPergunta(){
   if(!usuarioLogado || usuarioLogado.role !== 'MASTER'){ alert('Apenas MASTER pode adicionar perguntas.'); return; }
   const nova = document.getElementById('novaPergunta').value.trim();
@@ -399,7 +373,8 @@ async function adicionarPergunta(){
       alert('Pergunta adicionada.');
     } catch(err){ console.error(err); alert('Erro ao adicionar pergunta: ' + err.message); }
   } else {
-    perguntas.push(nova);
+    const id = 'local_' + Date.now();
+    perguntas.push({ id, text: nova });
     document.getElementById('novaPergunta').value = '';
     renderizarPerguntas();
     alert('Pergunta adicionada (local).');
@@ -414,7 +389,7 @@ async function carregarPerguntas(){
       snap.forEach(d => perguntas.push({ id: d.id, text: d.data().text }));
     } catch(err){ console.error('Erro carregar perguntas:', err); }
   } else {
-    perguntas = ["Como você avalia sua experiência na empresa?", "O que poderia ser melhorado?"];
+    // já inicializadas no onLogin fallback
   }
 }
 
@@ -423,15 +398,31 @@ function renderizarPerguntas(){
   const form = document.getElementById('formEntrevista');
   if(lista) lista.innerHTML = '';
   if(form) form.innerHTML = '';
+
   perguntas.forEach((p, i) => {
+    // lista com botão excluir (apenas MASTER)
     if(lista){
-      const li = document.createElement('li');
-      li.textContent = p.text || p;
-      lista.appendChild(li);
+      const row = document.createElement('div');
+      row.className = 'question-row';
+      const left = document.createElement('div');
+      left.textContent = p.text;
+      const actions = document.createElement('div');
+      actions.className = 'question-actions';
+      if(usuarioLogado && usuarioLogado.role === 'MASTER'){
+        const del = document.createElement('button');
+        del.textContent = 'Excluir';
+        del.onclick = function(){ excluirPergunta(p.id); };
+        actions.appendChild(del);
+      }
+      row.appendChild(left);
+      row.appendChild(actions);
+      lista.appendChild(row);
     }
+
+    // formulário (todos)
     if(form){
       const label = document.createElement('label');
-      label.textContent = p.text || p;
+      label.textContent = p.text;
       const textarea = document.createElement('textarea');
       textarea.id = 'resposta_' + i;
       textarea.rows = 3;
@@ -441,11 +432,25 @@ function renderizarPerguntas(){
   });
 }
 
-/* =========================
-   Usuários: criar, listar, excluir
-   - If Firebase available: create profile in Firestore and mapping in 'usernames'
-   - If not: operate on localUsers (in-memory)
-   ========================= */
+async function excluirPergunta(id){
+  if(!usuarioLogado || usuarioLogado.role !== 'MASTER'){ alert('Apenas MASTER pode excluir perguntas.'); return; }
+  if(!confirm('Confirma exclusão desta pergunta?')) return;
+
+  if(fb){
+    try {
+      await fb.deleteDoc(fb.doc(fb.db, 'questions', id));
+      await carregarPerguntas();
+      renderizarPerguntas();
+      alert('Pergunta excluída.');
+    } catch(err){ console.error(err); alert('Erro ao excluir pergunta: ' + err.message); }
+  } else {
+    perguntas = perguntas.filter(p => p.id !== id);
+    renderizarPerguntas();
+    alert('Pergunta excluída (local).');
+  }
+}
+
+/* ====== Usuários: criar, listar, excluir (tabela) ====== */
 async function criarUsuario(){
   if(!usuarioLogado || usuarioLogado.role !== 'MASTER'){ alert('Apenas MASTER pode criar usuários.'); return; }
   const novoUser = document.getElementById('novoUser').value.trim();
@@ -455,22 +460,15 @@ async function criarUsuario(){
 
   if(fb){
     try {
-      // create user in Auth using internal email pattern: username@local.example
       const internalEmail = novoUser.includes('@') ? novoUser : `${novoUser}@local.example`;
       await fb.createUserWithEmailAndPassword(fb.auth, internalEmail, novoPass);
-      // create profile in Firestore: users/{uid} or users/{internalEmail}
-      // We don't have uid here easily; create mapping in 'usernames' and 'users' by email
-      // get current user from auth is not possible for admin creation client-side; we store profile by email
       await fb.setDoc(fb.doc(fb.db, 'users', internalEmail), { username: novoUser, email: internalEmail, role: novoRole, createdAt: new Date().toISOString() });
       await fb.setDoc(fb.doc(fb.db, 'usernames', novoUser), { email: internalEmail, role: novoRole });
       document.getElementById('novoUser').value = '';
       document.getElementById('novoPass').value = '';
       renderizarUsuarios();
-      alert('Usuário criado (perfil Firestore). Note: remoção do Auth requer função admin.');
-    } catch(err){
-      console.error(err);
-      alert('Erro ao criar usuário no Firebase: ' + (err.message || err));
-    }
+      alert('Usuário criado (perfil Firestore). Para remover do Auth, use função admin.');
+    } catch(err){ console.error(err); alert('Erro ao criar usuário no Firebase: ' + (err.message || err)); }
   } else {
     if(localUsers.some(u => u.username === novoUser)){ alert('Usuário já existe (local).'); return; }
     localUsers.push({ username: novoUser, password: novoPass, role: novoRole });
@@ -482,49 +480,43 @@ async function criarUsuario(){
 }
 
 async function renderizarUsuarios(){
-  const container = document.getElementById('listaUsuarios');
-  container.innerHTML = '';
+  const tbody = document.getElementById('usersTbody');
+  tbody.innerHTML = '';
   if(fb){
     try {
       const snap = await fb.getDocs(fb.collection(fb.db, 'usernames'));
       snap.forEach(d => {
-        const data = d.data();
         const username = d.id;
+        const data = d.data();
         const role = data.role || 'USUARIOS';
-        const row = document.createElement('div');
-        row.className = 'user-row';
-        const left = document.createElement('div');
-        left.textContent = username + ' — ' + role;
-        const actions = document.createElement('div');
-        actions.className = 'user-actions';
+        const tr = document.createElement('tr');
+        const tdUser = document.createElement('td'); tdUser.textContent = username;
+        const tdRole = document.createElement('td'); tdRole.textContent = role;
+        const tdActions = document.createElement('td');
         if(usuarioLogado && usuarioLogado.role === 'MASTER'){
           const del = document.createElement('button');
           del.textContent = 'Excluir';
           del.onclick = async () => { await excluirUsuario(username); };
-          actions.appendChild(del);
+          tdActions.appendChild(del);
         }
-        row.appendChild(left);
-        row.appendChild(actions);
-        container.appendChild(row);
+        tr.appendChild(tdUser); tr.appendChild(tdRole); tr.appendChild(tdActions);
+        tbody.appendChild(tr);
       });
     } catch(err){ console.error('Erro listar users:', err); }
   } else {
     localUsers.forEach(u => {
-      const row = document.createElement('div');
-      row.className = 'user-row';
-      const left = document.createElement('div');
-      left.textContent = u.username + ' — ' + u.role;
-      const actions = document.createElement('div');
-      actions.className = 'user-actions';
+      const tr = document.createElement('tr');
+      const tdUser = document.createElement('td'); tdUser.textContent = u.username;
+      const tdRole = document.createElement('td'); tdRole.textContent = u.role;
+      const tdActions = document.createElement('td');
       if(usuarioLogado && usuarioLogado.role === 'MASTER'){
         const del = document.createElement('button');
         del.textContent = 'Excluir';
         del.onclick = function(){ excluirUsuarioLocal(u.username); };
-        actions.appendChild(del);
+        tdActions.appendChild(del);
       }
-      row.appendChild(left);
-      row.appendChild(actions);
-      container.appendChild(row);
+      tr.appendChild(tdUser); tr.appendChild(tdRole); tr.appendChild(tdActions);
+      tbody.appendChild(tr);
     });
   }
 }
@@ -536,17 +528,14 @@ async function excluirUsuario(username){
 
   if(fb){
     try {
-      // remove mapping and profile in Firestore
       const snap = await fb.getDoc(fb.doc(fb.db, 'usernames', username));
       if(snap.exists()){
         const data = snap.data();
         const email = data.email;
-        // delete username mapping
         await fb.deleteDoc(fb.doc(fb.db, 'usernames', username));
-        // delete profile doc by email if exists
         await fb.deleteDoc(fb.doc(fb.db, 'users', email));
         renderizarUsuarios();
-        alert('Perfil removido do Firestore. Para remover do Auth, execute função admin no servidor.');
+        alert('Perfil removido do Firestore. Para remover do Auth, execute função admin.');
       } else {
         alert('Usuário não encontrado no Firestore.');
       }
@@ -565,9 +554,7 @@ function excluirUsuarioLocal(username){
   alert('Usuário excluído (local).');
 }
 
-/* =========================
-   Respostas: salvar e carregar
-   ========================= */
+/* ====== Respostas ====== */
 async function salvarRespostas(){
   if(!usuarioLogado){ alert('Faça login para enviar respostas.'); return; }
   const respostaAtual = perguntas.map((p, i) => {
@@ -589,9 +576,7 @@ async function salvarRespostas(){
   }
 }
 
-/* =========================
-   Dashboard: gerar gráfico
-   ========================= */
+/* ====== Dashboard ====== */
 async function carregarRespostas(){
   respostas = [];
   if(fb){
@@ -599,8 +584,6 @@ async function carregarRespostas(){
       const snap = await fb.getDocs(fb.collection(fb.db, 'responses'));
       snap.forEach(d => respostas.push(d.data()));
     } catch(err){ console.error('Erro carregar respostas:', err); }
-  } else {
-    // já mantidas em memória
   }
 }
 
@@ -618,9 +601,7 @@ async function gerarGrafico(){
   });
 }
 
-/* =========================
-   Menu behavior: click opens submenu, click submenu item runs action and closes submenu
-   ========================= */
+/* ====== Menu behavior (click/hover) ====== */
 document.querySelectorAll('.submenu-link').forEach(a=>{
   a.addEventListener('click', function(e){
     e.preventDefault();
@@ -650,9 +631,7 @@ document.addEventListener('click', function(e){
 function closeAllSubmenus(){ document.querySelectorAll('nav li.has-sub.open').forEach(li => li.classList.remove('open')); }
 document.querySelectorAll('nav ul.submenu').forEach(ul => ul.addEventListener('click', function(e){ e.stopPropagation(); }));
 
-/* =========================
-   UI helper: mostrar seções
-   ========================= */
+/* ====== UI helper: mostrar seções ====== */
 function mostrar(secao){
   const ids = ["usuarios","perguntas","formulario","dashboard"];
   ids.forEach(id => { const el = document.getElementById(id); if(el) el.style.display = 'none'; });
@@ -665,14 +644,15 @@ function mostrar(secao){
   }
 }
 
-/* =========================
-   Inicialização: carrega dados locais
-   ========================= */
+/* ====== Inicialização ====== */
 (async function init(){
   if(fb){
     await carregarPerguntas();
   } else {
-    perguntas = ["Como você avalia sua experiência na empresa?", "O que poderia ser melhorado?"];
+    perguntas = [
+      { id: 'q1', text: "Como você avalia sua experiência na empresa?" },
+      { id: 'q2', text: "O que poderia ser melhorado?" }
+    ];
   }
   renderizarPerguntas();
   renderizarUsuarios();
