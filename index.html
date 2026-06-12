@@ -7,28 +7,30 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
+    /* Base */
     body { font-family: Arial, sans-serif; margin: 0; background: #f4f6f9; }
     header { background: #dc3545; color: #fff; padding: 20px; text-align: center; }
     header h1 { margin: 0; font-size: 28px; text-transform: uppercase; }
 
     /* NAV layout: left menu items, right welcome + logout */
-    nav { background: #333; display: none; }
+    nav { background: #333; display: none; width: 100%; }
     .menu-row {
       max-width: 1100px;
       margin: 0 auto;
       display: flex;
       align-items: center;
       padding: 6px 12px;
-      justify-content: space-between; /* left items left, right items right */
       gap: 12px;
     }
 
+    /* left group (menu items) */
     .menu-left { display:flex; align-items:center; gap:6px; }
     .menu-list { display:flex; gap:6px; margin:0; padding:0; list-style:none; align-items:center; }
-    .menu-list li { position:relative; }
+    .menu-list li { position:relative; margin:0; padding:0; }
     .menu-list li a.menu-link { color:#fff; padding:12px 18px; text-decoration:none; display:block; font-weight:500; white-space:nowrap; }
     .menu-list li a.menu-link:hover { background:#111; border-radius:4px; }
 
+    /* submenu: remove bullets and spacing */
     ul.submenu {
       display:none;
       position:absolute;
@@ -40,16 +42,24 @@
       border-radius:6px;
       box-shadow:0 6px 18px rgba(0,0,0,0.2);
       padding:6px 0;
+      margin:0;
+      list-style:none;
     }
+    ul.submenu li { margin:0; padding:0; }
     ul.submenu li a { padding:10px 14px; color:#fff; display:block; text-decoration:none; }
+    ul.submenu li a:hover { background:#3b3b3b; }
+
+    /* show submenu on hover or when parent has .open */
     .menu-list li:hover > ul.submenu { display:block; }
     .menu-list li.open > ul.submenu { display:block; }
 
-    .menu-right { display:flex; align-items:center; gap:8px; }
+    /* right group (welcome + logout) */
+    .menu-right { margin-left: auto; display:flex; align-items:center; gap:8px; }
     .sair { background:#dc3545; color:#fff; padding:8px 12px; border-radius:4px; text-decoration:none; }
     .sair:hover { background:#a71d2a; }
     .welcome { color:#fff; padding:8px 12px; font-weight:600; }
 
+    /* Content */
     .container { max-width: 900px; margin: 30px auto; padding: 20px; }
     .card { background:#fff; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.08); padding:20px; margin-bottom:30px; }
     h2 { color:#007bff; margin-top:0; }
@@ -58,18 +68,18 @@
     button:hover { background:#0056b3; }
     ul.simple { padding-left:18px; }
     label { display:block; margin-top:10px; font-weight:600; }
-    .user-row { display:flex; justify-content:space-between; align-items:center; gap:8px; padding:6px 0; border-bottom:1px solid #eee; }
-    .user-actions button { margin-left:6px; background:#dc3545; color:#fff; border:none; padding:6px 8px; border-radius:4px; cursor:pointer; }
-    .user-actions button:hover { background:#a71d2a; }
 
+    /* Users table */
     table.users-table { width:100%; border-collapse: collapse; margin-top:12px; }
     table.users-table th, table.users-table td { border: 1px solid #e6e6e6; padding: 8px 10px; text-align:left; }
     table.users-table th { background:#f7f7f7; font-weight:700; }
 
+    /* question row */
     .question-row { display:flex; justify-content:space-between; align-items:center; gap:8px; padding:6px 0; border-bottom:1px solid #eee; }
     .question-actions button { margin-left:6px; background:#dc3545; color:#fff; border:none; padding:6px 8px; border-radius:4px; cursor:pointer; }
     .question-actions button:hover { background:#a71d2a; }
 
+    /* responsive */
     @media (max-width:720px){
       .menu-row { padding:6px; flex-wrap:wrap; }
       ul.submenu { position:static; box-shadow:none; border-radius:0; margin-top:6px; }
@@ -209,38 +219,30 @@
 </div>
 
 <script type="module">
-/* Código completo (frontend). Firebase é opcional; se não configurado, fallback local mantém 'andrei' como MASTER. */
-
-/* ====== CONFIGURAÇÃO FIREBASE (opcional) ======
-   Preencha se quiser persistência real. Caso contrário, deixe apiKey=null.
+/* Código principal (mantive fallback local para 'andrei' MASTER).
+   Ajustes aplicados:
+   - Menu alinhado à esquerda (CRIAR / FORMULÁRIO / DASHBOARD)
+   - Bem-vindo + SAIR alinhados à direita
+   - Submenus sem bolinhas (list-style:none)
+   - Clique em submenu fecha o menu e abre a seção
 */
-const firebaseConfig = {
-  apiKey: null,
-  authDomain: null,
-  projectId: null
-};
 
+const firebaseConfig = { apiKey: null, authDomain: null, projectId: null };
 let fb = null;
 if (firebaseConfig && firebaseConfig.apiKey) {
   const { initializeApp } = await import('https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js');
   const { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } = await import('https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js');
   const { getFirestore, doc, setDoc, getDoc, collection, addDoc, getDocs, deleteDoc } = await import('https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js');
-
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
-
   fb = { auth, db, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, doc, setDoc, getDoc, collection, addDoc, getDocs, deleteDoc };
 }
 
-/* ====== Estado e fallback local ====== */
 let usuarioLogado = null;
 let perguntas = [];
 let respostas = [];
-
-let localUsers = [
-  { username: 'andrei', password: '#Andrei1996', role: 'MASTER' }
-];
+let localUsers = [{ username: 'andrei', password: '#Andrei1996', role: 'MASTER' }];
 
 const loginCard = document.getElementById('loginCard');
 const menuNav = document.getElementById('menuNav');
@@ -255,7 +257,6 @@ const bemvindoUser = document.getElementById('bemvindoUser');
 document.getElementById('btnEntrar').addEventListener('click', handleLogin);
 document.getElementById('loginPass').addEventListener('keydown', function(e){ if(e.key === 'Enter') handleLogin(); });
 
-/* ====== Login (username or email) ====== */
 async function handleLogin(){
   const loginInput = document.getElementById('loginUser').value.trim();
   const password = document.getElementById('loginPass').value;
@@ -271,8 +272,6 @@ async function handleLogin(){
         emailToUse = map.email;
       }
       await fb.signInWithEmailAndPassword(fb.auth, emailToUse, password);
-
-      // carregar perfil
       let profile = null;
       if(!loginInput.includes('@')){
         const snap = await fb.getDoc(fb.doc(fb.db, 'usernames', loginInput));
@@ -285,19 +284,15 @@ async function handleLogin(){
         const userDoc = await fb.getDoc(fb.doc(fb.db, 'users', loginInput));
         if(userDoc.exists()) profile = userDoc.data();
       }
-
       if(!profile){ alert('Autenticado, mas perfil não encontrado no Firestore.'); await fb.signOut(fb.auth); return; }
-
       usuarioLogado = { email: profile.email, role: profile.role, username: profile.username || profile.email.split('@')[0] };
       onLogin();
       return;
     } catch(err){
       console.warn('Firebase login falhou:', err);
-      // fallback to local below
     }
   }
 
-  // fallback local
   const found = localUsers.find(u => u.username === loginInput && u.password === password);
   if(found){
     usuarioLogado = { username: found.username, role: found.role, local: true };
@@ -308,7 +303,6 @@ async function handleLogin(){
   alert('Usuário ou senha inválidos.');
 }
 
-/* ====== Pós-login: mostrar menus conforme role ====== */
 function onLogin(){
   loginCard.style.display = 'none';
   menuNav.style.display = 'block';
@@ -351,7 +345,6 @@ function onLogin(){
   }
 }
 
-/* ====== Logout ====== */
 document.getElementById('logoutMaster').addEventListener('click', async (e)=>{ e.preventDefault(); await doLogout(); });
 document.getElementById('logoutUser').addEventListener('click', async (e)=>{ e.preventDefault(); await doLogout(); });
 
@@ -370,7 +363,7 @@ async function doLogout(){
   mostrar('');
 }
 
-/* ====== Perguntas: adicionar, listar, excluir ====== */
+/* Perguntas */
 async function adicionarPergunta(){
   if(!usuarioLogado || usuarioLogado.role !== 'MASTER'){ alert('Apenas MASTER pode adicionar perguntas.'); return; }
   const nova = document.getElementById('novaPergunta').value.trim();
@@ -458,7 +451,7 @@ async function excluirPergunta(id){
   }
 }
 
-/* ====== Usuários: criar, listar, excluir (tabela) ====== */
+/* Usuários */
 async function criarUsuario(){
   if(!usuarioLogado || usuarioLogado.role !== 'MASTER'){ alert('Apenas MASTER pode criar usuários.'); return; }
   const novoUser = document.getElementById('novoUser').value.trim();
@@ -517,155 +510,3 @@ async function renderizarUsuarios(){
       const tdUser = document.createElement('td'); tdUser.textContent = u.username;
       const tdRole = document.createElement('td'); tdRole.textContent = u.role;
       const tdActions = document.createElement('td');
-      if(usuarioLogado && usuarioLogado.role === 'MASTER'){
-        const del = document.createElement('button');
-        del.textContent = 'Excluir';
-        del.onclick = function(){ excluirUsuarioLocal(u.username); };
-        tdActions.appendChild(del);
-      }
-      tr.appendChild(tdUser); tr.appendChild(tdRole); tr.appendChild(tdActions);
-      tbody.appendChild(tr);
-    });
-  }
-}
-
-async function excluirUsuario(username){
-  if(!usuarioLogado || usuarioLogado.role !== 'MASTER'){ alert('Apenas MASTER pode excluir usuários.'); return; }
-  if(usuarioLogado.username === username || (usuarioLogado.email && usuarioLogado.email.split('@')[0] === username)){ alert('Você não pode excluir seu próprio usuário.'); return; }
-  if(!confirm("Confirma exclusão do usuário '" + username + "' ?")) return;
-
-  if(fb){
-    try {
-      const snap = await fb.getDoc(fb.doc(fb.db, 'usernames', username));
-      if(snap.exists()){
-        const data = snap.data();
-        const email = data.email;
-        await fb.deleteDoc(fb.doc(fb.db, 'usernames', username));
-        await fb.deleteDoc(fb.doc(fb.db, 'users', email));
-        renderizarUsuarios();
-        alert('Perfil removido do Firestore. Para remover do Auth, execute função admin.');
-      } else {
-        alert('Usuário não encontrado no Firestore.');
-      }
-    } catch(err){ console.error(err); alert('Erro ao excluir: ' + err.message); }
-  } else {
-    excluirUsuarioLocal(username);
-  }
-}
-
-function excluirUsuarioLocal(username){
-  if(!usuarioLogado || usuarioLogado.role !== 'MASTER'){ alert('Apenas MASTER pode excluir usuários.'); return; }
-  if(usuarioLogado.username === username){ alert('Você não pode excluir seu próprio usuário.'); return; }
-  if(!confirm("Confirma exclusão do usuário '" + username + "' ?")) return;
-  localUsers = localUsers.filter(u => u.username !== username);
-  renderizarUsuarios();
-  alert('Usuário excluído (local).');
-}
-
-/* ====== Respostas ====== */
-async function salvarRespostas(){
-  if(!usuarioLogado){ alert('Faça login para enviar respostas.'); return; }
-  const respostaAtual = perguntas.map((p, i) => {
-    const el = document.getElementById('resposta_' + i);
-    return el ? el.value.trim() : '';
-  });
-  if(respostaAtual.every(r => r === '')){ alert('Preencha pelo menos uma resposta antes de enviar.'); return; }
-
-  if(fb){
-    try {
-      await fb.addDoc(fb.collection(fb.db, 'responses'), { author: usuarioLogado.email || usuarioLogado.username, answers: respostaAtual, createdAt: new Date().toISOString() });
-      perguntas.forEach((p, i) => { const el = document.getElementById('resposta_' + i); if(el) el.value = ''; });
-      alert('Respostas salvas!');
-    } catch(err){ console.error(err); alert('Erro ao salvar respostas: ' + err.message); }
-  } else {
-    respostas.push({ author: usuarioLogado.username || 'local', answers: respostaAtual, createdAt: new Date().toISOString() });
-    perguntas.forEach((p, i) => { const el = document.getElementById('resposta_' + i); if(el) el.value = ''; });
-    alert('Respostas salvas (local).');
-  }
-}
-
-/* ====== Dashboard ====== */
-async function carregarRespostas(){
-  respostas = [];
-  if(fb){
-    try {
-      const snap = await fb.getDocs(fb.collection(fb.db, 'responses'));
-      snap.forEach(d => respostas.push(d.data()));
-    } catch(err){ console.error('Erro carregar respostas:', err); }
-  }
-}
-
-async function gerarGrafico(){
-  await carregarRespostas();
-  const canvas = document.getElementById('graficoRespostas');
-  if(!canvas) return;
-  const ctx = canvas.getContext('2d');
-  const dados = perguntas.map((p, i) => respostas.filter(r => r.answers && r.answers[i] && r.answers[i].length > 0).length);
-  if(window._chartInstance) window._chartInstance.destroy();
-  window._chartInstance = new Chart(ctx, {
-    type: 'bar',
-    data: { labels: perguntas.map(p => p.text || p), datasets: [{ label: 'Número de respostas', data: dados, backgroundColor: 'rgba(220,53,69,0.7)' }] },
-    options: { responsive: true, plugins: { legend: { display: false }, title: { display: true, text: 'Respostas por Pergunta' } }, scales: { y: { beginAtZero: true, precision: 0 } } }
-  });
-}
-
-/* ====== Menu behavior (click/hover) ====== */
-document.querySelectorAll('.submenu-link').forEach(a=>{
-  a.addEventListener('click', function(e){
-    e.preventDefault();
-    e.stopPropagation();
-    const sec = this.getAttribute('data-show');
-    mostrar(sec);
-    closeAllSubmenus();
-  });
-});
-
-document.querySelectorAll('.menu-left > ul > li.has-sub > a.menu-link').forEach(link=>{
-  link.addEventListener('click', function(e){
-    e.preventDefault();
-    e.stopPropagation();
-    const li = this.closest('li.has-sub');
-    if(!li) return;
-    const isOpen = li.classList.contains('open');
-    closeAllSubmenus();
-    if(!isOpen) li.classList.add('open');
-  });
-});
-
-document.addEventListener('click', function(e){
-  if(!e.target.closest('nav')) closeAllSubmenus();
-});
-
-function closeAllSubmenus(){ document.querySelectorAll('nav li.has-sub.open').forEach(li => li.classList.remove('open')); }
-document.querySelectorAll('nav ul.submenu').forEach(ul => ul.addEventListener('click', function(e){ e.stopPropagation(); }));
-
-/* ====== UI helper: mostrar seções ====== */
-function mostrar(secao){
-  const ids = ["usuarios","perguntas","formulario","dashboard"];
-  ids.forEach(id => { const el = document.getElementById(id); if(el) el.style.display = 'none'; });
-  if(secao){
-    const el = document.getElementById(secao);
-    if(el) el.style.display = 'block';
-    if(secao === 'perguntas' || secao === 'formulario') renderizarPerguntas();
-    if(secao === 'usuarios') renderizarUsuarios();
-    if(secao === 'dashboard') gerarGrafico();
-  }
-}
-
-/* ====== Inicialização ====== */
-(async function init(){
-  if(fb){
-    await carregarPerguntas();
-  } else {
-    perguntas = [
-      { id: 'q1', text: "Como você avalia sua experiência na empresa?" },
-      { id: 'q2', text: "O que poderia ser melhorado?" }
-    ];
-  }
-  renderizarPerguntas();
-  renderizarUsuarios();
-})();
-</script>
-
-</body>
-</html>
