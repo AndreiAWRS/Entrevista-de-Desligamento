@@ -10,47 +10,15 @@
     header h1 { margin: 0; font-size: 28px; text-transform: uppercase; }
 
     /* Barra de menu */
-    nav {
-      background: #333;
-      overflow: hidden;
-    }
-    nav ul {
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-    }
-    nav li {
-      float: left;
-      position: relative;
-    }
-    nav li a {
-      display: block;
-      color: #fff;
-      text-align: center;
-      padding: 14px 20px;
-      text-decoration: none;
-    }
-    nav li a:hover {
-      background-color: #111;
-    }
-
-    /* Submenu */
-    nav li ul {
-      display: none;
-      position: absolute;
-      background-color: #444;
-      min-width: 160px;
-      z-index: 1;
-    }
-    nav li ul li {
-      float: none;
-    }
-    nav li ul li a {
-      padding: 12px 16px;
-    }
-    nav li:hover ul {
-      display: block;
-    }
+    nav { background: #333; overflow: hidden; display:none; }
+    nav ul { list-style-type: none; margin: 0; padding: 0; }
+    nav li { float: left; position: relative; }
+    nav li a { display: block; color: #fff; text-align: center; padding: 14px 20px; text-decoration: none; }
+    nav li a:hover { background-color: #111; }
+    nav li ul { display: none; position: absolute; background-color: #444; min-width: 160px; z-index: 1; }
+    nav li ul li { float: none; }
+    nav li ul li a { padding: 12px 16px; }
+    nav li:hover ul { display: block; }
 
     .container { max-width: 900px; margin: 30px auto; padding: 20px; }
     .card { background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); padding: 20px; margin-bottom: 30px; }
@@ -66,9 +34,19 @@
   <h1>ENTREVISTA DE DESLIGAMENTO</h1>
 </header>
 
+<!-- Tela de Login -->
+<div class="container" id="loginCard">
+  <div class="card">
+    <h2>Login</h2>
+    <input type="text" id="loginUser" placeholder="Usuário">
+    <input type="password" id="loginPass" placeholder="Senha">
+    <button onclick="login()">Entrar</button>
+  </div>
+</div>
+
 <!-- Menu suspenso -->
-<nav>
-  <ul>
+<nav id="menuNav">
+  <ul id="menuMaster">
     <li><a href="#">CRIAR</a>
       <ul>
         <li><a href="#" onclick="mostrar('usuarios')">Usuários</a></li>
@@ -83,6 +61,13 @@
     <li><a href="#">DASHBOARD</a>
       <ul>
         <li><a href="#" onclick="mostrar('dashboard')">Gráficos</a></li>
+      </ul>
+    </li>
+  </ul>
+  <ul id="menuUser">
+    <li><a href="#">FORMULÁRIO</a>
+      <ul>
+        <li><a href="#" onclick="mostrar('formulario')">Formulário</a></li>
       </ul>
     </li>
   </ul>
@@ -127,6 +112,27 @@
   let usuarios = [{login:"andrei", senha:"#Andrei1996", master:true}];
   let perguntas = ["Como você avalia sua experiência na empresa?", "O que poderia ser melhorado?"];
   let respostas = [];
+  let usuarioLogado = null;
+
+  function login(){
+    const user = document.getElementById("loginUser").value;
+    const pass = document.getElementById("loginPass").value;
+    const encontrado = usuarios.find(u => u.login===user && u.senha===pass);
+    if(encontrado){
+      usuarioLogado = encontrado;
+      document.getElementById("loginCard").style.display="none";
+      document.getElementById("menuNav").style.display="block";
+      if(encontrado.master){
+        document.getElementById("menuMaster").style.display="block";
+        document.getElementById("menuUser").style.display="none";
+      } else {
+        document.getElementById("menuMaster").style.display="none";
+        document.getElementById("menuUser").style.display="block";
+      }
+    } else {
+      alert("Usuário ou senha inválidos!");
+    }
+  }
 
   function mostrar(secao){
     document.getElementById("usuarios").style.display="none";
@@ -196,27 +202,4 @@
   }
 
   function criarUsuario(){
-    const novoUser = document.getElementById("novoUser").value;
-    const novoPass = document.getElementById("novoPass").value;
-    if(novoUser && novoPass){
-      usuarios.push({login:novoUser, senha:novoPass, master:false});
-      document.getElementById("novoUser").value="";
-      document.getElementById("novoPass").value="";
-      renderizarUsuarios();
-      alert("Usuário criado com sucesso!");
-    }
-  }
-
-  function renderizarUsuarios(){
-    const lista = document.getElementById("listaUsuarios");
-    lista.innerHTML="";
-    usuarios.forEach(u=>{
-      const li=document.createElement("li");
-      li.textContent = u.login + (u.master?" (master)":"");
-      lista.appendChild(li);
-    });
-  }
-</script>
-
-</body>
-</html>
+    const novoUser = document.getElementBy
