@@ -18,7 +18,7 @@
     .menu-left li a { display: block; color: #fff; padding: 12px 18px; text-decoration: none; font-weight: 500; white-space: nowrap; }
     .menu-left li a:hover { background: #111; border-radius:4px; }
 
-    /* Submenu: hidden by default, shown on hover or when .open */
+    /* Submenu */
     ul.submenu {
       display: none;
       position: absolute;
@@ -31,7 +31,6 @@
       box-shadow: 0 6px 18px rgba(0,0,0,0.2);
       padding: 6px 0;
     }
-    ul.submenu li { float: none; }
     ul.submenu li a { padding: 10px 14px; color: #fff; display:block; }
     .menu-left li:hover > ul.submenu { display: block; } /* hover desktop */
     .menu-left li.open > ul.submenu { display: block; }  /* click/toggle */
@@ -46,13 +45,15 @@
     .container { max-width: 900px; margin: 30px auto; padding: 20px; }
     .card { background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); padding: 20px; margin-bottom: 30px; }
     h2 { color: #007bff; margin-top: 0; }
-    input, textarea { margin: 8px 0; padding: 10px; width: 100%; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+    input, textarea, select { margin: 8px 0; padding: 10px; width: 100%; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
     button { margin-top: 10px; padding: 10px 15px; background: #007bff; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
     button:hover { background: #0056b3; }
     ul.simple { padding-left: 18px; }
     label { display:block; margin-top:10px; font-weight:600; }
+    .user-row { display:flex; justify-content:space-between; align-items:center; gap:8px; padding:6px 0; border-bottom:1px solid #eee; }
+    .user-actions button { margin-left:6px; background:#dc3545; }
+    .user-actions button:hover { background:#a71d2a; }
 
-    /* responsividade simples */
     @media (max-width: 720px) {
       .menu-row { padding: 6px; flex-wrap:wrap; }
       ul.submenu { position: static; box-shadow: none; border-radius: 0; margin-top:6px; }
@@ -106,6 +107,22 @@
         </li>
       </ul>
 
+      <!-- menu operadores (left) -->
+      <ul id="menuOperadores" style="display:none;">
+        <li class="has-sub">
+          <a href="#" class="menu-link">FORMULÁRIO</a>
+          <ul class="submenu">
+            <li><a href="#" class="submenu-link" data-show="formulario">Formulário</a></li>
+          </ul>
+        </li>
+        <li class="has-sub">
+          <a href="#" class="menu-link">DASHBOARD</a>
+          <ul class="submenu">
+            <li><a href="#" class="submenu-link" data-show="dashboard">Gráficos</a></li>
+          </ul>
+        </li>
+      </ul>
+
       <!-- menu usuário comum -->
       <ul id="menuUser" style="display:none;">
         <li class="has-sub">
@@ -140,10 +157,16 @@
     <input type="text" id="novoUser" placeholder="Login do usuário">
     <label>Senha do usuário</label>
     <input type="password" id="novoPass" placeholder="Senha do usuário">
+    <label>Grupo</label>
+    <select id="novoRole">
+      <option value="USUARIOS">USUÁRIOS</option>
+      <option value="OPERADORES">OPERADORES</option>
+      <option value="MASTER">MASTER</option>
+    </select>
     <button onclick="criarUsuario()">Criar Usuário</button>
 
     <h2 style="margin-top:20px">Usuários existentes</h2>
-    <ul id="listaUsuarios" class="simple"></ul>
+    <div id="listaUsuarios" class="simple"></div>
   </div>
 
   <!-- Perguntas -->
@@ -174,7 +197,9 @@
 
 <script>
   // Dados em memória (protótipo)
-  let usuarios = [{ login: "andrei", senha: "#Andrei1996", master: true }];
+  let usuarios = [
+    { login: "andrei", senha: "#Andrei1996", role: "MASTER" }
+  ];
   let perguntas = ["Como você avalia sua experiência na empresa?", "O que poderia ser melhorado?"];
   let respostas = [];
   let usuarioLogado = null;
@@ -183,6 +208,7 @@
   const loginCard = document.getElementById('loginCard');
   const menuNav = document.getElementById('menuNav');
   const menuMaster = document.getElementById('menuMaster');
+  const menuOperadores = document.getElementById('menuOperadores');
   const menuUser = document.getElementById('menuUser');
   const menuRightMaster = document.getElementById('menuRightMaster');
   const menuRightUser = document.getElementById('menuRightUser');
@@ -198,38 +224,40 @@
   function login(){
     const user = document.getElementById("loginUser").value.trim();
     const pass = document.getElementById("loginPass").value;
-    if(!user || !pass){
-      alert("Preencha usuário e senha.");
-      return;
-    }
+    if(!user || !pass){ alert("Preencha usuário e senha."); return; }
     const encontrado = usuarios.find(u => u.login === user && u.senha === pass);
-    if(!encontrado){
-      alert("Usuário ou senha inválidos!");
-      return;
-    }
+    if(!encontrado){ alert("Usuário ou senha inválidos!"); return; }
 
     usuarioLogado = encontrado;
-    // esconder login e mostrar menu apropriado
     loginCard.style.display = 'none';
     menuNav.style.display = 'block';
-    if(encontrado.master){
+
+    // mostrar menus conforme role
+    if(encontrado.role === 'MASTER'){
       menuMaster.style.display = 'flex';
+      menuOperadores.style.display = 'none';
       menuUser.style.display = 'none';
       menuRightMaster.style.display = 'flex';
       menuRightUser.style.display = 'none';
       bemvindo.textContent = "Bem-vindo, " + capitalize(encontrado.login);
-      bemvindoUser.textContent = "";
-    } else {
+    } else if(encontrado.role === 'OPERADORES'){
       menuMaster.style.display = 'none';
+      menuOperadores.style.display = 'flex';
+      menuUser.style.display = 'none';
+      menuRightMaster.style.display = 'none';
+      menuRightUser.style.display = 'flex';
+      bemvindoUser.textContent = "Bem-vindo, " + capitalize(encontrado.login);
+      mostrar('dashboard'); // operadores podem ver dashboard and form
+    } else { // USUARIOS
+      menuMaster.style.display = 'none';
+      menuOperadores.style.display = 'none';
       menuUser.style.display = 'flex';
       menuRightMaster.style.display = 'none';
       menuRightUser.style.display = 'flex';
       bemvindoUser.textContent = "Bem-vindo, " + capitalize(encontrado.login);
-      bemvindo.textContent = "";
-      // mostrar formulário automaticamente para usuário comum
       mostrar('formulario');
     }
-    // limpar campos de login
+
     document.getElementById("loginUser").value = "";
     document.getElementById("loginPass").value = "";
   }
@@ -242,6 +270,7 @@
     usuarioLogado = null;
     menuNav.style.display = 'none';
     menuMaster.style.display = 'none';
+    menuOperadores.style.display = 'none';
     menuUser.style.display = 'none';
     menuRightMaster.style.display = 'none';
     menuRightUser.style.display = 'none';
@@ -266,10 +295,7 @@
     }
   }
 
-  function capitalize(s){
-    if(!s) return s;
-    return s.charAt(0).toUpperCase() + s.slice(1);
-  }
+  function capitalize(s){ if(!s) return s; return s.charAt(0).toUpperCase() + s.slice(1); }
 
   // Perguntas
   function adicionarPergunta(){
@@ -286,7 +312,6 @@
     const form = document.getElementById('formEntrevista');
     if(lista) lista.innerHTML = "";
     if(form) form.innerHTML = "";
-
     perguntas.forEach((p, i) => {
       if(lista){
         const li = document.createElement('li');
@@ -305,20 +330,15 @@
     });
   }
 
-  // Usuários
+  // Usuários: criar, listar, excluir
   function criarUsuario(){
-    if(!usuarioLogado || !usuarioLogado.master){
-      alert("Apenas master pode criar usuários.");
-      return;
-    }
+    if(!usuarioLogado || usuarioLogado.role !== 'MASTER'){ alert("Apenas MASTER pode criar usuários."); return; }
     const novoUser = document.getElementById('novoUser').value.trim();
     const novoPass = document.getElementById('novoPass').value;
+    const novoRole = document.getElementById('novoRole').value;
     if(!novoUser || !novoPass){ alert("Preencha login e senha!"); return; }
-    if(usuarios.some(u => u.login === novoUser)){
-      alert("Usuário já existe.");
-      return;
-    }
-    usuarios.push({ login: novoUser, senha: novoPass, master: false });
+    if(usuarios.some(u => u.login === novoUser)){ alert("Usuário já existe."); return; }
+    usuarios.push({ login: novoUser, senha: novoPass, role: novoRole });
     document.getElementById('novoUser').value = "";
     document.getElementById('novoPass').value = "";
     renderizarUsuarios();
@@ -326,29 +346,45 @@
   }
 
   function renderizarUsuarios(){
-    const lista = document.getElementById('listaUsuarios');
-    lista.innerHTML = "";
+    const container = document.getElementById('listaUsuarios');
+    container.innerHTML = "";
     usuarios.forEach(u => {
-      const li = document.createElement('li');
-      li.textContent = u.login + (u.master ? " (master)" : "");
-      lista.appendChild(li);
+      const row = document.createElement('div');
+      row.className = 'user-row';
+      const left = document.createElement('div');
+      left.textContent = u.login + " — " + u.role;
+      const actions = document.createElement('div');
+      actions.className = 'user-actions';
+      // only master can delete users
+      if(usuarioLogado && usuarioLogado.role === 'MASTER'){
+        const del = document.createElement('button');
+        del.textContent = 'Excluir';
+        del.onclick = function(){ excluirUsuario(u.login); };
+        actions.appendChild(del);
+      }
+      row.appendChild(left);
+      row.appendChild(actions);
+      container.appendChild(row);
     });
+  }
+
+  function excluirUsuario(login){
+    if(!usuarioLogado || usuarioLogado.role !== 'MASTER'){ alert("Apenas MASTER pode excluir usuários."); return; }
+    if(login === usuarioLogado.login){ alert("Você não pode excluir seu próprio usuário."); return; }
+    if(!confirm("Confirma exclusão do usuário '" + login + "' ?")) return;
+    usuarios = usuarios.filter(u => u.login !== login);
+    renderizarUsuarios();
+    alert("Usuário excluído.");
   }
 
   // Respostas e gráfico
   function salvarRespostas(){
-    if(!usuarioLogado){
-      alert("Faça login para enviar respostas.");
-      return;
-    }
+    if(!usuarioLogado){ alert("Faça login para enviar respostas."); return; }
     const respostaAtual = perguntas.map((p, i) => {
       const el = document.getElementById('resposta_' + i);
       return el ? el.value.trim() : "";
     });
-    if(respostaAtual.every(r => r === "")){
-      alert("Preencha pelo menos uma resposta antes de enviar.");
-      return;
-    }
+    if(respostaAtual.every(r => r === "")){ alert("Preencha pelo menos uma resposta antes de enviar."); return; }
     respostas.push(respostaAtual);
     perguntas.forEach((p, i) => {
       const el = document.getElementById('resposta_' + i);
@@ -362,47 +398,25 @@
     if(!canvas) return;
     const ctx = canvas.getContext('2d');
     const dados = perguntas.map((p, i) => respostas.filter(r => r[i] && r[i].length > 0).length);
-
-    if(window._chartInstance){
-      window._chartInstance.destroy();
-    }
-
+    if(window._chartInstance) window._chartInstance.destroy();
     window._chartInstance = new Chart(ctx, {
       type: 'bar',
-      data: {
-        labels: perguntas,
-        datasets: [{
-          label: 'Número de respostas',
-          data: dados,
-          backgroundColor: 'rgba(220,53,69,0.7)'
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { display: false },
-          title: { display: true, text: 'Respostas por Pergunta' }
-        },
-        scales: {
-          y: { beginAtZero: true, precision: 0 }
-        }
-      }
+      data: { labels: perguntas, datasets: [{ label: 'Número de respostas', data: dados, backgroundColor: 'rgba(220,53,69,0.7)' }] },
+      options: { responsive: true, plugins: { legend: { display: false }, title: { display: true, text: 'Respostas por Pergunta' } }, scales: { y: { beginAtZero: true, precision: 0 } } }
     });
   }
 
-  // --- Comportamento de clique/hover do menu ---
-  // 1) clique em links do submenu abre a seção
+  // --- Menu behavior: click opens submenu, click submenu item runs action and closes submenu ---
   document.querySelectorAll('.submenu-link').forEach(a=>{
     a.addEventListener('click', function(e){
       e.preventDefault();
       e.stopPropagation();
       const sec = this.getAttribute('data-show');
       mostrar(sec);
-      closeAllSubmenus();
+      closeAllSubmenus(); // fecha submenu imediatamente após ação
     });
   });
 
-  // 2) toggle do submenu ao clicar no link pai (apenas quando clicar no link pai)
   document.querySelectorAll('.menu-left > ul > li.has-sub > a.menu-link').forEach(link=>{
     link.addEventListener('click', function(e){
       e.preventDefault();
@@ -415,21 +429,14 @@
     });
   });
 
-  // 3) fechar submenus ao clicar fora
   document.addEventListener('click', function(e){
     if(!e.target.closest('nav')) closeAllSubmenus();
   });
 
-  function closeAllSubmenus(){
-    document.querySelectorAll('nav li.has-sub.open').forEach(li => li.classList.remove('open'));
-  }
+  function closeAllSubmenus(){ document.querySelectorAll('nav li.has-sub.open').forEach(li => li.classList.remove('open')); }
+  document.querySelectorAll('nav ul.submenu').forEach(ul => ul.addEventListener('click', function(e){ e.stopPropagation(); }));
 
-  // evita que clique dentro do submenu feche por propagação
-  document.querySelectorAll('nav ul.submenu').forEach(ul => {
-    ul.addEventListener('click', function(e){ e.stopPropagation(); });
-  });
-
-  // Inicialização: renderiza listas básicas
+  // Inicialização
   renderizarPerguntas();
   renderizarUsuarios();
 </script>
