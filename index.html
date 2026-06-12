@@ -8,7 +8,6 @@
     body { font-family: Arial, sans-serif; margin: 0; background: #f4f6f9; }
     header { background: #dc3545; color: #fff; padding: 20px; text-align: center; }
     header h1 { margin: 0; font-size: 28px; text-transform: uppercase; }
-
     nav { background: #333; overflow: hidden; display:none; }
     nav ul { list-style-type: none; margin: 0; padding: 0; }
     nav li { float: left; position: relative; }
@@ -18,10 +17,8 @@
     nav li ul li { float: none; }
     nav li ul li a { padding: 12px 16px; }
     nav li:hover ul { display: block; }
-
     .logout { float: right; background: #dc3545; padding: 10px 15px; border-radius: 4px; cursor: pointer; }
     .logout:hover { background: #a71d2a; }
-
     .container { max-width: 900px; margin: 30px auto; padding: 20px; }
     .card { background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); padding: 20px; margin-bottom: 30px; }
     h2 { color: #007bff; }
@@ -31,7 +28,6 @@
   </style>
 </head>
 <body>
-
 <header>
   <h1>ENTREVISTA DE DESLIGAMENTO</h1>
 </header>
@@ -46,7 +42,7 @@
   </div>
 </div>
 
-<!-- Menu suspenso -->
+<!-- Menu -->
 <nav id="menuNav">
   <ul id="menuMaster">
     <li><a href="#">CRIAR</a>
@@ -67,6 +63,7 @@
     </li>
     <li><a href="#" class="logout" onclick="logout()">Logout</a></li>
   </ul>
+
   <ul id="menuUser">
     <li><a href="#">FORMULÁRIO</a>
       <ul>
@@ -78,7 +75,6 @@
 </nav>
 
 <div class="container">
-
   <!-- Criar Usuários -->
   <div class="card" id="usuarios" style="display:none;">
     <h2>Criar Usuário</h2>
@@ -109,7 +105,6 @@
     <h2>Dashboard</h2>
     <canvas id="graficoRespostas" width="400" height="200"></canvas>
   </div>
-
 </div>
 
 <script>
@@ -119,19 +114,24 @@
   let usuarioLogado = null;
 
   function login(){
-    const user = document.getElementById("loginUser").value;
-    const pass = document.getElementById("loginPass").value;
-    const encontrado = usuarios.find(u => u.login===user && u.senha===pass);
+    const user = document.getElementById("loginUser").value.trim();
+    const pass = document.getElementById("loginPass").value.trim();
+
+    const encontrado = usuarios.find(u => u.login === user && u.senha === pass);
+
     if(encontrado){
       usuarioLogado = encontrado;
-      document.getElementById("loginCard").style.display="none";
-      document.getElementById("menuNav").style.display="block";
+      document.getElementById("loginCard").style.display = "none";
+      document.getElementById("menuNav").style.display = "block";
+
       if(encontrado.master){
-        document.getElementById("menuMaster").style.display="block";
-        document.getElementById("menuUser").style.display="none";
+        document.getElementById("menuMaster").style.display = "block";
+        document.getElementById("menuUser").style.display = "none";
+        mostrar('dashboard'); // Abre dashboard por padrão para master
       } else {
-        document.getElementById("menuMaster").style.display="none";
-        document.getElementById("menuUser").style.display="block";
+        document.getElementById("menuMaster").style.display = "none";
+        document.getElementById("menuUser").style.display = "block";
+        mostrar('formulario'); // Abre formulário por padrão para usuários comuns
       }
     } else {
       alert("Usuário ou senha inválidos!");
@@ -140,26 +140,29 @@
 
   function logout(){
     usuarioLogado = null;
-    document.getElementById("loginCard").style.display="block";
-    document.getElementById("menuNav").style.display="none";
-    mostrar(""); // esconde todas as seções
+    document.getElementById("loginCard").style.display = "block";
+    document.getElementById("menuNav").style.display = "none";
+    mostrar(""); 
   }
 
   function mostrar(secao){
-    ["usuarios","perguntas","formulario","dashboard"].forEach(id=>{
-      document.getElementById(id).style.display="none";
+    ["usuarios","perguntas","formulario","dashboard"].forEach(id => {
+      const el = document.getElementById(id);
+      if(el) el.style.display = "none";
     });
+
     if(secao){
-      document.getElementById(secao).style.display="block";
-      if(secao==="perguntas") renderizarPerguntas();
-      if(secao==="formulario") renderizarPerguntas();
-      if(secao==="dashboard") gerarGrafico();
-      if(secao==="usuarios") renderizarUsuarios();
+      const el = document.getElementById(secao);
+      if(el) el.style.display = "block";
+
+      if(secao === "perguntas" || secao === "formulario") renderizarPerguntas();
+      if(secao === "dashboard") gerarGrafico();
+      if(secao === "usuarios") renderizarUsuarios();
     }
   }
 
   function adicionarPergunta() {
-    const nova = document.getElementById("novaPergunta").value;
+    const nova = document.getElementById("novaPergunta").value.trim();
     if (nova) {
       perguntas.push(nova);
       document.getElementById("novaPergunta").value = "";
@@ -170,20 +173,24 @@
   function renderizarPerguntas() {
     const lista = document.getElementById("listaPerguntas");
     const form = document.getElementById("formEntrevista");
+
     if(lista) lista.innerHTML = "";
     if(form) form.innerHTML = "";
 
     perguntas.forEach((p, i) => {
+      // Lista de perguntas (admin)
       if(lista){
         const li = document.createElement("li");
         li.textContent = p;
         lista.appendChild(li);
       }
+      // Formulário
       if(form){
         const label = document.createElement("label");
         label.textContent = p;
         const input = document.createElement("textarea");
         input.id = "resposta_" + i;
+        input.rows = 3;
         form.appendChild(label);
         form.appendChild(input);
       }
@@ -191,17 +198,18 @@
   }
 
   function salvarRespostas() {
-    const respostaAtual = perguntas.map((p, i) => document.getElementById("resposta_" + i)?.value || "");
+    const respostaAtual = perguntas.map((p, i) => 
+      document.getElementById("resposta_" + i)?.value.trim() || ""
+    );
     respostas.push(respostaAtual);
-    alert("Respostas salvas!");
+    alert("Respostas salvas com sucesso!");
   }
 
   function gerarGrafico() {
     const ctx = document.getElementById("graficoRespostas").getContext("2d");
-    const dados
-      function gerarGrafico() {
-    const ctx = document.getElementById("graficoRespostas").getContext("2d");
-    const dados = perguntas.map((p, i) => respostas.filter(r => r[i] !== "").length);
+    const dados = perguntas.map((p, i) => 
+      respostas.filter(r => r[i] && r[i].trim() !== "").length
+    );
 
     new Chart(ctx, {
       type: 'bar',
@@ -210,7 +218,7 @@
         datasets: [{
           label: 'Número de respostas',
           data: dados,
-          backgroundColor: 'rgba(220, 53, 69, 0.6)' // vermelho
+          backgroundColor: 'rgba(220, 53, 69, 0.6)'
         }]
       },
       options: {
@@ -224,12 +232,12 @@
   }
 
   function criarUsuario(){
-    const novoUser = document.getElementById("novoUser").value;
-    const novoPass = document.getElementById("novoPass").value;
+    const novoUser = document.getElementById("novoUser").value.trim();
+    const novoPass = document.getElementById("novoPass").value.trim();
     if(novoUser && novoPass){
-      usuarios.push({login:novoUser, senha:novoPass, master:false});
-      document.getElementById("novoUser").value="";
-      document.getElementById("novoPass").value="";
+      usuarios.push({login: novoUser, senha: novoPass, master: false});
+      document.getElementById("novoUser").value = "";
+      document.getElementById("novoPass").value = "";
       renderizarUsuarios();
       alert("Usuário criado com sucesso!");
     } else {
@@ -239,14 +247,18 @@
 
   function renderizarUsuarios(){
     const lista = document.getElementById("listaUsuarios");
-    lista.innerHTML="";
-    usuarios.forEach(u=>{
-      const li=document.createElement("li");
-      li.textContent = u.login + (u.master?" (master)":"");
+    lista.innerHTML = "";
+    usuarios.forEach(u => {
+      const li = document.createElement("li");
+      li.textContent = u.login + (u.master ? " (master)" : "");
       lista.appendChild(li);
     });
   }
-</script>
 
+  // Opcional: Enter no campo de senha faz login
+  document.getElementById("loginPass").addEventListener("keypress", function(e){
+    if(e.key === "Enter") login();
+  });
+</script>
 </body>
 </html>
