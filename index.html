@@ -11,42 +11,52 @@
     header { background: #dc3545; color: #fff; padding: 20px; text-align: center; }
     header h1 { margin: 0; font-size: 28px; text-transform: uppercase; }
 
-    nav { background: #333; overflow: visible; display: none; }
-    .menu-row { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; gap: 12px; padding: 6px 12px; }
-    .menu-left { display:flex; gap:6px; align-items:center; }
-    .menu-left ul { list-style: none; margin: 0; padding: 0; display:flex; gap:6px; align-items:center; }
-    .menu-left li { position: relative; }
-    .menu-left li a { display: block; color: #fff; padding: 12px 18px; text-decoration: none; font-weight: 500; white-space: nowrap; }
-    .menu-left li a:hover { background: #111; border-radius:4px; }
+    /* NAV layout: left menu items, right welcome + logout */
+    nav { background: #333; display: none; }
+    .menu-row {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      padding: 6px 12px;
+      justify-content: space-between; /* left items left, right items right */
+      gap: 12px;
+    }
+
+    .menu-left { display:flex; align-items:center; gap:6px; }
+    .menu-list { display:flex; gap:6px; margin:0; padding:0; list-style:none; align-items:center; }
+    .menu-list li { position:relative; }
+    .menu-list li a.menu-link { color:#fff; padding:12px 18px; text-decoration:none; display:block; font-weight:500; white-space:nowrap; }
+    .menu-list li a.menu-link:hover { background:#111; border-radius:4px; }
 
     ul.submenu {
-      display: none;
-      position: absolute;
-      top: calc(100% + 6px);
-      left: 0;
-      background: #444;
-      min-width: 180px;
-      z-index: 50;
-      border-radius: 6px;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.2);
-      padding: 6px 0;
+      display:none;
+      position:absolute;
+      top:calc(100% + 6px);
+      left:0;
+      background:#444;
+      min-width:180px;
+      z-index:50;
+      border-radius:6px;
+      box-shadow:0 6px 18px rgba(0,0,0,0.2);
+      padding:6px 0;
     }
-    ul.submenu li a { padding: 10px 14px; color: #fff; display:block; }
-    .menu-left li:hover > ul.submenu { display: block; }
-    .menu-left li.open > ul.submenu { display: block; }
+    ul.submenu li a { padding:10px 14px; color:#fff; display:block; text-decoration:none; }
+    .menu-list li:hover > ul.submenu { display:block; }
+    .menu-list li.open > ul.submenu { display:block; }
 
-    .menu-right { margin-left: auto; display:flex; align-items:center; gap:8px; }
-    .sair { background: #dc3545; color: #fff; padding: 8px 12px; border-radius: 4px; text-decoration: none; }
-    .sair:hover { background: #a71d2a; }
-    .welcome { color: #fff; padding: 8px 12px; font-weight: 600; }
+    .menu-right { display:flex; align-items:center; gap:8px; }
+    .sair { background:#dc3545; color:#fff; padding:8px 12px; border-radius:4px; text-decoration:none; }
+    .sair:hover { background:#a71d2a; }
+    .welcome { color:#fff; padding:8px 12px; font-weight:600; }
 
     .container { max-width: 900px; margin: 30px auto; padding: 20px; }
-    .card { background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); padding: 20px; margin-bottom: 30px; }
-    h2 { color: #007bff; margin-top: 0; }
-    input, textarea, select { margin: 8px 0; padding: 10px; width: 100%; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-    button { margin-top: 10px; padding: 10px 15px; background: #007bff; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
-    button:hover { background: #0056b3; }
-    ul.simple { padding-left: 18px; }
+    .card { background:#fff; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.08); padding:20px; margin-bottom:30px; }
+    h2 { color:#007bff; margin-top:0; }
+    input, textarea, select { margin:8px 0; padding:10px; width:100%; border:1px solid #ccc; border-radius:4px; box-sizing:border-box; }
+    button { margin-top:10px; padding:10px 15px; background:#007bff; color:#fff; border:none; border-radius:4px; cursor:pointer; }
+    button:hover { background:#0056b3; }
+    ul.simple { padding-left:18px; }
     label { display:block; margin-top:10px; font-weight:600; }
     .user-row { display:flex; justify-content:space-between; align-items:center; gap:8px; padding:6px 0; border-bottom:1px solid #eee; }
     .user-actions button { margin-left:6px; background:#dc3545; color:#fff; border:none; padding:6px 8px; border-radius:4px; cursor:pointer; }
@@ -60,9 +70,9 @@
     .question-actions button { margin-left:6px; background:#dc3545; color:#fff; border:none; padding:6px 8px; border-radius:4px; cursor:pointer; }
     .question-actions button:hover { background:#a71d2a; }
 
-    @media (max-width: 720px) {
-      .menu-row { padding: 6px; flex-wrap:wrap; }
-      ul.submenu { position: static; box-shadow: none; border-radius: 0; margin-top:6px; }
+    @media (max-width:720px){
+      .menu-row { padding:6px; flex-wrap:wrap; }
+      ul.submenu { position:static; box-shadow:none; border-radius:0; margin-top:6px; }
       .menu-left ul { flex-wrap:wrap; }
       .menu-right { width:100%; justify-content:flex-end; margin-top:6px; }
     }
@@ -72,6 +82,7 @@
 
 <header><h1>ENTREVISTA DE DESLIGAMENTO</h1></header>
 
+<!-- Login -->
 <div class="container" id="loginCard">
   <div class="card">
     <h2>Login</h2>
@@ -81,10 +92,11 @@
   </div>
 </div>
 
+<!-- NAV: left menu items, right welcome + logout -->
 <nav id="menuNav" aria-label="Menu principal">
   <div class="menu-row">
     <div class="menu-left">
-      <ul id="menuMaster" style="display:none;">
+      <ul id="menuMaster" class="menu-list" style="display:none;">
         <li class="has-sub">
           <a href="#" class="menu-link">CRIAR</a>
           <ul class="submenu">
@@ -108,7 +120,7 @@
         </li>
       </ul>
 
-      <ul id="menuOperadores" style="display:none;">
+      <ul id="menuOperadores" class="menu-list" style="display:none;">
         <li class="has-sub">
           <a href="#" class="menu-link">FORMULÁRIO</a>
           <ul class="submenu">
@@ -123,7 +135,7 @@
         </li>
       </ul>
 
-      <ul id="menuUser" style="display:none;">
+      <ul id="menuUser" class="menu-list" style="display:none;">
         <li class="has-sub">
           <a href="#" class="menu-link">FORMULÁRIO</a>
           <ul class="submenu">
@@ -145,7 +157,9 @@
   </div>
 </nav>
 
+<!-- Conteúdo -->
 <div class="container">
+  <!-- Criar Usuário -->
   <div class="card" id="usuarios" style="display:none;">
     <h2>Criar Usuário</h2>
     <label>Login do usuário (username)</label>
@@ -169,6 +183,7 @@
     </table>
   </div>
 
+  <!-- Perguntas -->
   <div class="card" id="perguntas" style="display:none;">
     <h2>Perguntas</h2>
     <label>Nova Pergunta</label>
@@ -179,12 +194,14 @@
     <div id="listaPerguntas" class="simple"></div>
   </div>
 
+  <!-- Formulário -->
   <div class="card" id="formulario" style="display:none;">
     <h2>Formulário</h2>
     <form id="formEntrevista"></form>
     <button onclick="salvarRespostas()">Enviar Respostas</button>
   </div>
 
+  <!-- Dashboard -->
   <div class="card" id="dashboard" style="display:none;">
     <h2>Dashboard</h2>
     <canvas id="graficoRespostas" width="800" height="300"></canvas>
@@ -192,14 +209,10 @@
 </div>
 
 <script type="module">
-/* Frontend com opções Firebase (opcional) e fallback local.
-   Ajustes solicitados: menu left/right, excluir perguntas (MASTER),
-   tabela de usuários com cabeçalhos USUÁRIO / GRUPO, sem dica de senha.
-*/
+/* Código completo (frontend). Firebase é opcional; se não configurado, fallback local mantém 'andrei' como MASTER. */
 
 /* ====== CONFIGURAÇÃO FIREBASE (opcional) ======
-   Se quiser usar Firebase, preencha o objeto abaixo.
-   Caso contrário, deixe como null ou com apiKey=null.
+   Preencha se quiser persistência real. Caso contrário, deixe apiKey=null.
 */
 const firebaseConfig = {
   apiKey: null,
@@ -222,7 +235,7 @@ if (firebaseConfig && firebaseConfig.apiKey) {
 
 /* ====== Estado e fallback local ====== */
 let usuarioLogado = null;
-let perguntas = []; // array de objetos { id, text }
+let perguntas = [];
 let respostas = [];
 
 let localUsers = [
@@ -329,7 +342,6 @@ function onLogin(){
     carregarPerguntas().then(renderizarPerguntas);
     renderizarUsuarios();
   } else {
-    // local perguntas
     perguntas = [
       { id: 'q1', text: "Como você avalia sua experiência na empresa?" },
       { id: 'q2', text: "O que poderia ser melhorado?" }
@@ -388,8 +400,6 @@ async function carregarPerguntas(){
       const snap = await fb.getDocs(fb.collection(fb.db, 'questions'));
       snap.forEach(d => perguntas.push({ id: d.id, text: d.data().text }));
     } catch(err){ console.error('Erro carregar perguntas:', err); }
-  } else {
-    // já inicializadas no onLogin fallback
   }
 }
 
@@ -400,7 +410,6 @@ function renderizarPerguntas(){
   if(form) form.innerHTML = '';
 
   perguntas.forEach((p, i) => {
-    // lista com botão excluir (apenas MASTER)
     if(lista){
       const row = document.createElement('div');
       row.className = 'question-row';
@@ -419,7 +428,6 @@ function renderizarPerguntas(){
       lista.appendChild(row);
     }
 
-    // formulário (todos)
     if(form){
       const label = document.createElement('label');
       label.textContent = p.text;
