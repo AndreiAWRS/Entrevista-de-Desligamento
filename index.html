@@ -8,15 +8,56 @@
     body { font-family: Arial, sans-serif; margin: 0; background: #f4f6f9; }
     header { background: #dc3545; color: #fff; padding: 20px; text-align: center; }
     header h1 { margin: 0; font-size: 28px; text-transform: uppercase; }
-    nav { background: #333; padding: 10px; text-align: center; }
-    nav button { margin: 0 10px; padding: 10px 15px; background: #007bff; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
-    nav button:hover { background: #0056b3; }
+
+    /* Barra de menu */
+    nav {
+      background: #333;
+      overflow: hidden;
+    }
+    nav ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+    nav li {
+      float: left;
+      position: relative;
+    }
+    nav li a {
+      display: block;
+      color: #fff;
+      text-align: center;
+      padding: 14px 20px;
+      text-decoration: none;
+    }
+    nav li a:hover {
+      background-color: #111;
+    }
+
+    /* Submenu */
+    nav li ul {
+      display: none;
+      position: absolute;
+      background-color: #444;
+      min-width: 160px;
+      z-index: 1;
+    }
+    nav li ul li {
+      float: none;
+    }
+    nav li ul li a {
+      padding: 12px 16px;
+    }
+    nav li:hover ul {
+      display: block;
+    }
+
     .container { max-width: 900px; margin: 30px auto; padding: 20px; }
     .card { background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); padding: 20px; margin-bottom: 30px; }
     h2 { color: #007bff; }
     input, textarea { margin: 8px 0; padding: 10px; width: 100%; border: 1px solid #ccc; border-radius: 4px; }
-    button.action { margin-top: 10px; padding: 10px 15px; background: #007bff; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
-    button.action:hover { background: #0056b3; }
+    button { margin-top: 10px; padding: 10px 15px; background: #007bff; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+    button:hover { background: #0056b3; }
   </style>
 </head>
 <body>
@@ -25,10 +66,26 @@
   <h1>ENTREVISTA DE DESLIGAMENTO</h1>
 </header>
 
+<!-- Menu suspenso -->
 <nav>
-  <button onclick="mostrar('usuarios')">CRIAR</button>
-  <button onclick="mostrar('formulario')">FORMULÁRIO</button>
-  <button onclick="mostrar('dashboard')">DASHBOARD</button>
+  <ul>
+    <li><a href="#">CRIAR</a>
+      <ul>
+        <li><a href="#" onclick="mostrar('usuarios')">Usuários</a></li>
+      </ul>
+    </li>
+    <li><a href="#">FORMULÁRIO</a>
+      <ul>
+        <li><a href="#" onclick="mostrar('perguntas')">Perguntas</a></li>
+        <li><a href="#" onclick="mostrar('formulario')">Formulário</a></li>
+      </ul>
+    </li>
+    <li><a href="#">DASHBOARD</a>
+      <ul>
+        <li><a href="#" onclick="mostrar('dashboard')">Gráficos</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
 
 <div class="container">
@@ -38,21 +95,24 @@
     <h2>Criar Usuário</h2>
     <input type="text" id="novoUser" placeholder="Login do usuário">
     <input type="password" id="novoPass" placeholder="Senha do usuário">
-    <button class="action" onclick="criarUsuario()">Criar Usuário</button>
+    <button onclick="criarUsuario()">Criar Usuário</button>
     <ul id="listaUsuarios"></ul>
+  </div>
+
+  <!-- Perguntas -->
+  <div class="card" id="perguntas" style="display:none;">
+    <h2>Perguntas</h2>
+    <label>Nova Pergunta:</label>
+    <input type="text" id="novaPergunta" placeholder="Digite a pergunta">
+    <button onclick="adicionarPergunta()">Adicionar Pergunta</button>
+    <ul id="listaPerguntas"></ul>
   </div>
 
   <!-- Formulário -->
   <div class="card" id="formulario" style="display:none;">
-    <h2>Perguntas</h2>
-    <label>Nova Pergunta:</label>
-    <input type="text" id="novaPergunta" placeholder="Digite a pergunta">
-    <button class="action" onclick="adicionarPergunta()">Adicionar Pergunta</button>
-    <ul id="listaPerguntas"></ul>
-
     <h2>Formulário</h2>
     <form id="formEntrevista"></form>
-    <button class="action" onclick="salvarRespostas()">Enviar Respostas</button>
+    <button onclick="salvarRespostas()">Enviar Respostas</button>
   </div>
 
   <!-- Dashboard -->
@@ -70,12 +130,14 @@
 
   function mostrar(secao){
     document.getElementById("usuarios").style.display="none";
+    document.getElementById("perguntas").style.display="none";
     document.getElementById("formulario").style.display="none";
     document.getElementById("dashboard").style.display="none";
     document.getElementById(secao).style.display="block";
+    if(secao==="perguntas") renderizarPerguntas();
     if(secao==="formulario") renderizarPerguntas();
-    if(secao==="usuarios") renderizarUsuarios();
     if(secao==="dashboard") gerarGrafico();
+    if(secao==="usuarios") renderizarUsuarios();
   }
 
   function adicionarPergunta() {
@@ -90,20 +152,23 @@
   function renderizarPerguntas() {
     const lista = document.getElementById("listaPerguntas");
     const form = document.getElementById("formEntrevista");
-    lista.innerHTML = "";
-    form.innerHTML = "";
+    if(lista) lista.innerHTML = "";
+    if(form) form.innerHTML = "";
 
     perguntas.forEach((p, i) => {
-      const li = document.createElement("li");
-      li.textContent = p;
-      lista.appendChild(li);
-
-      const label = document.createElement("label");
-      label.textContent = p;
-      const input = document.createElement("textarea");
-      input.id = "resposta_" + i;
-      form.appendChild(label);
-      form.appendChild(input);
+      if(lista){
+        const li = document.createElement("li");
+        li.textContent = p;
+        lista.appendChild(li);
+      }
+      if(form){
+        const label = document.createElement("label");
+        label.textContent = p;
+        const input = document.createElement("textarea");
+        input.id = "resposta_" + i;
+        form.appendChild(label);
+        form.appendChild(input);
+      }
     });
   }
 
