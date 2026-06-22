@@ -25,7 +25,7 @@
     }
     body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-    /* ===== LOGIN ===== */
+    /* LOGIN */
     #loginScreen { min-height:100vh; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,var(--login-bg1),var(--login-bg2)); }
     .login-box { background:#fff; border-radius:var(--radius-lg); padding:40px; width:100%; max-width:400px; box-shadow:0 20px 60px rgba(0,0,0,.18); }
     .login-brand { display:flex; align-items:center; gap:14px; margin-bottom:24px; }
@@ -36,7 +36,7 @@
     .login-brand-text p { font-size:13px;color:var(--text-muted); }
     .login-box .subtitle { font-size:14px;color:var(--text-muted);margin-bottom:24px; }
 
-    /* ===== INPUTS ===== */
+    /* INPUTS */
     .field { margin-bottom:16px; }
     .field label { display:block;font-size:13px;font-weight:500;color:var(--text);margin-bottom:6px; }
     .field-icon { position:relative; }
@@ -49,7 +49,7 @@
     input:disabled,select:disabled,textarea:disabled { background:#f9fafb;color:var(--text-muted);cursor:not-allowed; }
     textarea { resize:vertical;line-height:1.6; }
 
-    /* ===== BUTTONS ===== */
+    /* BUTTONS */
     .btn { display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:none;border-radius:var(--radius);font-size:14px;font-weight:500;font-family:inherit;cursor:pointer;transition:background .2s,transform .1s;text-decoration:none; }
     .btn:active { transform:scale(.98); }
     .btn-primary { background:var(--primary);color:#fff; }
@@ -66,8 +66,10 @@
     .btn-warning:hover { background:#b45309; }
     .btn-full { width:100%;justify-content:center; }
     .btn-sm { padding:6px 12px;font-size:13px; }
+    .btn-outline-primary { background:transparent;color:var(--primary);border:1px solid var(--primary); }
+    .btn-outline-primary:hover { background:var(--primary-light); }
 
-    /* ===== APP LAYOUT ===== */
+    /* APP LAYOUT */
     #appScreen { display:none;min-height:100vh;flex-direction:column; }
     #appScreen.active { display:flex; }
     .app-header { height:var(--header-h);background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;position:sticky;top:0;z-index:100; }
@@ -98,12 +100,12 @@
     .page-header h2 { font-size:20px;font-weight:600; }
     .page-header p { font-size:14px;color:var(--text-muted);margin-top:4px; }
 
-    /* ===== CARDS ===== */
+    /* CARDS */
     .card { background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:20px; }
     .card-title { font-size:15px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px; }
     .card-title i { font-size:18px;color:var(--primary); }
 
-    /* ===== TABLE ===== */
+    /* TABLE */
     table { width:100%;border-collapse:collapse;font-size:14px; }
     th { text-align:left;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--text-muted);padding:8px 12px;border-bottom:1px solid var(--border); }
     td { padding:12px;border-bottom:1px solid var(--border);vertical-align:middle; }
@@ -111,7 +113,7 @@
     tr:hover td { background:#f9fafb; }
     .table-wrap { border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;overflow-x:auto; }
 
-    /* ===== FORMULÁRIO ===== */
+    /* FORMULÁRIO */
     .form-banner { display:none;align-items:center;gap:16px;background:var(--primary-light);border:1px solid rgba(var(--primary-rgb),.2);border-radius:var(--radius-lg);padding:20px 24px;margin-bottom:24px; }
     .form-banner.visible { display:flex; }
     .form-banner-logo { height:52px;max-width:140px;object-fit:contain;border-radius:8px;flex-shrink:0; }
@@ -128,11 +130,9 @@
     .field-row { margin-bottom:0; }
     .field-row label { display:block;font-size:13px;font-weight:500;margin-bottom:5px;color:var(--text-muted); }
     .field-row label span.req { color:var(--danger); }
-
-    /* auto-filled badge */
     .auto-filled-badge { display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--success);background:var(--success-light);padding:2px 8px;border-radius:20px;margin-left:8px;font-weight:500; }
 
-    /* ===== QUESTION CARD ===== */
+    /* QUESTION CARD */
     .question-card { background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin-bottom:12px; }
     .question-num { font-size:11px;font-weight:600;color:var(--primary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;display:flex;align-items:center;gap:8px; }
     .question-type-badge { font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px; }
@@ -140,46 +140,44 @@
     .type-multipla { background:#dbeafe;color:#1e40af; }
     .type-escala { background:#d1fae5;color:#065f46; }
     .question-text { font-size:14px;font-weight:500;color:var(--text); }
-
-    /* Múltipla escolha */
     .mc-options { display:flex;flex-direction:column;gap:8px;margin-top:12px; }
     .mc-option { display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s; }
     .mc-option:hover { border-color:var(--primary);background:var(--primary-light); }
     .mc-option input[type=radio],.mc-option input[type=checkbox] { accent-color:var(--primary);width:16px;height:16px;flex-shrink:0; }
     .mc-option label { font-size:14px;cursor:pointer;flex:1; }
-
-    /* Escala 1-10 */
     .scale-wrap { margin-top:12px; }
-    .scale-labels { display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);margin-bottom:6px; }
-    .scale-slider { width:100%;accent-color:var(--primary); }
-    .scale-value-display { text-align:center;font-size:22px;font-weight:700;color:var(--primary);margin-top:6px; }
     .scale-bar-row { display:flex;gap:4px;margin-top:10px;justify-content:center; }
     .scale-bar-btn { width:34px;height:34px;border-radius:6px;border:2px solid var(--border);background:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;color:var(--text-muted); }
     .scale-bar-btn:hover { border-color:var(--primary);color:var(--primary); }
     .scale-bar-btn.active { background:var(--primary);border-color:var(--primary);color:#fff; }
+    .scale-value-display { text-align:center;font-size:22px;font-weight:700;color:var(--primary);margin-top:6px; }
 
-    /* ===== PERGUNTAS ADMIN ===== */
-    .perg-admin-card { background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:10px; }
-    .perg-admin-header { display:flex;align-items:center;justify-content:space-between;gap:10px; }
+    /* PERGUNTAS ADMIN */
+    .perg-admin-card { background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:10px;transition:border-color .2s; }
+    .perg-admin-card:hover { border-color:#c7d2fe; }
+    .perg-admin-header { display:flex;align-items:flex-start;justify-content:space-between;gap:10px; }
     .perg-admin-info { flex:1; }
     .perg-admin-text { font-size:14px;font-weight:500; }
     .perg-admin-sub { font-size:12px;color:var(--text-muted);margin-top:3px; }
+    .perg-actions { display:flex;gap:6px;flex-shrink:0; }
 
-    /* Criação de pergunta */
+    /* Type selector */
     .type-selector { display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap; }
     .type-btn { padding:8px 16px;border:2px solid var(--border);border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;background:#fff;color:var(--text-muted);transition:all .15s; }
     .type-btn.active { border-color:var(--primary);color:var(--primary);background:var(--primary-light); }
     .options-builder { margin-top:12px; }
     .option-row { display:flex;gap:8px;align-items:center;margin-bottom:8px; }
     .option-row input { flex:1; }
-    .option-row .btn-sm { flex-shrink:0; }
 
-    /* ===== COLABORADORES ===== */
+    /* COLABORADORES */
     .colab-tag { display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:2px 8px;border-radius:20px; }
     .colab-ativo { background:#d1fae5;color:#065f46; }
     .colab-desligado { background:#fde8e8;color:#c81e1e; }
+    .pending-badge { display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600; }
+    .pending-yes { background:#fef3c7;color:#92400e; }
+    .pending-done { background:#d1fae5;color:#065f46; }
 
-    /* ===== CONFIGURAÇÕES ===== */
+    /* CONFIGURAÇÕES */
     .logo-upload-area { border:2px dashed var(--border);border-radius:var(--radius-lg);padding:32px 20px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;position:relative; }
     .logo-upload-area:hover,.logo-upload-area.drag { border-color:var(--primary);background:var(--primary-light); }
     .logo-upload-area input[type=file] { position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%; }
@@ -197,21 +195,52 @@
     .palette-swatch:hover { transform:scale(1.15); }
     .palette-swatch.selected { border-color:var(--text);transform:scale(1.1); }
 
-    /* ===== STATS ===== */
+    /* STATS */
     .stats-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:24px; }
     .stat-card { background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px; }
     .stat-label { font-size:12px;color:var(--text-muted);font-weight:500;margin-bottom:6px; }
     .stat-value { font-size:28px;font-weight:600;color:var(--text); }
+    .stat-sub { font-size:12px;color:var(--text-muted);margin-top:4px; }
     .progress-bar { height:6px;background:var(--border);border-radius:99px;overflow:hidden;margin-top:8px; }
     .progress-fill { height:100%;background:var(--primary);border-radius:99px;transition:width .4s; }
+    .progress-fill-warning { background:#d97706; }
+    .progress-fill-danger { background:var(--danger); }
 
-    /* ===== MISC ===== */
+    /* CHARTS TABS */
+    .chart-tabs { display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap; }
+    .chart-tab { padding:7px 16px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:#fff;color:var(--text-muted);transition:all .15s; }
+    .chart-tab.active { background:var(--primary);color:#fff;border-color:var(--primary); }
+    .chart-panel { display:none; }
+    .chart-panel.active { display:block; }
+
+    /* IMPORT */
+    .import-drop { border:2px dashed var(--border);border-radius:var(--radius-lg);padding:28px 20px;text-align:center;cursor:pointer;transition:all .2s;position:relative;background:#fafafa; }
+    .import-drop:hover,.import-drop.drag { border-color:var(--primary);background:var(--primary-light); }
+    .import-drop input[type=file] { position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%; }
+    .import-drop i { font-size:36px;color:var(--text-light);margin-bottom:8px;display:block; }
+    .import-drop p { font-size:14px;font-weight:500;color:var(--text); }
+    .import-drop small { font-size:12px;color:var(--text-muted); }
+    .import-preview { background:#f9fafb;border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-top:12px;font-size:13px;color:var(--text-muted); }
+    .import-preview strong { color:var(--text);display:block;margin-bottom:4px; }
+
+    /* MODAL */
+    .modal-overlay { position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px; }
+    .modal-overlay.hidden { display:none; }
+    .modal { background:#fff;border-radius:var(--radius-lg);padding:28px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto; }
+    .modal-header { display:flex;align-items:center;justify-content:space-between;margin-bottom:20px; }
+    .modal-header h3 { font-size:16px;font-weight:600; }
+    .modal-close { background:none;border:none;cursor:pointer;font-size:20px;color:var(--text-muted);padding:4px;line-height:1; }
+    .modal-footer { display:flex;justify-content:flex-end;gap:10px;margin-top:20px;padding-top:16px;border-top:1px solid var(--border); }
+
+    /* MISC */
     .empty { text-align:center;padding:40px 20px;color:var(--text-muted); }
     .empty i { font-size:40px;margin-bottom:12px;opacity:.4;display:block; }
     .empty p { font-size:14px; }
     .form-grid { display:grid;grid-template-columns:1fr 1fr;gap:16px; }
     @media(max-width:600px) { .form-grid { grid-template-columns:1fr; } .sidebar { display:none; } }
     .divider { border:none;border-top:1px solid var(--border);margin:20px 0; }
+    .toolbar { display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px; }
+    .alert-info { background:#eff6ff;border:1px solid #bfdbfe;border-radius:var(--radius);padding:12px 16px;font-size:13px;color:#1e40af;display:flex;align-items:center;gap:8px;margin-bottom:16px; }
 
     #toastContainer { position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px; }
     .toast { background:var(--text);color:#fff;padding:12px 18px;border-radius:var(--radius);font-size:14px;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.2);display:flex;align-items:center;gap:8px;animation:slideIn .3s ease;max-width:320px; }
@@ -221,15 +250,9 @@
 
     canvas#colorCanvas { display:none;width:1px;height:1px; }
 
-    .toolbar { display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px; }
-
-    /* Modal */
-    .modal-overlay { position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px; }
-    .modal-overlay.hidden { display:none; }
-    .modal { background:#fff;border-radius:var(--radius-lg);padding:28px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto; }
-    .modal-header { display:flex;align-items:center;justify-content:space-between;margin-bottom:20px; }
-    .modal-header h3 { font-size:16px;font-weight:600; }
-    .modal-close { background:none;border:none;cursor:pointer;font-size:20px;color:var(--text-muted);padding:4px; }
+    /* Pending indicator */
+    .pending-row { background:#fffbeb !important; }
+    .pending-row td { border-bottom-color:#fde68a; }
   </style>
 </head>
 <body>
@@ -294,13 +317,14 @@
       <div class="sidebar-section" id="sidebarDashSection" style="display:none;">
         <div class="sidebar-title">Relatórios</div>
         <div class="sidebar-link" data-page="dashboard"><i class="ti ti-chart-bar"></i> Dashboard</div>
+        <div class="sidebar-link" data-page="pendentes"><i class="ti ti-clock-exclamation"></i> Pendências</div>
         <div class="sidebar-link" data-page="relatorios"><i class="ti ti-file-spreadsheet"></i> Exportar dados</div>
       </div>
     </aside>
 
     <main class="content">
 
-      <!-- ===== FORMULÁRIO ===== -->
+      <!-- FORMULÁRIO -->
       <div class="page" id="page-formulario">
         <div class="page-header">
           <h2>Entrevista de Desligamento</h2>
@@ -313,11 +337,8 @@
             <p>Formulário de entrevista de desligamento</p>
           </div>
         </div>
-
-        <!-- Identificação do colaborador -->
         <div class="card">
           <div class="card-title"><i class="ti ti-id-badge"></i> Identificação do colaborador</div>
-
           <div class="form-grid-2" style="margin-bottom:14px;">
             <div class="field-row">
               <label>Matrícula <span class="req">*</span></label>
@@ -331,39 +352,20 @@
               <input type="text" id="fNome" placeholder="Nome do colaborador">
             </div>
           </div>
-
           <div class="form-grid-3" style="margin-bottom:14px;">
-            <div class="field-row">
-              <label>Data de admissão <span id="admissaoAuto"></span></label>
-              <input type="date" id="fAdmissao">
-            </div>
-            <div class="field-row">
-              <label>Local <span id="localAuto"></span></label>
-              <input type="text" id="fLocal" placeholder="Ex: São Paulo">
-            </div>
-            <div class="field-row">
-              <label>Turno <span id="turnoAuto"></span></label>
-              <input type="text" id="fTurno" placeholder="Ex: Manhã">
-            </div>
+            <div class="field-row"><label>Data de admissão <span id="admissaoAuto"></span></label><input type="date" id="fAdmissao"></div>
+            <div class="field-row"><label>Local <span id="localAuto"></span></label><input type="text" id="fLocal" placeholder="Ex: São Paulo"></div>
+            <div class="field-row"><label>Turno <span id="turnoAuto"></span></label><input type="text" id="fTurno" placeholder="Ex: Manhã"></div>
           </div>
-
           <div class="form-grid-3" style="margin-bottom:14px;">
-            <div class="field-row">
-              <label>Filial <span id="filialAuto"></span></label>
-              <input type="text" id="fFilial" placeholder="Ex: Filial Norte">
-            </div>
-            <div class="field-row">
-              <label>Gestor imediato <span id="gestorAuto"></span></label>
-              <input type="text" id="fGestor" placeholder="Nome do gestor">
-            </div>
-            <div class="field-row">
-              <label>Gerente <span id="gerenteAuto"></span></label>
-              <input type="text" id="fGerente" placeholder="Nome do gerente">
-            </div>
+            <div class="field-row"><label>Filial <span id="filialAuto"></span></label><input type="text" id="fFilial" placeholder="Ex: Filial Norte"></div>
+            <div class="field-row"><label>Gestor imediato <span id="gestorAuto"></span></label><input type="text" id="fGestor" placeholder="Nome do gestor"></div>
+            <div class="field-row"><label>Gerente <span id="gerenteAuto"></span></label><input type="text" id="fGerente" placeholder="Nome do gerente"></div>
           </div>
-
+          <div class="form-grid-3" style="margin-bottom:14px;">
+            <div class="field-row"><label>Cargo <span id="cargoAuto"></span></label><input type="text" id="fCargo" placeholder="Ex: Analista"></div>
+          </div>
           <div class="section-divider"><span>Desligamento</span></div>
-
           <div class="form-grid-2">
             <div class="field-row">
               <label>Data de desligamento <span class="req">*</span></label>
@@ -383,44 +385,66 @@
               </select>
             </div>
           </div>
-          <div class="field-row" style="margin-top:14px;" id="motivoOutroWrap" style="display:none;">
+          <div class="field-row" style="margin-top:14px;display:none;" id="motivoOutroWrap">
             <label>Especifique o motivo</label>
             <input type="text" id="fMotivoOutro" placeholder="Descreva o motivo...">
           </div>
         </div>
-
-        <!-- Perguntas -->
         <div id="formBody"></div>
-
         <button class="btn btn-success" id="btnSalvarRespostas" style="margin-top:8px;">
           <i class="ti ti-send"></i> Enviar respostas
         </button>
       </div>
 
-      <!-- ===== COLABORADORES ===== -->
+      <!-- COLABORADORES -->
       <div class="page" id="page-colaboradores">
         <div class="page-header">
           <h2>Base de colaboradores</h2>
-          <p>Cadastre e gerencie a base de colaboradores para preenchimento automático do formulário.</p>
+          <p>Cadastre colaboradores manualmente ou importe uma planilha para preenchimento automático do formulário.</p>
         </div>
+
+        <!-- IMPORTAR PLANILHA -->
+        <div class="card" id="importCard">
+          <div class="card-title"><i class="ti ti-file-import"></i> Importar planilha de desligados</div>
+          <div class="alert-info"><i class="ti ti-info-circle"></i> A planilha deve conter as colunas: <strong style="display:inline;">FILIAL, CADASTRO, NOME FUNCIONARIO, DATA ADM, CARGO, LOCAL, TURNO, GESTOR, GERENTE</strong></div>
+          <div class="import-drop" id="importDropArea">
+            <input type="file" id="importFileInput" accept=".xlsx,.xls,.csv">
+            <i class="ti ti-table-import"></i>
+            <p>Clique ou arraste a planilha aqui</p>
+            <small>Formatos aceitos: .xlsx, .xls, .csv</small>
+          </div>
+          <div id="importPreview" style="display:none;" class="import-preview">
+            <strong id="importPreviewTitle"></strong>
+            <span id="importPreviewInfo"></span>
+          </div>
+          <div id="importActions" style="display:none;margin-top:12px;display:none;gap:10px;flex-wrap:wrap;">
+            <button class="btn btn-primary" id="btnConfirmarImport"><i class="ti ti-check"></i> Confirmar importação</button>
+            <button class="btn btn-ghost" id="btnCancelarImport"><i class="ti ti-x"></i> Cancelar</button>
+          </div>
+        </div>
+
         <div class="card">
-          <div class="card-title"><i class="ti ti-user-plus"></i> Cadastrar colaborador</div>
+          <div class="card-title"><i class="ti ti-user-plus"></i> Cadastrar colaborador manualmente</div>
           <div class="form-grid-3" style="margin-bottom:14px;">
             <div class="field-row"><label>Matrícula <span class="req">*</span></label><input type="text" id="cMatricula" placeholder="Ex: 00123"></div>
             <div class="field-row" style="grid-column:span 2;"><label>Nome completo <span class="req">*</span></label><input type="text" id="cNome" placeholder="Nome do colaborador"></div>
           </div>
           <div class="form-grid-3" style="margin-bottom:14px;">
             <div class="field-row"><label>Data de admissão</label><input type="date" id="cAdmissao"></div>
+            <div class="field-row"><label>Cargo</label><input type="text" id="cCargo" placeholder="Ex: Analista"></div>
             <div class="field-row"><label>Local</label><input type="text" id="cLocal" placeholder="Ex: São Paulo"></div>
-            <div class="field-row"><label>Turno</label><input type="text" id="cTurno" placeholder="Ex: Manhã"></div>
           </div>
           <div class="form-grid-3" style="margin-bottom:16px;">
+            <div class="field-row"><label>Turno</label><input type="text" id="cTurno" placeholder="Ex: Manhã"></div>
             <div class="field-row"><label>Filial</label><input type="text" id="cFilial" placeholder="Ex: Filial Norte"></div>
             <div class="field-row"><label>Gestor</label><input type="text" id="cGestor" placeholder="Nome do gestor"></div>
+          </div>
+          <div class="form-grid-3" style="margin-bottom:16px;">
             <div class="field-row"><label>Gerente</label><input type="text" id="cGerente" placeholder="Nome do gerente"></div>
           </div>
           <button class="btn btn-primary" id="btnCadastrarColab"><i class="ti ti-plus"></i> Cadastrar colaborador</button>
         </div>
+
         <div class="card">
           <div class="card-title"><i class="ti ti-users"></i> Colaboradores cadastrados</div>
           <div class="toolbar">
@@ -430,7 +454,7 @@
           <div class="table-wrap">
             <table>
               <thead><tr>
-                <th>Matrícula</th><th>Nome</th><th>Admissão</th><th>Local</th><th>Turno</th><th>Filial</th><th>Gestor</th><th>Gerente</th><th>Ações</th>
+                <th>Matrícula</th><th>Nome</th><th>Cargo</th><th>Admissão</th><th>Local</th><th>Turno</th><th>Filial</th><th>Gestor</th><th>Gerente</th><th>Entrevista</th><th>Ações</th>
               </tr></thead>
               <tbody id="colabTbody"></tbody>
             </table>
@@ -438,30 +462,26 @@
         </div>
       </div>
 
-      <!-- ===== PERGUNTAS ===== -->
+      <!-- PERGUNTAS -->
       <div class="page" id="page-perguntas">
         <div class="page-header">
           <h2>Gerenciar perguntas</h2>
-          <p>Crie perguntas abertas, de múltipla escolha ou em escala de 1 a 10.</p>
+          <p>Crie e edite perguntas abertas, de múltipla escolha ou em escala de 1 a 10.</p>
         </div>
         <div class="card">
           <div class="card-title"><i class="ti ti-circle-plus"></i> Nova pergunta</div>
-
           <div class="field-row" style="margin-bottom:14px;">
             <label>Texto da pergunta</label>
             <input type="text" id="novaPergunta" placeholder="Digite a pergunta...">
           </div>
-
           <div class="field-row" style="margin-bottom:14px;">
             <label>Tipo de pergunta</label>
-            <div class="type-selector">
+            <div class="type-selector" id="novaTipoSelector">
               <button class="type-btn active" data-type="aberta"><i class="ti ti-align-left"></i> Aberta</button>
               <button class="type-btn" data-type="multipla"><i class="ti ti-list-check"></i> Múltipla escolha</button>
               <button class="type-btn" data-type="escala"><i class="ti ti-chart-bar"></i> Escala 1–10</button>
             </div>
           </div>
-
-          <!-- Múltipla escolha builder -->
           <div id="mcBuilder" style="display:none;">
             <div class="field-row" style="margin-bottom:10px;">
               <label>Tipo de seleção</label>
@@ -476,24 +496,19 @@
               <button class="btn btn-ghost btn-sm" id="btnAddOption" style="margin-top:6px;"><i class="ti ti-plus"></i> Adicionar opção</button>
             </div>
           </div>
-
           <div style="margin-top:14px;">
             <button class="btn btn-primary" id="btnAdicionarPergunta"><i class="ti ti-plus"></i> Adicionar pergunta</button>
           </div>
         </div>
-
         <div class="card">
           <div class="card-title"><i class="ti ti-list"></i> Perguntas cadastradas</div>
           <div id="listaPerguntas"></div>
         </div>
       </div>
 
-      <!-- ===== USUÁRIOS ===== -->
+      <!-- USUÁRIOS -->
       <div class="page" id="page-usuarios">
-        <div class="page-header">
-          <h2>Gerenciar usuários</h2>
-          <p>Crie e gerencie acessos por nível de permissão.</p>
-        </div>
+        <div class="page-header"><h2>Gerenciar usuários</h2><p>Crie e gerencie acessos por nível de permissão.</p></div>
         <div class="card">
           <div class="card-title"><i class="ti ti-user-plus"></i> Criar usuário</div>
           <div class="form-grid">
@@ -518,12 +533,9 @@
         </div>
       </div>
 
-      <!-- ===== CONFIGURAÇÕES ===== -->
+      <!-- CONFIGURAÇÕES -->
       <div class="page" id="page-configuracoes">
-        <div class="page-header">
-          <h2>Configurações da empresa</h2>
-          <p>Personalize a identidade visual do sistema com a logomarca da empresa.</p>
-        </div>
+        <div class="page-header"><h2>Configurações da empresa</h2><p>Personalize a identidade visual do sistema.</p></div>
         <div class="card">
           <div class="card-title"><i class="ti ti-building"></i> Nome da empresa</div>
           <div style="display:flex;gap:10px;align-items:flex-end;">
@@ -531,7 +543,7 @@
               <label>Nome exibido no cabeçalho e formulário</label>
               <input type="text" id="nomeEmpresa" placeholder="Ex: RH Inovação Ltda.">
             </div>
-            <button class="btn btn-primary btn-sm" id="btnSalvarNome" style="margin-bottom:0;"><i class="ti ti-check"></i> Salvar</button>
+            <button class="btn btn-primary btn-sm" id="btnSalvarNome"><i class="ti ti-check"></i> Salvar</button>
           </div>
         </div>
         <div class="card">
@@ -576,30 +588,71 @@
         </div>
       </div>
 
-      <!-- ===== DASHBOARD ===== -->
+      <!-- DASHBOARD -->
       <div class="page" id="page-dashboard">
-        <div class="page-header">
-          <h2>Dashboard</h2>
-          <p>Visão geral das entrevistas de desligamento coletadas.</p>
-        </div>
+        <div class="page-header"><h2>Dashboard</h2><p>Visão geral das entrevistas de desligamento coletadas.</p></div>
         <div class="stats-grid" id="statsGrid"></div>
         <div class="card">
-          <div class="card-title"><i class="ti ti-chart-bar"></i> Respostas por pergunta</div>
-          <canvas id="graficoRespostas" style="max-height:380px;display:block;"></canvas>
+          <div class="card-title"><i class="ti ti-chart-bar"></i> Análise das respostas</div>
+          <div class="chart-tabs" id="chartTabs">
+            <button class="chart-tab active" data-tab="barras">Respostas por pergunta</button>
+            <button class="chart-tab" data-tab="motivos">Motivos de desligamento</button>
+            <button class="chart-tab" data-tab="filiais">Por filial</button>
+            <button class="chart-tab" data-tab="timeline">Linha do tempo</button>
+          </div>
           <div id="dashboardEmpty" class="empty" style="display:none;"><i class="ti ti-inbox"></i><p>Nenhuma resposta enviada ainda.</p></div>
+
+          <div class="chart-panel active" id="panel-barras">
+            <div style="position:relative;width:100%;height:320px;"><canvas id="graficoBarras" role="img" aria-label="Gráfico de barras com respostas por pergunta"></canvas></div>
+          </div>
+          <div class="chart-panel" id="panel-motivos">
+            <div style="display:flex;align-items:flex-start;gap:24px;flex-wrap:wrap;">
+              <div style="position:relative;width:260px;height:260px;flex-shrink:0;"><canvas id="graficoPizza" role="img" aria-label="Gráfico de pizza com motivos de desligamento"></canvas></div>
+              <div id="legendaMotivos" style="flex:1;min-width:180px;display:flex;flex-direction:column;gap:8px;padding-top:20px;"></div>
+            </div>
+          </div>
+          <div class="chart-panel" id="panel-filiais">
+            <div style="position:relative;width:100%;height:320px;"><canvas id="graficoFiliais" role="img" aria-label="Gráfico de barras horizontais com desligamentos por filial"></canvas></div>
+          </div>
+          <div class="chart-panel" id="panel-timeline">
+            <div style="position:relative;width:100%;height:320px;"><canvas id="graficoTimeline" role="img" aria-label="Gráfico de linha com entrevistas ao longo do tempo"></canvas></div>
+          </div>
         </div>
       </div>
 
-      <!-- ===== EXPORTAR DADOS ===== -->
-      <div class="page" id="page-relatorios">
-        <div class="page-header">
-          <h2>Exportar dados</h2>
-          <p>Baixe as informações em formato Excel para análise externa.</p>
+      <!-- PENDÊNCIAS -->
+      <div class="page" id="page-pendentes">
+        <div class="page-header"><h2>Entrevistas pendentes</h2><p>Colaboradores desligados que ainda não tiveram a entrevista de desligamento realizada.</p></div>
+        <div class="stats-grid" id="statsGridPendentes"></div>
+        <div class="card">
+          <div class="card-title"><i class="ti ti-chart-donut"></i> Situação das entrevistas</div>
+          <div style="display:flex;align-items:flex-start;gap:24px;flex-wrap:wrap;">
+            <div style="position:relative;width:260px;height:260px;flex-shrink:0;"><canvas id="graficoPendentes" role="img" aria-label="Gráfico de rosca com situação das entrevistas"></canvas></div>
+            <div id="legendaPendentes" style="flex:1;min-width:180px;display:flex;flex-direction:column;gap:10px;padding-top:24px;"></div>
+          </div>
         </div>
+        <div class="card">
+          <div class="card-title"><i class="ti ti-clock-exclamation"></i> Lista de pendentes</div>
+          <div class="toolbar">
+            <input type="text" id="searchPendentes" placeholder="Buscar por nome ou matrícula..." style="max-width:280px;">
+            <button class="btn btn-warning btn-sm" id="btnExportarPendentes"><i class="ti ti-file-spreadsheet"></i> Exportar pendentes</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Matrícula</th><th>Nome</th><th>Cargo</th><th>Filial</th><th>Gestor</th><th>Situação</th></tr></thead>
+              <tbody id="pendentesTbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- EXPORTAR -->
+      <div class="page" id="page-relatorios">
+        <div class="page-header"><h2>Exportar dados</h2><p>Baixe as informações em formato Excel para análise externa.</p></div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;" class="export-grid">
           <div class="card">
             <div class="card-title"><i class="ti ti-users"></i> Colaboradores desligados</div>
-            <p style="font-size:14px;color:var(--text-muted);margin-bottom:16px;">Exporta a lista completa de colaboradores com seus dados cadastrais e informações de desligamento.</p>
+            <p style="font-size:14px;color:var(--text-muted);margin-bottom:16px;">Exporta a lista completa de colaboradores com seus dados cadastrais.</p>
             <button class="btn btn-success" id="btnExportarColabsRel"><i class="ti ti-file-spreadsheet"></i> Baixar Excel — Colaboradores</button>
           </div>
           <div class="card">
@@ -618,41 +671,81 @@
   </div>
 </div>
 
+<!-- MODAL EDITAR PERGUNTA -->
+<div class="modal-overlay hidden" id="modalEditPerg">
+  <div class="modal">
+    <div class="modal-header">
+      <h3><i class="ti ti-edit" style="color:var(--primary);margin-right:6px;"></i> Editar pergunta</h3>
+      <button class="modal-close" onclick="fecharModal()">&#x2715;</button>
+    </div>
+    <div class="field-row" style="margin-bottom:16px;">
+      <label>Texto da pergunta</label>
+      <input type="text" id="editPergText" placeholder="Digite a pergunta...">
+    </div>
+    <div class="field-row" style="margin-bottom:16px;">
+      <label>Tipo de pergunta</label>
+      <div class="type-selector" id="editTipoSelector">
+        <button class="type-btn active" data-type="aberta"><i class="ti ti-align-left"></i> Aberta</button>
+        <button class="type-btn" data-type="multipla"><i class="ti ti-list-check"></i> Múltipla escolha</button>
+        <button class="type-btn" data-type="escala"><i class="ti ti-chart-bar"></i> Escala 1–10</button>
+      </div>
+    </div>
+    <div id="mcBuilderEdit" style="display:none;">
+      <div class="field-row" style="margin-bottom:10px;">
+        <label>Tipo de seleção</label>
+        <select id="mcTipoSelecaoEdit" style="max-width:260px;">
+          <option value="radio">Única resposta</option>
+          <option value="checkbox">Múltiplas respostas</option>
+        </select>
+      </div>
+      <div class="options-builder">
+        <label style="font-size:13px;font-weight:500;margin-bottom:8px;display:block;">Opções de resposta</label>
+        <div id="optionsListEdit"></div>
+        <button class="btn btn-ghost btn-sm" id="btnAddOptionEdit" style="margin-top:6px;"><i class="ti ti-plus"></i> Adicionar opção</button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="fecharModal()">Cancelar</button>
+      <button class="btn btn-primary" id="btnSalvarEdicao"><i class="ti ti-check"></i> Salvar alterações</button>
+    </div>
+  </div>
+</div>
+
 <div id="toastContainer"></div>
 
 <script>
 // ===== ESTADO =====
 let usuarioLogado = null;
-
 let perguntas = [
   { id: 'q1', text: 'Como você avalia sua experiência geral na empresa?', tipo: 'escala' },
   { id: 'q2', text: 'O que poderia ter sido melhorado no seu ambiente de trabalho?', tipo: 'aberta' },
   { id: 'q3', text: 'Você recomendaria a empresa como um bom lugar para trabalhar?', tipo: 'multipla', selecao: 'radio', opcoes: ['Sim, com certeza', 'Talvez', 'Não recomendaria'] },
   { id: 'q4', text: 'Qual foi o principal motivo da sua saída?', tipo: 'aberta' },
 ];
-
 let respostas = [];
-
 let colaboradores = [
-  { matricula: '00001', nome: 'Maria Silva', admissao: '2019-03-15', local: 'São Paulo', turno: 'Manhã', filial: 'Filial Centro', gestor: 'Carlos Mendes', gerente: 'Ana Beatriz' },
-  { matricula: '00002', nome: 'João Pereira', admissao: '2021-07-10', local: 'Campinas', turno: 'Tarde', filial: 'Filial Norte', gestor: 'Fernanda Lima', gerente: 'Ricardo Torres' },
+  { matricula: '00001', nome: 'Maria Silva', cargo: 'Analista RH', admissao: '2019-03-15', local: 'São Paulo', turno: 'Manhã', filial: 'Filial Centro', gestor: 'Carlos Mendes', gerente: 'Ana Beatriz' },
+  { matricula: '00002', nome: 'João Pereira', cargo: 'Assistente Adm', admissao: '2021-07-10', local: 'Campinas', turno: 'Tarde', filial: 'Filial Norte', gestor: 'Fernanda Lima', gerente: 'Ricardo Torres' },
 ];
-
 let localUsers = [{ username: 'andrei', password: '#Andrei1996', role: 'MASTER' }];
-
 let branding = { logoDataUrl: null, logoFileName: null, companyName: '', primaryColor: '#1a56db' };
 let selectedSwatchColor = null;
 let novaPergTipo = 'aberta';
 let mcOpcoes = [];
+let editPergId = null;
+let editMcOpcoes = [];
+let editPergTipo = 'aberta';
+let importData = null;
+let chartInstances = {};
 
 // ===== TOAST =====
-function toast(msg, type = '') {
+function toast(msg, type='') {
   const el = document.createElement('div');
-  el.className = 'toast' + (type ? ' ' + type : '');
-  const icon = type === 'success' ? 'circle-check' : type === 'danger' ? 'alert-circle' : 'info-circle';
+  el.className = 'toast' + (type ? ' '+type : '');
+  const icon = type==='success'?'circle-check':type==='danger'?'alert-circle':'info-circle';
   el.innerHTML = `<i class="ti ti-${icon}"></i> ${msg}`;
   document.getElementById('toastContainer').appendChild(el);
-  setTimeout(() => el.remove(), 3500);
+  setTimeout(()=>el.remove(), 3500);
 }
 
 // ===== CORES =====
@@ -662,8 +755,8 @@ function hexToRgb(hex) {
   const n = parseInt(hex,16);
   return [(n>>16)&255,(n>>8)&255,n&255];
 }
-function darken(hex, a=20) { let [r,g,b]=hexToRgb(hex); return '#'+[Math.max(0,r-a),Math.max(0,g-a),Math.max(0,b-a)].map(x=>x.toString(16).padStart(2,'0')).join(''); }
-function lighten(hex, a=230) { let [r,g,b]=hexToRgb(hex); return '#'+[Math.min(255,Math.round(r+(255-r)*(a/255))),Math.min(255,Math.round(g+(255-g)*(a/255))),Math.min(255,Math.round(b+(255-b)*(a/255)))].map(x=>x.toString(16).padStart(2,'0')).join(''); }
+function darken(hex,a=20){let[r,g,b]=hexToRgb(hex);return'#'+[Math.max(0,r-a),Math.max(0,g-a),Math.max(0,b-a)].map(x=>x.toString(16).padStart(2,'0')).join('');}
+function lighten(hex,a=230){let[r,g,b]=hexToRgb(hex);return'#'+[Math.min(255,Math.round(r+(255-r)*(a/255))),Math.min(255,Math.round(g+(255-g)*(a/255))),Math.min(255,Math.round(b+(255-b)*(a/255)))].map(x=>x.toString(16).padStart(2,'0')).join('');}
 function applyThemeColor(hex) {
   const root = document.documentElement;
   const [r,g,b] = hexToRgb(hex);
@@ -674,35 +767,33 @@ function applyThemeColor(hex) {
   root.style.setProperty('--login-bg1', hex);
   root.style.setProperty('--login-bg2', darken(hex,20));
   branding.primaryColor = hex;
-  if (window.myChart) { window.myChart.data.datasets[0].backgroundColor = hex; window.myChart.update(); }
 }
 
-// ===== EXTRAÇÃO DE CORES =====
 function extractColorsFromImage(imgEl) {
-  return new Promise(resolve => {
+  return new Promise(resolve=>{
     const canvas = document.getElementById('colorCanvas');
-    canvas.width = 80; canvas.height = 80;
+    canvas.width=80; canvas.height=80;
     const ctx = canvas.getContext('2d');
-    ctx.drawImage(imgEl, 0, 0, 80, 80);
+    ctx.drawImage(imgEl,0,0,80,80);
     const data = ctx.getImageData(0,0,80,80).data;
-    const buckets = {};
-    for (let i=0;i<data.length;i+=4) {
-      if (data[i+3]<30) continue;
-      const r=Math.round(data[i]/32)*32, g=Math.round(data[i+1]/32)*32, b=Math.round(data[i+2]/32)*32;
+    const buckets={};
+    for(let i=0;i<data.length;i+=4){
+      if(data[i+3]<30)continue;
+      const r=Math.round(data[i]/32)*32,g=Math.round(data[i+1]/32)*32,b=Math.round(data[i+2]/32)*32;
       const br=(r+g+b)/3;
-      if (br>230||br<20) continue;
-      if (Math.max(r,g,b)-Math.min(r,g,b)<30) continue;
-      const k=`${r},${g},${b}`; buckets[k]=(buckets[k]||0)+1;
+      if(br>230||br<20)continue;
+      if(Math.max(r,g,b)-Math.min(r,g,b)<30)continue;
+      const k=`${r},${g},${b}`;buckets[k]=(buckets[k]||0)+1;
     }
-    const sorted = Object.entries(buckets).sort((a,b)=>b[1]-a[1]);
-    const top = sorted.slice(0,12).map(([k])=>'#'+k.split(',').map(Number).map(x=>x.toString(16).padStart(2,'0')).join(''));
-    const distinct = [];
-    for (const c of top) {
-      const [r1,g1,b1]=hexToRgb(c);
-      if (!distinct.some(d=>{const [r2,g2,b2]=hexToRgb(d);return Math.abs(r1-r2)+Math.abs(g1-g2)+Math.abs(b1-b2)<80;})) distinct.push(c);
-      if (distinct.length>=6) break;
+    const sorted=Object.entries(buckets).sort((a,b)=>b[1]-a[1]);
+    const top=sorted.slice(0,12).map(([k])=>'#'+k.split(',').map(Number).map(x=>x.toString(16).padStart(2,'0')).join(''));
+    const distinct=[];
+    for(const c of top){
+      const[r1,g1,b1]=hexToRgb(c);
+      if(!distinct.some(d=>{const[r2,g2,b2]=hexToRgb(d);return Math.abs(r1-r2)+Math.abs(g1-g2)+Math.abs(b1-b2)<80;}))distinct.push(c);
+      if(distinct.length>=6)break;
     }
-    resolve(distinct.length ? distinct : ['#1a56db']);
+    resolve(distinct.length?distinct:['#1a56db']);
   });
 }
 
@@ -712,373 +803,435 @@ function renderPalette(colors) {
     <div class="palette-swatch ${i===0?'selected':''}" style="background:${c};" title="${c}" onclick="selectSwatch(this,'${c}')"></div>
   `).join('');
 }
-window.selectSwatch = (el, color) => {
+window.selectSwatch = (el,color)=>{
   document.querySelectorAll('.palette-swatch').forEach(s=>s.classList.remove('selected'));
-  el.classList.add('selected');
-  selectedSwatchColor = color;
+  el.classList.add('selected'); selectedSwatchColor=color;
 };
 
-// ===== BRANDING =====
 function applyBranding() {
   const has = !!branding.logoDataUrl;
-  const name = branding.companyName || 'Desligamento RH';
-  ['headerLogoImg','loginLogoImg','formBannerLogo','previewLogoImg'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el){el.src=has?branding.logoDataUrl:'';el.style.display=has?'block':'none';}
-  });
-  ['headerLogoIcon','loginLogoIcon','previewLogoIcon'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el) el.style.display=has?'none':'flex';
-  });
-  document.getElementById('headerLogoText').textContent = name;
-  document.getElementById('loginCompanyName').textContent = name;
-  if(document.getElementById('formBannerName')) document.getElementById('formBannerName').textContent = name;
-  if(document.getElementById('previewCompanyName')) document.getElementById('previewCompanyName').textContent = name;
-  const banner = document.getElementById('formBanner');
-  if(banner) has ? banner.classList.add('visible') : banner.classList.remove('visible');
+  const name = branding.companyName||'Desligamento RH';
+  ['headerLogoImg','loginLogoImg','formBannerLogo','previewLogoImg'].forEach(id=>{const el=document.getElementById(id);if(el){el.src=has?branding.logoDataUrl:'';el.style.display=has?'block':'none';}});
+  ['headerLogoIcon','loginLogoIcon','previewLogoIcon'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display=has?'none':'flex';});
+  document.getElementById('headerLogoText').textContent=name;
+  document.getElementById('loginCompanyName').textContent=name;
+  if(document.getElementById('formBannerName'))document.getElementById('formBannerName').textContent=name;
+  if(document.getElementById('previewCompanyName'))document.getElementById('previewCompanyName').textContent=name;
+  const banner=document.getElementById('formBanner');
+  if(banner)has?banner.classList.add('visible'):banner.classList.remove('visible');
   applyThemeColor(branding.primaryColor);
 }
 
 // ===== UPLOAD LOGO =====
-document.getElementById('logoFileInput').addEventListener('change', e=>{const f=e.target.files[0];if(f)processLogoFile(f);});
-const uploadArea = document.getElementById('logoUploadArea');
-uploadArea.addEventListener('dragover', e=>{e.preventDefault();uploadArea.classList.add('drag');});
-uploadArea.addEventListener('dragleave', ()=>uploadArea.classList.remove('drag'));
-uploadArea.addEventListener('drop', e=>{e.preventDefault();uploadArea.classList.remove('drag');const f=e.dataTransfer.files[0];if(f)processLogoFile(f);});
+document.getElementById('logoFileInput').addEventListener('change',e=>{const f=e.target.files[0];if(f)processLogoFile(f);});
+const uploadArea=document.getElementById('logoUploadArea');
+uploadArea.addEventListener('dragover',e=>{e.preventDefault();uploadArea.classList.add('drag');});
+uploadArea.addEventListener('dragleave',()=>uploadArea.classList.remove('drag'));
+uploadArea.addEventListener('drop',e=>{e.preventDefault();uploadArea.classList.remove('drag');const f=e.dataTransfer.files[0];if(f)processLogoFile(f);});
 
-function processLogoFile(file) {
-  if (!file.type.startsWith('image/')) return toast('Selecione uma imagem válida.','danger');
-  const reader = new FileReader();
-  reader.onload = async e => {
-    branding.logoDataUrl = e.target.result;
-    branding.logoFileName = file.name;
-    document.getElementById('logoPreviewImg').src = e.target.result;
-    document.getElementById('logoFileName').textContent = file.name;
+function processLogoFile(file){
+  if(!file.type.startsWith('image/'))return toast('Selecione uma imagem válida.','danger');
+  const reader=new FileReader();
+  reader.onload=async e=>{
+    branding.logoDataUrl=e.target.result; branding.logoFileName=file.name;
+    document.getElementById('logoPreviewImg').src=e.target.result;
+    document.getElementById('logoFileName').textContent=file.name;
     document.getElementById('logoPreviewWrap').classList.add('visible');
-    document.getElementById('logoUploadArea').style.display = 'none';
-    const img = new Image();
-    img.onload = async () => {
-      const colors = await extractColorsFromImage(img);
+    document.getElementById('logoUploadArea').style.display='none';
+    const img=new Image();
+    img.onload=async()=>{
+      const colors=await extractColorsFromImage(img);
       renderPalette(colors);
-      document.getElementById('paletteCard').style.display = 'block';
-      if (colors.length) { applyThemeColor(colors[0]); selectedSwatchColor = colors[0]; }
+      document.getElementById('paletteCard').style.display='block';
+      if(colors.length){applyThemeColor(colors[0]);selectedSwatchColor=colors[0];}
       applyBranding();
       toast('Logomarca carregada! Selecione a cor e aplique.','success');
     };
-    img.src = e.target.result;
+    img.src=e.target.result;
   };
   reader.readAsDataURL(file);
 }
 
-document.getElementById('btnRemoverLogo').addEventListener('click', ()=>{
-  branding.logoDataUrl = null; branding.logoFileName = null;
+document.getElementById('btnRemoverLogo').addEventListener('click',()=>{
+  branding.logoDataUrl=null; branding.logoFileName=null;
   document.getElementById('logoPreviewWrap').classList.remove('visible');
-  document.getElementById('logoUploadArea').style.display = 'block';
-  document.getElementById('logoFileInput').value = '';
-  document.getElementById('paletteCard').style.display = 'none';
+  document.getElementById('logoUploadArea').style.display='block';
+  document.getElementById('logoFileInput').value='';
+  document.getElementById('paletteCard').style.display='none';
   applyBranding(); toast('Logomarca removida.','success');
 });
-document.getElementById('btnAplicarCor').addEventListener('click', ()=>{
-  if (!selectedSwatchColor) return toast('Selecione uma cor.','danger');
+document.getElementById('btnAplicarCor').addEventListener('click',()=>{
+  if(!selectedSwatchColor)return toast('Selecione uma cor.','danger');
   applyThemeColor(selectedSwatchColor); applyBranding(); toast('Cor aplicada!','success');
 });
-document.getElementById('btnResetarCor').addEventListener('click', ()=>{
+document.getElementById('btnResetarCor').addEventListener('click',()=>{
   selectedSwatchColor='#1a56db'; branding.primaryColor='#1a56db';
   applyThemeColor('#1a56db'); applyBranding();
   document.querySelectorAll('.palette-swatch').forEach(s=>s.classList.remove('selected'));
   toast('Cor restaurada para o padrão.','success');
 });
-document.getElementById('btnSalvarNome').addEventListener('click', ()=>{
-  const nome = document.getElementById('nomeEmpresa').value.trim();
-  if (!nome) return toast('Digite o nome da empresa.','danger');
-  branding.companyName = nome; applyBranding(); toast('Nome atualizado!','success');
+document.getElementById('btnSalvarNome').addEventListener('click',()=>{
+  const nome=document.getElementById('nomeEmpresa').value.trim();
+  if(!nome)return toast('Digite o nome da empresa.','danger');
+  branding.companyName=nome; applyBranding(); toast('Nome atualizado!','success');
 });
 
 // ===== LOGIN =====
-document.getElementById('btnEntrar').addEventListener('click', handleLogin);
-document.getElementById('loginPass').addEventListener('keydown', e=>{if(e.key==='Enter')handleLogin();});
-function handleLogin() {
+document.getElementById('btnEntrar').addEventListener('click',handleLogin);
+document.getElementById('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')handleLogin();});
+function handleLogin(){
   const u=document.getElementById('loginUser').value.trim(), p=document.getElementById('loginPass').value;
-  if (!u||!p) return toast('Preencha usuário e senha.','danger');
-  const found = localUsers.find(x=>x.username===u&&x.password===p);
-  if (!found) return toast('Usuário ou senha inválidos.','danger');
-  usuarioLogado = { username: found.username, role: found.role };
+  if(!u||!p)return toast('Preencha usuário e senha.','danger');
+  const found=localUsers.find(x=>x.username===u&&x.password===p);
+  if(!found)return toast('Usuário ou senha inválidos.','danger');
+  usuarioLogado={username:found.username,role:found.role};
   onLoginSucesso();
 }
-function onLoginSucesso() {
-  document.getElementById('loginScreen').style.display = 'none';
+function onLoginSucesso(){
+  document.getElementById('loginScreen').style.display='none';
   document.getElementById('appScreen').classList.add('active');
-  const r = usuarioLogado.role;
-  document.getElementById('userName').textContent = usuarioLogado.username;
-  const rb = document.getElementById('userRole');
-  rb.textContent = r==='MASTER'?'Master':r==='OPERADORES'?'Operador':'Usuário';
-  rb.className = 'role-badge role-'+r;
-  document.getElementById('userAvatar').textContent = usuarioLogado.username[0].toUpperCase();
-  document.getElementById('sidebarAdminSection').style.display = r==='MASTER'?'block':'none';
-  document.getElementById('sidebarDashSection').style.display = (r==='MASTER'||r==='OPERADORES')?'block':'none';
+  const r=usuarioLogado.role;
+  document.getElementById('userName').textContent=usuarioLogado.username;
+  const rb=document.getElementById('userRole');
+  rb.textContent=r==='MASTER'?'Master':r==='OPERADORES'?'Operador':'Usuário';
+  rb.className='role-badge role-'+r;
+  document.getElementById('userAvatar').textContent=usuarioLogado.username[0].toUpperCase();
+  document.getElementById('sidebarAdminSection').style.display=r==='MASTER'?'block':'none';
+  document.getElementById('sidebarDashSection').style.display=(r==='MASTER'||r==='OPERADORES')?'block':'none';
   navTo('formulario');
 }
-document.getElementById('btnLogout').addEventListener('click', ()=>{
-  usuarioLogado = null;
+document.getElementById('btnLogout').addEventListener('click',()=>{
+  usuarioLogado=null;
   document.getElementById('appScreen').classList.remove('active');
-  document.getElementById('loginScreen').style.display = 'flex';
-  document.getElementById('loginUser').value='';
-  document.getElementById('loginPass').value='';
+  document.getElementById('loginScreen').style.display='flex';
+  document.getElementById('loginUser').value=''; document.getElementById('loginPass').value='';
 });
 
 // ===== NAVEGAÇÃO =====
-function navTo(page) {
+function navTo(page){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.sidebar-link').forEach(l=>l.classList.remove('active'));
   document.getElementById('page-'+page).classList.add('active');
-  const link = document.querySelector(`.sidebar-link[data-page="${page}"]`);
-  if (link) link.classList.add('active');
-  if (page==='formulario') renderFormulario();
-  if (page==='perguntas') renderPerguntas();
-  if (page==='usuarios') renderUsuarios();
-  if (page==='dashboard') renderDashboard();
-  if (page==='colaboradores') renderColaboradores();
-  if (page==='relatorios') renderRelatorios();
+  const link=document.querySelector(`.sidebar-link[data-page="${page}"]`);
+  if(link)link.classList.add('active');
+  if(page==='formulario')renderFormulario();
+  if(page==='perguntas')renderPerguntas();
+  if(page==='usuarios')renderUsuarios();
+  if(page==='dashboard')renderDashboard();
+  if(page==='colaboradores')renderColaboradores();
+  if(page==='relatorios')renderRelatorios();
+  if(page==='pendentes')renderPendentes();
 }
 document.querySelectorAll('.sidebar-link').forEach(l=>l.addEventListener('click',()=>navTo(l.dataset.page)));
 
+// ===== IMPORTAR PLANILHA =====
+const importDrop = document.getElementById('importDropArea');
+importDrop.addEventListener('dragover',e=>{e.preventDefault();importDrop.classList.add('drag');});
+importDrop.addEventListener('dragleave',()=>importDrop.classList.remove('drag'));
+importDrop.addEventListener('drop',e=>{e.preventDefault();importDrop.classList.remove('drag');const f=e.dataTransfer.files[0];if(f)processImportFile(f);});
+document.getElementById('importFileInput').addEventListener('change',e=>{const f=e.target.files[0];if(f)processImportFile(f);});
+
+function processImportFile(file) {
+  const ext = file.name.split('.').pop().toLowerCase();
+  if(!['xlsx','xls','csv'].includes(ext)) return toast('Formato inválido. Use .xlsx, .xls ou .csv.','danger');
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const wb = XLSX.read(e.target.result, {type:'array'});
+      const ws = wb.Sheets[wb.SheetNames[0]];
+      const rows = XLSX.utils.sheet_to_json(ws, {header:1, defval:''});
+      if(rows.length < 2) return toast('Planilha vazia ou sem dados.','danger');
+
+      // Mapear cabeçalhos (case-insensitive, ignora espaços)
+      const header = rows[0].map(h => String(h).trim().toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''));
+      const MAP = {
+        filial:    ['FILIAL'],
+        matricula: ['CADASTRO','MATRICULA','MATRÍCULA'],
+        nome:      ['NOME FUNCIONARIO','NOME FUNCIONÁRIO','NOME'],
+        admissao:  ['DATA ADM','DATA ADMISSAO','DATA ADMISSÃO'],
+        cargo:     ['CARGO','FUNÇÃO','FUNCAO'],
+        local:     ['LOCAL'],
+        turno:     ['TURNO'],
+        gestor:    ['GESTOR'],
+        gerente:   ['GERENTE'],
+      };
+
+      const idx = {};
+      for(const [field, aliases] of Object.entries(MAP)){
+        for(const alias of aliases){
+          const i = header.findIndex(h=>h.includes(alias));
+          if(i !== -1){ idx[field]=i; break; }
+        }
+      }
+
+      if(idx.matricula === undefined && idx.nome === undefined)
+        return toast('Não foi possível identificar as colunas CADASTRO ou NOME FUNCIONARIO.','danger');
+
+      const dataRows = rows.slice(1).filter(r=>r.some(c=>String(c).trim()));
+      importData = dataRows.map(r => ({
+        filial:    String(r[idx.filial]||'').trim(),
+        matricula: String(r[idx.matricula]||'').trim(),
+        nome:      String(r[idx.nome]||'').trim(),
+        admissao:  formatDateFromXLSX(r[idx.admissao]),
+        cargo:     String(r[idx.cargo]||'').trim(),
+        local:     String(r[idx.local]||'').trim(),
+        turno:     String(r[idx.turno]||'').trim(),
+        gestor:    String(r[idx.gestor]||'').trim(),
+        gerente:   String(r[idx.gerente]||'').trim(),
+      })).filter(r=>r.nome||r.matricula);
+
+      document.getElementById('importPreview').style.display='block';
+      document.getElementById('importPreviewTitle').textContent = `Planilha: ${file.name}`;
+      document.getElementById('importPreviewInfo').textContent = `${importData.length} colaboradores encontrados • Clique em "Confirmar importação" para adicionar à base.`;
+      document.getElementById('importActions').style.display='flex';
+      toast(`${importData.length} registros prontos para importação.`,'success');
+    } catch(err) {
+      toast('Erro ao ler planilha. Verifique o formato.','danger');
+      console.error(err);
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function formatDateFromXLSX(val) {
+  if(!val) return '';
+  if(typeof val === 'number') {
+    // Excel serial date
+    const d = new Date(Math.round((val - 25569)*86400*1000));
+    return d.toISOString().split('T')[0];
+  }
+  const s = String(val).trim();
+  // dd/mm/yyyy
+  const m = s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})$/);
+  if(m) return `${m[3].length===2?'20'+m[3]:m[3]}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}`;
+  return s;
+}
+
+document.getElementById('btnConfirmarImport').addEventListener('click',()=>{
+  if(!importData||!importData.length) return;
+  let novos=0, existentes=0;
+  for(const c of importData){
+    if(colaboradores.some(x=>x.matricula===c.matricula&&c.matricula)){
+      existentes++;
+    } else {
+      colaboradores.push(c); novos++;
+    }
+  }
+  importData=null;
+  document.getElementById('importPreview').style.display='none';
+  document.getElementById('importActions').style.display='none';
+  document.getElementById('importFileInput').value='';
+  renderColaboradores();
+  toast(`Importação concluída: ${novos} novos, ${existentes} já existentes.`,'success');
+});
+
+document.getElementById('btnCancelarImport').addEventListener('click',()=>{
+  importData=null;
+  document.getElementById('importPreview').style.display='none';
+  document.getElementById('importActions').style.display='none';
+  document.getElementById('importFileInput').value='';
+});
+
 // ===== COLABORADORES =====
+function colabTemEntrevista(mat) {
+  return respostas.some(r=>r.matricula===mat);
+}
+
 function renderColaboradores(filter='') {
   const tbody = document.getElementById('colabTbody');
   const list = filter ? colaboradores.filter(c=>
     c.nome.toLowerCase().includes(filter.toLowerCase())||c.matricula.includes(filter)
   ) : colaboradores;
-  if (!list.length) {
-    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;color:var(--text-muted);padding:24px;">Nenhum colaborador encontrado.</td></tr>`;
+  if(!list.length){
+    tbody.innerHTML=`<tr><td colspan="11" style="text-align:center;color:var(--text-muted);padding:24px;">Nenhum colaborador encontrado.</td></tr>`;
     return;
   }
-  tbody.innerHTML = list.map(c=>`
-    <tr>
-      <td><span style="font-weight:600;color:var(--primary);">${c.matricula}</span></td>
-      <td style="font-weight:500;">${c.nome}</td>
+  tbody.innerHTML = list.map(c=>{
+    const feita = colabTemEntrevista(c.matricula);
+    return `<tr class="${!feita&&c.matricula?'pending-row':''}">
+      <td><span style="font-weight:600;color:var(--primary);">${c.matricula||'—'}</span></td>
+      <td style="font-weight:500;">${c.nome||'—'}</td>
+      <td>${c.cargo||'—'}</td>
       <td>${c.admissao||'—'}</td>
       <td>${c.local||'—'}</td>
       <td>${c.turno||'—'}</td>
       <td>${c.filial||'—'}</td>
       <td>${c.gestor||'—'}</td>
       <td>${c.gerente||'—'}</td>
+      <td><span class="pending-badge ${feita?'pending-done':'pending-yes'}">${feita?'<i class="ti ti-check"></i> Realizada':'<i class="ti ti-clock"></i> Pendente'}</span></td>
       <td>${usuarioLogado?.role==='MASTER'?`<button class="btn btn-danger btn-sm" onclick="excluirColab('${c.matricula}')"><i class="ti ti-trash"></i></button>`:'—'}</td>
-    </tr>
-  `).join('');
+    </tr>`;
+  }).join('');
 }
 
-document.getElementById('searchColab').addEventListener('input', e=>renderColaboradores(e.target.value));
+document.getElementById('searchColab').addEventListener('input',e=>renderColaboradores(e.target.value));
 
-document.getElementById('btnCadastrarColab').addEventListener('click', ()=>{
-  const mat = document.getElementById('cMatricula').value.trim();
-  const nome = document.getElementById('cNome').value.trim();
-  if (!mat||!nome) return toast('Matrícula e nome são obrigatórios.','danger');
-  if (colaboradores.some(c=>c.matricula===mat)) return toast('Matrícula já cadastrada.','danger');
+document.getElementById('btnCadastrarColab').addEventListener('click',()=>{
+  const mat=document.getElementById('cMatricula').value.trim();
+  const nome=document.getElementById('cNome').value.trim();
+  if(!mat||!nome)return toast('Matrícula e nome são obrigatórios.','danger');
+  if(colaboradores.some(c=>c.matricula===mat))return toast('Matrícula já cadastrada.','danger');
   colaboradores.push({
-    matricula: mat, nome,
-    admissao: document.getElementById('cAdmissao').value||'',
-    local: document.getElementById('cLocal').value.trim()||'',
-    turno: document.getElementById('cTurno').value.trim()||'',
-    filial: document.getElementById('cFilial').value.trim()||'',
-    gestor: document.getElementById('cGestor').value.trim()||'',
-    gerente: document.getElementById('cGerente').value.trim()||'',
+    matricula:mat, nome,
+    cargo:document.getElementById('cCargo').value.trim()||'',
+    admissao:document.getElementById('cAdmissao').value||'',
+    local:document.getElementById('cLocal').value.trim()||'',
+    turno:document.getElementById('cTurno').value.trim()||'',
+    filial:document.getElementById('cFilial').value.trim()||'',
+    gestor:document.getElementById('cGestor').value.trim()||'',
+    gerente:document.getElementById('cGerente').value.trim()||'',
   });
-  ['cMatricula','cNome','cAdmissao','cLocal','cTurno','cFilial','cGestor','cGerente'].forEach(id=>document.getElementById(id).value='');
+  ['cMatricula','cNome','cCargo','cAdmissao','cLocal','cTurno','cFilial','cGestor','cGerente'].forEach(id=>document.getElementById(id).value='');
   renderColaboradores();
   toast('Colaborador cadastrado!','success');
 });
 
 window.excluirColab = mat => {
-  if (!confirm('Remover este colaborador?')) return;
-  colaboradores = colaboradores.filter(c=>c.matricula!==mat);
-  renderColaboradores();
-  toast('Colaborador removido.','success');
+  if(!confirm('Remover este colaborador?'))return;
+  colaboradores=colaboradores.filter(c=>c.matricula!==mat);
+  renderColaboradores(); toast('Colaborador removido.','success');
 };
 
-document.getElementById('btnExportarColabs').addEventListener('click', exportarColaboradores);
-document.getElementById('btnExportarColabsRel').addEventListener('click', exportarColaboradores);
+document.getElementById('btnExportarColabs').addEventListener('click',exportarColaboradores);
+document.getElementById('btnExportarColabsRel').addEventListener('click',exportarColaboradores);
 
-function exportarColaboradores() {
-  const rows = [['Matrícula','Nome','Data Admissão','Local','Turno','Filial','Gestor','Gerente']];
-  colaboradores.forEach(c=>rows.push([c.matricula,c.nome,c.admissao,c.local,c.turno,c.filial,c.gestor,c.gerente]));
-  downloadXLSX(rows, 'Colaboradores', 'colaboradores_desligados.xlsx');
+function exportarColaboradores(){
+  const rows=[['Matrícula','Nome','Cargo','Data Admissão','Local','Turno','Filial','Gestor','Gerente','Entrevista Realizada']];
+  colaboradores.forEach(c=>rows.push([c.matricula,c.nome,c.cargo||'',c.admissao,c.local,c.turno,c.filial,c.gestor,c.gerente,colabTemEntrevista(c.matricula)?'Sim':'Não']));
+  downloadXLSX(rows,'Colaboradores','colaboradores_desligados.xlsx');
   toast('Excel de colaboradores baixado!','success');
 }
 
-// ===== FORMULÁRIO — BUSCA COLABORADOR =====
-document.getElementById('btnBuscarColab').addEventListener('click', buscarColaborador);
-document.getElementById('fMatricula').addEventListener('keydown', e=>{if(e.key==='Enter')buscarColaborador();});
-
-function buscarColaborador() {
-  const mat = document.getElementById('fMatricula').value.trim();
-  if (!mat) return toast('Digite a matrícula para buscar.','danger');
-  const c = colaboradores.find(x=>x.matricula===mat);
-  if (!c) { toast('Matrícula não encontrada. Preencha os campos manualmente.',''); return; }
-
-  const fields = {fNome:c.nome, fAdmissao:c.admissao, fLocal:c.local, fTurno:c.turno, fFilial:c.filial, fGestor:c.gestor, fGerente:c.gerente};
-  const autoLabels = {fAdmissao:'admissaoAuto',fLocal:'localAuto',fTurno:'turnoAuto',fFilial:'filialAuto',fGestor:'gestorAuto',fGerente:'gerenteAuto'};
-
-  Object.entries(fields).forEach(([id, val])=>{
-    const el = document.getElementById(id);
-    if (el) {
-      el.value = val||'';
-      if (val) {
-        el.disabled = true;
-        const labelSpan = document.getElementById(autoLabels[id]);
-        if (labelSpan) labelSpan.innerHTML = '<span class="auto-filled-badge"><i class="ti ti-database" style="font-size:10px;"></i> Auto</span>';
-      }
-    }
+// ===== BUSCA COLABORADOR NO FORMULÁRIO =====
+document.getElementById('btnBuscarColab').addEventListener('click',buscarColaborador);
+document.getElementById('fMatricula').addEventListener('keydown',e=>{if(e.key==='Enter')buscarColaborador();});
+function buscarColaborador(){
+  const mat=document.getElementById('fMatricula').value.trim();
+  if(!mat)return toast('Digite a matrícula para buscar.','danger');
+  const c=colaboradores.find(x=>x.matricula===mat);
+  if(!c){toast('Matrícula não encontrada. Preencha os campos manualmente.','');return;}
+  const fields={fNome:c.nome,fAdmissao:c.admissao,fLocal:c.local,fTurno:c.turno,fFilial:c.filial,fGestor:c.gestor,fGerente:c.gerente,fCargo:c.cargo};
+  const autoLabels={fAdmissao:'admissaoAuto',fLocal:'localAuto',fTurno:'turnoAuto',fFilial:'filialAuto',fGestor:'gestorAuto',fGerente:'gerenteAuto',fCargo:'cargoAuto'};
+  Object.entries(fields).forEach(([id,val])=>{
+    const el=document.getElementById(id);
+    if(el){el.value=val||'';if(val){el.disabled=true;const s=document.getElementById(autoLabels[id]);if(s)s.innerHTML='<span class="auto-filled-badge"><i class="ti ti-database" style="font-size:10px;"></i> Auto</span>';}}
   });
-  document.getElementById('fNome').disabled = !!c.nome;
+  document.getElementById('fNome').disabled=!!c.nome;
   toast(`Colaborador "${c.nome}" carregado automaticamente!`,'success');
 }
-
-function limparCamposColab() {
-  ['fNome','fAdmissao','fLocal','fTurno','fFilial','fGestor','fGerente'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el){el.value='';el.disabled=false;}
-  });
-  ['admissaoAuto','localAuto','turnoAuto','filialAuto','gestorAuto','gerenteAuto'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el) el.innerHTML='';
-  });
+function limparCamposColab(){
+  ['fNome','fAdmissao','fLocal','fTurno','fFilial','fGestor','fGerente','fCargo'].forEach(id=>{const el=document.getElementById(id);if(el){el.value='';el.disabled=false;}});
+  ['admissaoAuto','localAuto','turnoAuto','filialAuto','gestorAuto','gerenteAuto','cargoAuto'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML='';});
   document.getElementById('fMatricula').value='';
 }
 
-document.getElementById('fMotivo').addEventListener('change', ()=>{
-  const val = document.getElementById('fMotivo').value;
-  document.getElementById('motivoOutroWrap').style.display = val==='Outro'?'block':'none';
+document.getElementById('fMotivo').addEventListener('change',()=>{
+  const val=document.getElementById('fMotivo').value;
+  document.getElementById('motivoOutroWrap').style.display=val==='Outro'?'block':'none';
 });
 
-// ===== FORMULÁRIO — RENDER PERGUNTAS =====
-function renderFormulario() {
-  const body = document.getElementById('formBody');
-  if (!perguntas.length) {
-    body.innerHTML = '<div class="empty"><i class="ti ti-file-off"></i><p>Nenhuma pergunta cadastrada ainda.</p></div>';
-    return;
-  }
-  body.innerHTML = perguntas.map((p,i)=>`
+// ===== FORMULÁRIO RENDER =====
+function renderFormulario(){
+  const body=document.getElementById('formBody');
+  if(!perguntas.length){body.innerHTML='<div class="empty"><i class="ti ti-file-off"></i><p>Nenhuma pergunta cadastrada ainda.</p></div>';return;}
+  body.innerHTML=perguntas.map((p,i)=>`
     <div class="question-card">
-      <div class="question-num">
-        Pergunta ${i+1}
-        <span class="question-type-badge type-${p.tipo}">${p.tipo==='aberta'?'Aberta':p.tipo==='multipla'?'Múltipla escolha':'Escala 1–10'}</span>
-      </div>
+      <div class="question-num">Pergunta ${i+1}<span class="question-type-badge type-${p.tipo}">${tipoLabel(p.tipo)}</span></div>
       <div class="question-text">${p.text}</div>
-      ${renderPerguntaInput(p, i)}
+      ${renderPerguntaInput(p,i)}
     </div>
   `).join('');
-
-  // Inicializar sliders
   perguntas.forEach((p,i)=>{
-    if (p.tipo==='escala') {
-      const slider = document.getElementById(`slider_${i}`);
-      const display = document.getElementById(`scaleVal_${i}`);
-      if (slider && display) {
-        slider.addEventListener('input', ()=>{ display.textContent=slider.value; syncScaleBtns(i,slider.value); });
-      }
+    if(p.tipo==='escala'){
+      const slider=document.getElementById(`slider_${i}`);
+      const display=document.getElementById(`scaleVal_${i}`);
+      if(slider&&display)slider.addEventListener('input',()=>{display.textContent=slider.value;syncScaleBtns(i,slider.value);});
     }
   });
 }
 
-function renderPerguntaInput(p, i) {
-  if (p.tipo==='aberta') return `<div style="margin-top:12px;"><textarea id="resp_${i}" rows="3" placeholder="Escreva sua resposta aqui..."></textarea></div>`;
-  if (p.tipo==='multipla') {
-    const type = p.selecao||'radio';
-    return `<div class="mc-options">${(p.opcoes||[]).map((op,j)=>`
+function tipoLabel(tipo){return tipo==='aberta'?'Aberta':tipo==='multipla'?'Múltipla escolha':'Escala 1–10';}
+
+function renderPerguntaInput(p,i){
+  if(p.tipo==='aberta')return`<div style="margin-top:12px;"><textarea id="resp_${i}" rows="3" placeholder="Escreva sua resposta aqui..."></textarea></div>`;
+  if(p.tipo==='multipla'){
+    const type=p.selecao||'radio';
+    return`<div class="mc-options">${(p.opcoes||[]).map((op,j)=>`
       <label class="mc-option">
         <input type="${type}" name="mc_${i}" value="${j}" id="mc_${i}_${j}">
         <label for="mc_${i}_${j}">${op}</label>
       </label>
     `).join('')}</div>`;
   }
-  if (p.tipo==='escala') return `
+  if(p.tipo==='escala')return`
     <div class="scale-wrap">
-      <div class="scale-bar-row">${Array.from({length:10},(_,k)=>`
-        <button type="button" class="scale-bar-btn" id="sbtn_${i}_${k+1}" onclick="setScale(${i},${k+1})">${k+1}</button>
-      `).join('')}</div>
+      <div class="scale-bar-row">${Array.from({length:10},(_,k)=>`<button type="button" class="scale-bar-btn" id="sbtn_${i}_${k+1}" onclick="setScale(${i},${k+1})">${k+1}</button>`).join('')}</div>
       <input type="range" class="scale-slider" id="slider_${i}" min="1" max="10" value="5" style="display:none;">
       <div class="scale-value-display" id="scaleVal_${i}">—</div>
     </div>`;
   return '';
 }
 
-window.setScale = (qi, val) => {
-  document.getElementById(`scaleVal_${qi}`).textContent = val;
-  syncScaleBtns(qi, val);
-};
+window.setScale=(qi,val)=>{document.getElementById(`scaleVal_${qi}`).textContent=val;syncScaleBtns(qi,val);};
+function syncScaleBtns(qi,val){for(let k=1;k<=10;k++){const btn=document.getElementById(`sbtn_${qi}_${k}`);if(btn)btn.classList.toggle('active',k<=parseInt(val));}}
 
-function syncScaleBtns(qi, val) {
-  for(let k=1;k<=10;k++) {
-    const btn = document.getElementById(`sbtn_${qi}_${k}`);
-    if(btn) btn.classList.toggle('active', k<=parseInt(val));
-  }
-}
+document.getElementById('btnSalvarRespostas').addEventListener('click',()=>{
+  if(!usuarioLogado)return;
+  const mat=document.getElementById('fMatricula').value.trim();
+  const nome=document.getElementById('fNome').value.trim();
+  const dataDeslig=document.getElementById('fDataDeslig').value;
+  const motivo=document.getElementById('fMotivo').value;
+  if(!nome)return toast('Informe o nome do colaborador.','danger');
+  if(!dataDeslig)return toast('Informe a data de desligamento.','danger');
+  if(!motivo)return toast('Informe o motivo do desligamento.','danger');
 
-document.getElementById('btnSalvarRespostas').addEventListener('click', ()=>{
-  if (!usuarioLogado) return;
-  const mat = document.getElementById('fMatricula').value.trim();
-  const nome = document.getElementById('fNome').value.trim();
-  const dataDeslig = document.getElementById('fDataDeslig').value;
-  const motivo = document.getElementById('fMotivo').value;
-  if (!nome) return toast('Informe o nome do colaborador.','danger');
-  if (!dataDeslig) return toast('Informe a data de desligamento.','danger');
-  if (!motivo) return toast('Informe o motivo do desligamento.','danger');
-
-  const answers = perguntas.map((p,i)=>{
-    if (p.tipo==='aberta') return document.getElementById(`resp_${i}`)?.value.trim()||'';
-    if (p.tipo==='escala') return document.getElementById(`scaleVal_${i}`)?.textContent||'';
-    if (p.tipo==='multipla') {
-      const type = p.selecao||'radio';
-      if (type==='radio') {
-        const sel = document.querySelector(`input[name="mc_${i}"]:checked`);
-        return sel ? p.opcoes[parseInt(sel.value)] : '';
-      } else {
-        const sels = [...document.querySelectorAll(`input[name="mc_${i}"]:checked`)];
-        return sels.map(s=>p.opcoes[parseInt(s.value)]).join('; ');
-      }
+  const answers=perguntas.map((p,i)=>{
+    if(p.tipo==='aberta')return document.getElementById(`resp_${i}`)?.value.trim()||'';
+    if(p.tipo==='escala')return document.getElementById(`scaleVal_${i}`)?.textContent||'';
+    if(p.tipo==='multipla'){
+      const type=p.selecao||'radio';
+      if(type==='radio'){const sel=document.querySelector(`input[name="mc_${i}"]:checked`);return sel?p.opcoes[parseInt(sel.value)]:'';}
+      else{const sels=[...document.querySelectorAll(`input[name="mc_${i}"]:checked`)];return sels.map(s=>p.opcoes[parseInt(s.value)]).join('; ');}
     }
     return '';
   });
 
-  const colab = colaboradores.find(c=>c.matricula===mat)||{};
+  const colab=colaboradores.find(c=>c.matricula===mat)||{};
   respostas.push({
-    author: usuarioLogado.username,
-    matricula: mat, nome,
-    admissao: document.getElementById('fAdmissao').value||colab.admissao||'',
-    local: document.getElementById('fLocal').value||colab.local||'',
-    turno: document.getElementById('fTurno').value||colab.turno||'',
-    filial: document.getElementById('fFilial').value||colab.filial||'',
-    gestor: document.getElementById('fGestor').value||colab.gestor||'',
-    gerente: document.getElementById('fGerente').value||colab.gerente||'',
-    dataDesligamento: dataDeslig,
-    motivo: motivo==='Outro'?(document.getElementById('fMotivoOutro').value||'Outro'):motivo,
-    answers,
-    createdAt: new Date().toISOString(),
+    author:usuarioLogado.username, matricula:mat, nome,
+    cargo:document.getElementById('fCargo').value||colab.cargo||'',
+    admissao:document.getElementById('fAdmissao').value||colab.admissao||'',
+    local:document.getElementById('fLocal').value||colab.local||'',
+    turno:document.getElementById('fTurno').value||colab.turno||'',
+    filial:document.getElementById('fFilial').value||colab.filial||'',
+    gestor:document.getElementById('fGestor').value||colab.gestor||'',
+    gerente:document.getElementById('fGerente').value||colab.gerente||'',
+    dataDesligamento:dataDeslig,
+    motivo:motivo==='Outro'?(document.getElementById('fMotivoOutro').value||'Outro'):motivo,
+    answers, createdAt:new Date().toISOString(),
   });
-
   toast('Respostas enviadas com sucesso!','success');
   limparCamposColab();
   document.getElementById('fDataDeslig').value='';
   document.getElementById('fMotivo').value='';
+  document.getElementById('motivoOutroWrap').style.display='none';
   renderFormulario();
 });
 
 // ===== PERGUNTAS ADMIN =====
-// Type selector
-document.querySelectorAll('.type-btn').forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active'));
+document.querySelectorAll('#novaTipoSelector .type-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('#novaTipoSelector .type-btn').forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
-    novaPergTipo = btn.dataset.type;
-    const mcBuilder = document.getElementById('mcBuilder');
-    if (novaPergTipo==='multipla') { mcBuilder.style.display='block'; if(!mcOpcoes.length){mcOpcoes=['',''];renderMcBuilder();} }
-    else { mcBuilder.style.display='none'; }
+    novaPergTipo=btn.dataset.type;
+    const mcB=document.getElementById('mcBuilder');
+    if(novaPergTipo==='multipla'){mcB.style.display='block';if(!mcOpcoes.length){mcOpcoes=['',''];renderMcBuilder();}}
+    else mcB.style.display='none';
   });
 });
 
-function renderMcBuilder() {
-  const list = document.getElementById('optionsList');
-  list.innerHTML = mcOpcoes.map((op,i)=>`
+function renderMcBuilder(){
+  document.getElementById('optionsList').innerHTML=mcOpcoes.map((op,i)=>`
     <div class="option-row">
       <span style="font-size:12px;font-weight:600;color:var(--primary);min-width:20px;">${i+1}.</span>
       <input type="text" value="${op}" placeholder="Opção ${i+1}..." oninput="mcOpcoes[${i}]=this.value">
@@ -1087,73 +1240,129 @@ function renderMcBuilder() {
   `).join('');
 }
 
-document.getElementById('btnAddOption').addEventListener('click', ()=>{
-  mcOpcoes.push(''); renderMcBuilder();
-});
-window.removeOption = i => { mcOpcoes.splice(i,1); renderMcBuilder(); };
+document.getElementById('btnAddOption').addEventListener('click',()=>{mcOpcoes.push('');renderMcBuilder();});
+window.removeOption=i=>{mcOpcoes.splice(i,1);renderMcBuilder();};
 
-document.getElementById('btnAdicionarPergunta').addEventListener('click', ()=>{
-  if (usuarioLogado?.role !== 'MASTER') return toast('Apenas MASTER pode gerenciar perguntas.','danger');
-  const text = document.getElementById('novaPergunta').value.trim();
-  if (!text) return toast('Digite a pergunta antes de adicionar.','danger');
-  const perg = { id: 'q'+Date.now(), text, tipo: novaPergTipo };
-  if (novaPergTipo==='multipla') {
-    const opcoesFiltradas = mcOpcoes.filter(o=>o.trim());
-    if (opcoesFiltradas.length<2) return toast('Adicione pelo menos 2 opções de resposta.','danger');
-    perg.selecao = document.getElementById('mcTipoSelecao').value;
-    perg.opcoes = opcoesFiltradas;
-    mcOpcoes = ['',''];
-    renderMcBuilder();
+document.getElementById('btnAdicionarPergunta').addEventListener('click',()=>{
+  if(usuarioLogado?.role!=='MASTER')return toast('Apenas MASTER pode gerenciar perguntas.','danger');
+  const text=document.getElementById('novaPergunta').value.trim();
+  if(!text)return toast('Digite a pergunta antes de adicionar.','danger');
+  const perg={id:'q'+Date.now(),text,tipo:novaPergTipo};
+  if(novaPergTipo==='multipla'){
+    const opcoesFiltradas=mcOpcoes.filter(o=>o.trim());
+    if(opcoesFiltradas.length<2)return toast('Adicione pelo menos 2 opções de resposta.','danger');
+    perg.selecao=document.getElementById('mcTipoSelecao').value;
+    perg.opcoes=opcoesFiltradas;
+    mcOpcoes=['',''];renderMcBuilder();
   }
   perguntas.push(perg);
-  document.getElementById('novaPergunta').value = '';
-  renderPerguntas();
-  toast('Pergunta adicionada!','success');
+  document.getElementById('novaPergunta').value='';
+  renderPerguntas(); toast('Pergunta adicionada!','success');
 });
 
-function renderPerguntas() {
-  const el = document.getElementById('listaPerguntas');
-  if (!perguntas.length) {
-    el.innerHTML = '<div class="empty"><i class="ti ti-list-search"></i><p>Nenhuma pergunta cadastrada.</p></div>';
-    return;
-  }
-  el.innerHTML = perguntas.map((p,i)=>`
+function renderPerguntas(){
+  const el=document.getElementById('listaPerguntas');
+  if(!perguntas.length){el.innerHTML='<div class="empty"><i class="ti ti-list-search"></i><p>Nenhuma pergunta cadastrada.</p></div>';return;}
+  el.innerHTML=perguntas.map((p,i)=>`
     <div class="perg-admin-card">
       <div class="perg-admin-header">
         <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
           <span style="font-size:12px;font-weight:600;color:var(--primary);background:var(--primary-light);padding:2px 8px;border-radius:20px;">Q${i+1}</span>
-          <span class="question-type-badge type-${p.tipo}">${p.tipo==='aberta'?'Aberta':p.tipo==='multipla'?'Múltipla':'Escala 1–10'}</span>
+          <span class="question-type-badge type-${p.tipo}">${tipoLabel(p.tipo)}</span>
         </div>
         <div class="perg-admin-info" style="margin-left:10px;">
           <div class="perg-admin-text">${p.text}</div>
           ${p.tipo==='multipla'?`<div class="perg-admin-sub">${p.selecao==='checkbox'?'Múltiplas respostas':'Única resposta'} — ${p.opcoes.length} opções: ${p.opcoes.join(', ')}</div>`:''}
           ${p.tipo==='escala'?`<div class="perg-admin-sub">Escala numérica de 1 a 10</div>`:''}
         </div>
-        ${usuarioLogado?.role==='MASTER'?`<button class="btn btn-danger btn-sm" onclick="excluirPergunta('${p.id}')"><i class="ti ti-trash"></i></button>`:''}
+        ${usuarioLogado?.role==='MASTER'?`<div class="perg-actions">
+          <button class="btn btn-outline-primary btn-sm" onclick="abrirEditarPergunta('${p.id}')"><i class="ti ti-edit"></i> Editar</button>
+          <button class="btn btn-danger btn-sm" onclick="excluirPergunta('${p.id}')"><i class="ti ti-trash"></i></button>
+        </div>`:''}
       </div>
     </div>
   `).join('');
 }
 
-window.excluirPergunta = id => {
-  if (!confirm('Excluir esta pergunta?')) return;
-  perguntas = perguntas.filter(p=>p.id!==id);
-  renderPerguntas();
-  toast('Pergunta removida.','success');
+window.excluirPergunta=id=>{
+  if(!confirm('Excluir esta pergunta?'))return;
+  perguntas=perguntas.filter(p=>p.id!==id);
+  renderPerguntas(); toast('Pergunta removida.','success');
 };
 
+// ===== EDITAR PERGUNTA (MODAL) =====
+window.abrirEditarPergunta=id=>{
+  const p=perguntas.find(x=>x.id===id);
+  if(!p)return;
+  editPergId=id;
+  editPergTipo=p.tipo;
+  editMcOpcoes=p.tipo==='multipla'?[...p.opcoes]:['',''];
+  document.getElementById('editPergText').value=p.text;
+
+  // Reset tipo selector
+  document.querySelectorAll('#editTipoSelector .type-btn').forEach(b=>{
+    b.classList.toggle('active',b.dataset.type===p.tipo);
+  });
+  const mcBE=document.getElementById('mcBuilderEdit');
+  if(p.tipo==='multipla'){
+    mcBE.style.display='block';
+    document.getElementById('mcTipoSelecaoEdit').value=p.selecao||'radio';
+    renderMcBuilderEdit();
+  } else mcBE.style.display='none';
+
+  document.getElementById('modalEditPerg').classList.remove('hidden');
+};
+
+window.fecharModal=()=>{document.getElementById('modalEditPerg').classList.add('hidden');};
+
+document.querySelectorAll('#editTipoSelector .type-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('#editTipoSelector .type-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    editPergTipo=btn.dataset.type;
+    const mcBE=document.getElementById('mcBuilderEdit');
+    if(editPergTipo==='multipla'){mcBE.style.display='block';if(!editMcOpcoes.length){editMcOpcoes=['',''];}renderMcBuilderEdit();}
+    else mcBE.style.display='none';
+  });
+});
+
+function renderMcBuilderEdit(){
+  document.getElementById('optionsListEdit').innerHTML=editMcOpcoes.map((op,i)=>`
+    <div class="option-row">
+      <span style="font-size:12px;font-weight:600;color:var(--primary);min-width:20px;">${i+1}.</span>
+      <input type="text" value="${op}" placeholder="Opção ${i+1}..." oninput="editMcOpcoes[${i}]=this.value">
+      ${editMcOpcoes.length>2?`<button class="btn btn-outline-danger btn-sm" onclick="removeOptionEdit(${i})"><i class="ti ti-x"></i></button>`:''}
+    </div>
+  `).join('');
+}
+
+document.getElementById('btnAddOptionEdit').addEventListener('click',()=>{editMcOpcoes.push('');renderMcBuilderEdit();});
+window.removeOptionEdit=i=>{editMcOpcoes.splice(i,1);renderMcBuilderEdit();};
+
+document.getElementById('btnSalvarEdicao').addEventListener('click',()=>{
+  const text=document.getElementById('editPergText').value.trim();
+  if(!text)return toast('Digite o texto da pergunta.','danger');
+  const idx=perguntas.findIndex(p=>p.id===editPergId);
+  if(idx===-1)return;
+  const perg={id:editPergId,text,tipo:editPergTipo};
+  if(editPergTipo==='multipla'){
+    const opcoesFiltradas=editMcOpcoes.filter(o=>o.trim());
+    if(opcoesFiltradas.length<2)return toast('Adicione pelo menos 2 opções de resposta.','danger');
+    perg.selecao=document.getElementById('mcTipoSelecaoEdit').value;
+    perg.opcoes=opcoesFiltradas;
+  }
+  perguntas[idx]=perg;
+  fecharModal(); renderPerguntas();
+  toast('Pergunta atualizada!','success');
+});
+
 // ===== USUÁRIOS =====
-function renderUsuarios() {
-  const tbody = document.getElementById('usersTbody');
-  if (!localUsers.length) { tbody.innerHTML='<tr><td colspan="3" style="text-align:center;color:var(--text-muted);padding:24px;">Nenhum usuário.</td></tr>'; return; }
-  tbody.innerHTML = localUsers.map(u=>`
+function renderUsuarios(){
+  const tbody=document.getElementById('usersTbody');
+  if(!localUsers.length){tbody.innerHTML='<tr><td colspan="3" style="text-align:center;color:var(--text-muted);padding:24px;">Nenhum usuário.</td></tr>';return;}
+  tbody.innerHTML=localUsers.map(u=>`
     <tr>
-      <td>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div class="user-avatar" style="width:30px;height:30px;font-size:11px;">${u.username[0].toUpperCase()}</div>
-          <span style="font-weight:500;">${u.username}</span>
-        </div>
-      </td>
+      <td><div style="display:flex;align-items:center;gap:10px;"><div class="user-avatar" style="width:30px;height:30px;font-size:11px;">${u.username[0].toUpperCase()}</div><span style="font-weight:500;">${u.username}</span></div></td>
       <td><span class="role-badge role-${u.role}">${u.role==='MASTER'?'Master':u.role==='OPERADORES'?'Operador':'Usuário'}</span></td>
       <td>${usuarioLogado?.role==='MASTER'&&usuarioLogado.username!==u.username
         ?`<button class="btn btn-danger btn-sm" onclick="excluirUsuario('${u.username}')"><i class="ti ti-trash"></i> Remover</button>`
@@ -1162,96 +1371,265 @@ function renderUsuarios() {
   `).join('');
 }
 
-document.getElementById('btnCriarUsuario').addEventListener('click', ()=>{
-  if (usuarioLogado?.role!=='MASTER') return toast('Apenas MASTER pode criar usuários.','danger');
-  const username=document.getElementById('novoUser').value.trim(), password=document.getElementById('novoPass').value, role=document.getElementById('novoRole').value;
-  if (!username||!password) return toast('Preencha usuário e senha.','danger');
-  if (localUsers.some(u=>u.username===username)) return toast('Usuário já existe.','danger');
+document.getElementById('btnCriarUsuario').addEventListener('click',()=>{
+  if(usuarioLogado?.role!=='MASTER')return toast('Apenas MASTER pode criar usuários.','danger');
+  const username=document.getElementById('novoUser').value.trim(),password=document.getElementById('novoPass').value,role=document.getElementById('novoRole').value;
+  if(!username||!password)return toast('Preencha usuário e senha.','danger');
+  if(localUsers.some(u=>u.username===username))return toast('Usuário já existe.','danger');
   localUsers.push({username,password,role});
   document.getElementById('novoUser').value=''; document.getElementById('novoPass').value='';
   renderUsuarios(); toast('Usuário criado!','success');
 });
 
-window.excluirUsuario = username => {
-  if (!confirm(`Remover "${username}"?`)) return;
-  localUsers = localUsers.filter(u=>u.username!==username);
+window.excluirUsuario=username=>{
+  if(!confirm(`Remover "${username}"?`))return;
+  localUsers=localUsers.filter(u=>u.username!==username);
   renderUsuarios(); toast('Usuário removido.','success');
 };
 
+// ===== CORES GRÁFICOS =====
+const CHART_COLORS = ['#1a56db','#057a55','#d97706','#c81e1e','#7c3aed','#0e7490','#b45309','#be185d','#065f46','#1e3a5f'];
+const CHART_COLORS_LIGHT = ['#e8f0fe','#def7ec','#fdf6b2','#fde8e8','#ede9fe','#cffafe','#fef3c7','#fce7f3','#d1fae5','#dbeafe'];
+
+function destroyChart(id){if(chartInstances[id]){chartInstances[id].destroy();delete chartInstances[id];}}
+
+// ===== CHART TABS =====
+document.querySelectorAll('.chart-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.chart-tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.chart-panel').forEach(p=>p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('panel-'+tab.dataset.tab).classList.add('active');
+    renderChartByTab(tab.dataset.tab);
+  });
+});
+
+function renderChartByTab(tab){
+  if(tab==='barras')renderGraficoBarras();
+  else if(tab==='motivos')renderGraficoPizza();
+  else if(tab==='filiais')renderGraficoFiliais();
+  else if(tab==='timeline')renderGraficoTimeline();
+}
+
 // ===== DASHBOARD =====
-let myChart = null;
-function renderDashboard() {
-  const total = respostas.length, totalQ = perguntas.length;
-  const comConteudo = respostas.reduce((acc,r)=>acc+r.answers.filter(a=>a&&a.length>0).length,0);
-  const taxa = total ? Math.round((comConteudo/(total*Math.max(totalQ,1)))*100) : 0;
-  document.getElementById('statsGrid').innerHTML = `
+function renderDashboard(){
+  const total=respostas.length, totalQ=perguntas.length;
+  const comConteudo=respostas.reduce((acc,r)=>acc+r.answers.filter(a=>a&&a.length>0).length,0);
+  const taxa=total?Math.round((comConteudo/(total*Math.max(totalQ,1)))*100):0;
+  const pendentes=colaboradores.filter(c=>!colabTemEntrevista(c.matricula)&&c.matricula).length;
+
+  document.getElementById('statsGrid').innerHTML=`
     <div class="stat-card"><div class="stat-label">Entrevistas realizadas</div><div class="stat-value">${total}</div></div>
     <div class="stat-card"><div class="stat-label">Perguntas ativas</div><div class="stat-value">${totalQ}</div></div>
     <div class="stat-card"><div class="stat-label">Taxa de resposta</div><div class="stat-value">${taxa}%</div>
-      <div class="progress-bar"><div class="progress-fill" style="width:${taxa}%"></div></div>
-    </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${taxa}%"></div></div></div>
+    <div class="stat-card"><div class="stat-label">Entrevistas pendentes</div><div class="stat-value" style="color:${pendentes>0?'#d97706':'var(--success)'};">${pendentes}</div><div class="stat-sub">${pendentes>0?'colaboradores sem entrevista':'todos entrevistados'}</div></div>
   `;
-  const canvas = document.getElementById('graficoRespostas');
-  const empty = document.getElementById('dashboardEmpty');
-  if (!total) { canvas.style.display='none'; empty.style.display='block'; if(myChart){myChart.destroy();myChart=null;} return; }
-  canvas.style.display='block'; empty.style.display='none';
-  if (myChart) myChart.destroy();
-  const data = perguntas.map((_,i)=>respostas.filter(r=>r.answers[i]&&r.answers[i].length>0).length);
-  myChart = new Chart(canvas.getContext('2d'), {
+
+  const empty=document.getElementById('dashboardEmpty');
+  const tabs=document.getElementById('chartTabs');
+  if(!total){empty.style.display='block';tabs.style.display='none';document.querySelectorAll('.chart-panel canvas').forEach(c=>c.style.display='none');}
+  else{empty.style.display='none';tabs.style.display='flex';document.querySelectorAll('.chart-panel canvas').forEach(c=>c.style.display='block');}
+
+  renderGraficoBarras();
+}
+
+function renderGraficoBarras(){
+  destroyChart('barras');
+  if(!respostas.length)return;
+  const canvas=document.getElementById('graficoBarras');
+  if(!canvas)return;
+  const data=perguntas.map((_,i)=>respostas.filter(r=>r.answers[i]&&r.answers[i].length>0).length);
+  chartInstances['barras']=new Chart(canvas.getContext('2d'),{
     type:'bar',
     data:{
-      labels:perguntas.map(p=>p.text.length>40?p.text.substring(0,40)+'…':p.text),
-      datasets:[{label:'Respostas recebidas',data,backgroundColor:branding.primaryColor,borderRadius:6}]
+      labels:perguntas.map(p=>p.text.length>35?p.text.substring(0,35)+'…':p.text),
+      datasets:[{label:'Respostas recebidas',data,backgroundColor:CHART_COLORS[0],borderRadius:6}]
     },
-    options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:1},grid:{color:'#f3f4f6'}},x:{grid:{display:false}}}}
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:1},grid:{color:'#f3f4f6'}},x:{grid:{display:false},ticks:{autoSkip:false,maxRotation:30}}}}
   });
 }
 
-// ===== EXPORTAR ENTREVISTAS =====
-document.getElementById('btnExportarEntrevistas').addEventListener('click', exportarEntrevistas);
-
-function exportarEntrevistas() {
-  if (!respostas.length) return toast('Nenhuma entrevista preenchida ainda.','danger');
-  const headers = ['Matrícula','Nome','Data Admissão','Local','Turno','Filial','Gestor','Gerente','Data Desligamento','Motivo Desligamento',...perguntas.map((_,i)=>`Q${i+1}: ${perguntas[i].text.substring(0,40)}`), 'Preenchido por','Data/Hora'];
-  const rows = [headers];
-  respostas.forEach(r=>{
-    rows.push([
-      r.matricula||'',r.nome||'',r.admissao||'',r.local||'',r.turno||'',r.filial||'',r.gestor||'',r.gerente||'',
-      r.dataDesligamento||'',r.motivo||'',
-      ...r.answers,
-      r.author, new Date(r.createdAt).toLocaleString('pt-BR')
-    ]);
+function renderGraficoPizza(){
+  destroyChart('pizza');
+  if(!respostas.length)return;
+  const canvas=document.getElementById('graficoPizza');
+  if(!canvas)return;
+  const motivos={};
+  respostas.forEach(r=>{const m=r.motivo||'Não informado';motivos[m]=(motivos[m]||0)+1;});
+  const labels=Object.keys(motivos), values=Object.values(motivos);
+  chartInstances['pizza']=new Chart(canvas.getContext('2d'),{
+    type:'doughnut',
+    data:{labels,datasets:[{data:values,backgroundColor:CHART_COLORS.slice(0,labels.length),borderWidth:2,borderColor:'#fff'}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{display:false}}}
   });
-  downloadXLSX(rows, 'Entrevistas', 'entrevistas_desligamento.xlsx');
+  const total=values.reduce((a,b)=>a+b,0);
+  document.getElementById('legendaMotivos').innerHTML=labels.map((l,i)=>`
+    <div style="display:flex;align-items:center;gap:8px;">
+      <span style="width:12px;height:12px;border-radius:3px;background:${CHART_COLORS[i]};flex-shrink:0;"></span>
+      <span style="font-size:13px;color:#374151;flex:1;">${l}</span>
+      <span style="font-size:13px;font-weight:600;color:#111;">${values[i]} <span style="font-weight:400;color:#6b7280;">(${Math.round(values[i]/total*100)}%)</span></span>
+    </div>
+  `).join('');
+}
+
+function renderGraficoFiliais(){
+  destroyChart('filiais');
+  if(!respostas.length)return;
+  const canvas=document.getElementById('graficoFiliais');
+  if(!canvas)return;
+  const filiais={};
+  respostas.forEach(r=>{const f=r.filial||'Não informado';filiais[f]=(filiais[f]||0)+1;});
+  const sorted=Object.entries(filiais).sort((a,b)=>b[1]-a[1]);
+  const labels=sorted.map(e=>e[0]), values=sorted.map(e=>e[1]);
+  const wrapperH=Math.max(labels.length*50+80,280);
+  canvas.parentElement.style.height=wrapperH+'px';
+  chartInstances['filiais']=new Chart(canvas.getContext('2d'),{
+    type:'bar',
+    data:{
+      labels,
+      datasets:[{label:'Entrevistas',data:values,backgroundColor:CHART_COLORS.slice(0,labels.length),borderRadius:6,borderSkipped:false}]
+    },
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,ticks:{stepSize:1},grid:{color:'#f3f4f6'}},y:{grid:{display:false}}}}
+  });
+}
+
+function renderGraficoTimeline(){
+  destroyChart('timeline');
+  if(!respostas.length)return;
+  const canvas=document.getElementById('graficoTimeline');
+  if(!canvas)return;
+  const byMonth={};
+  respostas.forEach(r=>{
+    const d=new Date(r.createdAt);
+    const key=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+    byMonth[key]=(byMonth[key]||0)+1;
+  });
+  const sorted=Object.entries(byMonth).sort((a,b)=>a[0]<b[0]?-1:1);
+  const labels=sorted.map(e=>{const[y,m]=e[0].split('-');return`${m}/${y}`;});
+  const values=sorted.map(e=>e[1]);
+  chartInstances['timeline']=new Chart(canvas.getContext('2d'),{
+    type:'line',
+    data:{
+      labels,
+      datasets:[{label:'Entrevistas realizadas',data:values,borderColor:CHART_COLORS[0],backgroundColor:CHART_COLORS_LIGHT[0],fill:true,tension:0.35,pointBackgroundColor:CHART_COLORS[0],pointRadius:5}]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:1},grid:{color:'#f3f4f6'}},x:{grid:{display:false},ticks:{autoSkip:false,maxRotation:30}}}}
+  });
+}
+
+// ===== PENDENTES =====
+function renderPendentes(){
+  const pendentes=colaboradores.filter(c=>!colabTemEntrevista(c.matricula)&&c.matricula);
+  const realizadas=colaboradores.filter(c=>colabTemEntrevista(c.matricula)&&c.matricula);
+  const total=colaboradores.filter(c=>c.matricula).length;
+  const pct=total?Math.round((realizadas.length/total)*100):0;
+
+  document.getElementById('statsGridPendentes').innerHTML=`
+    <div class="stat-card"><div class="stat-label">Total de colaboradores</div><div class="stat-value">${total}</div></div>
+    <div class="stat-card"><div class="stat-label">Entrevistas realizadas</div><div class="stat-value" style="color:var(--success);">${realizadas.length}</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:var(--success);"></div></div></div>
+    <div class="stat-card"><div class="stat-label">Entrevistas pendentes</div><div class="stat-value" style="color:${pendentes.length>0?'#d97706':'var(--success)'};">${pendentes.length}</div>
+      <div class="progress-bar"><div class="progress-fill ${pendentes.length>0?'progress-fill-warning':''}" style="width:${total?Math.round(pendentes.length/total*100):0}%;"></div></div></div>
+    <div class="stat-card"><div class="stat-label">Taxa de cobertura</div><div class="stat-value">${pct}%</div></div>
+  `;
+
+  // Gráfico rosca pendentes
+  destroyChart('pendentes');
+  const canvas=document.getElementById('graficoPendentes');
+  if(total>0&&canvas){
+    chartInstances['pendentes']=new Chart(canvas.getContext('2d'),{
+      type:'doughnut',
+      data:{
+        labels:['Realizadas','Pendentes'],
+        datasets:[{data:[realizadas.length,pendentes.length],backgroundColor:['#057a55','#d97706'],borderWidth:2,borderColor:'#fff'}]
+      },
+      options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{display:false}}}
+    });
+    document.getElementById('legendaPendentes').innerHTML=`
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="width:12px;height:12px;border-radius:3px;background:#057a55;flex-shrink:0;"></span>
+        <span style="font-size:14px;color:#374151;flex:1;">Realizadas</span>
+        <span style="font-size:14px;font-weight:600;">${realizadas.length} <span style="font-weight:400;color:#6b7280;">(${pct}%)</span></span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="width:12px;height:12px;border-radius:3px;background:#d97706;flex-shrink:0;"></span>
+        <span style="font-size:14px;color:#374151;flex:1;">Pendentes</span>
+        <span style="font-size:14px;font-weight:600;">${pendentes.length} <span style="font-weight:400;color:#6b7280;">(${total?Math.round(pendentes.length/total*100):0}%)</span></span>
+      </div>
+      ${total===0?'<p style="font-size:13px;color:var(--text-muted);">Nenhum colaborador cadastrado.</p>':''}
+    `;
+  }
+
+  // Tabela pendentes
+  renderTabelaPendentes('');
+}
+
+function renderTabelaPendentes(filter){
+  const pendentes=colaboradores.filter(c=>!colabTemEntrevista(c.matricula)&&c.matricula&&(
+    !filter||c.nome.toLowerCase().includes(filter.toLowerCase())||c.matricula.includes(filter)
+  ));
+  const tbody=document.getElementById('pendentesTbody');
+  if(!pendentes.length){
+    tbody.innerHTML=`<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:28px;">${filter?'Nenhum resultado encontrado.':'🎉 Todos os colaboradores já foram entrevistados!'}</td></tr>`;
+    return;
+  }
+  tbody.innerHTML=pendentes.map(c=>`
+    <tr class="pending-row">
+      <td><span style="font-weight:600;color:var(--primary);">${c.matricula}</span></td>
+      <td style="font-weight:500;">${c.nome}</td>
+      <td>${c.cargo||'—'}</td>
+      <td>${c.filial||'—'}</td>
+      <td>${c.gestor||'—'}</td>
+      <td><span class="pending-badge pending-yes"><i class="ti ti-clock"></i> Pendente</span></td>
+    </tr>
+  `).join('');
+}
+
+document.getElementById('searchPendentes').addEventListener('input',e=>renderTabelaPendentes(e.target.value));
+
+document.getElementById('btnExportarPendentes').addEventListener('click',()=>{
+  const pendentes=colaboradores.filter(c=>!colabTemEntrevista(c.matricula)&&c.matricula);
+  if(!pendentes.length)return toast('Nenhuma pendência para exportar.','danger');
+  const rows=[['Matrícula','Nome','Cargo','Filial','Gestor','Gerente','Local','Turno']];
+  pendentes.forEach(c=>rows.push([c.matricula,c.nome,c.cargo||'',c.filial||'',c.gestor||'',c.gerente||'',c.local||'',c.turno||'']));
+  downloadXLSX(rows,'Pendentes','entrevistas_pendentes.xlsx');
+  toast('Excel de pendentes baixado!','success');
+});
+
+// ===== EXPORTAR =====
+document.getElementById('btnExportarEntrevistas').addEventListener('click',exportarEntrevistas);
+function exportarEntrevistas(){
+  if(!respostas.length)return toast('Nenhuma entrevista preenchida ainda.','danger');
+  const headers=['Matrícula','Nome','Cargo','Data Admissão','Local','Turno','Filial','Gestor','Gerente','Data Desligamento','Motivo Desligamento',...perguntas.map((_,i)=>`Q${i+1}: ${perguntas[i].text.substring(0,40)}`),'Preenchido por','Data/Hora'];
+  const rows=[headers];
+  respostas.forEach(r=>rows.push([
+    r.matricula||'',r.nome||'',r.cargo||'',r.admissao||'',r.local||'',r.turno||'',r.filial||'',r.gestor||'',r.gerente||'',
+    r.dataDesligamento||'',r.motivo||'',...r.answers,r.author,new Date(r.createdAt).toLocaleString('pt-BR')
+  ]));
+  downloadXLSX(rows,'Entrevistas','entrevistas_desligamento.xlsx');
   toast('Excel de entrevistas baixado!','success');
 }
 
-// ===== EXCEL DOWNLOAD =====
-function downloadXLSX(rows, sheetName, filename) {
-  const wb = XLSX.utils.book_new();
-  const ws = XLSX.utils.aoa_to_sheet(rows);
-  // Auto-width
-  const colWidths = rows[0].map((_,i)=>({wch:Math.max(...rows.map(r=>(r[i]||'').toString().length),10)}));
-  ws['!cols'] = colWidths;
-  XLSX.utils.book_append_sheet(wb, ws, sheetName);
-  XLSX.writeFile(wb, filename);
+function downloadXLSX(rows,sheetName,filename){
+  const wb=XLSX.utils.book_new();
+  const ws=XLSX.utils.aoa_to_sheet(rows);
+  const colWidths=rows[0].map((_,i)=>({wch:Math.max(...rows.map(r=>(r[i]||'').toString().length),10)}));
+  ws['!cols']=colWidths;
+  XLSX.utils.book_append_sheet(wb,ws,sheetName);
+  XLSX.writeFile(wb,filename);
 }
 
-// ===== PRÉVIA RELATÓRIOS =====
-function renderRelatorios() {
-  const el = document.getElementById('previaEntrevistas');
-  if (!respostas.length) {
-    el.innerHTML = '<div class="empty"><i class="ti ti-inbox"></i><p>Nenhuma entrevista enviada ainda.</p></div>';
-    return;
-  }
-  el.innerHTML = `<div class="table-wrap"><table>
-    <thead><tr>
-      <th>Matrícula</th><th>Nome</th><th>Data Desligamento</th><th>Motivo</th><th>Preenchido por</th><th>Data/Hora</th>
-    </tr></thead>
+function renderRelatorios(){
+  const el=document.getElementById('previaEntrevistas');
+  if(!respostas.length){el.innerHTML='<div class="empty"><i class="ti ti-inbox"></i><p>Nenhuma entrevista enviada ainda.</p></div>';return;}
+  el.innerHTML=`<div class="table-wrap"><table>
+    <thead><tr><th>Matrícula</th><th>Nome</th><th>Cargo</th><th>Data Desligamento</th><th>Motivo</th><th>Preenchido por</th><th>Data/Hora</th></tr></thead>
     <tbody>${respostas.map(r=>`
       <tr>
         <td><b>${r.matricula||'—'}</b></td>
         <td>${r.nome||'—'}</td>
+        <td>${r.cargo||'—'}</td>
         <td>${r.dataDesligamento||'—'}</td>
         <td>${r.motivo||'—'}</td>
         <td>${r.author}</td>
