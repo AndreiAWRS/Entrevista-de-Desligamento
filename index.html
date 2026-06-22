@@ -15,6 +15,7 @@
       --primary: #1a56db;
       --primary-light: #e8f0fe;
       --primary-dark: #1039a8;
+      --primary-rgb: 26,86,219;
       --danger: #c81e1e;
       --danger-light: #fde8e8;
       --success: #057a55;
@@ -31,6 +32,8 @@
       --header-h: 64px;
       --radius: 10px;
       --radius-lg: 14px;
+      --login-bg1: #1a56db;
+      --login-bg2: #1039a8;
     }
 
     body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
@@ -41,7 +44,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, #1a56db 0%, #1039a8 100%);
+      background: linear-gradient(135deg, var(--login-bg1) 0%, var(--login-bg2) 100%);
     }
     .login-box {
       background: #fff;
@@ -49,24 +52,38 @@
       padding: 40px;
       width: 100%;
       max-width: 400px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.18);
     }
-    .login-logo {
-      width: 48px; height: 48px;
+    .login-brand {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 24px;
+    }
+    .login-logo-img {
+      width: 52px; height: 52px;
+      border-radius: 12px;
+      object-fit: contain;
+      background: var(--primary-light);
+      padding: 4px;
+      display: none;
+    }
+    .login-logo-icon {
+      width: 52px; height: 52px;
       background: var(--primary);
       border-radius: 12px;
       display: flex; align-items: center; justify-content: center;
-      margin-bottom: 20px;
+      flex-shrink: 0;
     }
-    .login-logo i { font-size: 24px; color: #fff; }
-    .login-box h1 { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
-    .login-box p { font-size: 14px; color: var(--text-muted); margin-bottom: 28px; }
+    .login-logo-icon i { font-size: 26px; color: #fff; }
+    .login-brand-text h1 { font-size: 18px; font-weight: 600; line-height: 1.3; }
+    .login-brand-text p { font-size: 13px; color: var(--text-muted); }
+
+    .login-box .subtitle { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; }
     .field { margin-bottom: 16px; }
     .field label { display: block; font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 6px; }
     .field-icon { position: relative; }
-    .field-icon i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 16px; color: var(--text-light); }
+    .field-icon i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 16px; color: var(--text-light); pointer-events: none; }
     .field-icon input { padding-left: 38px; }
-    input, textarea, select {
+    input[type=text], input[type=password], input[type=email], textarea, select {
       width: 100%;
       padding: 10px 12px;
       border: 1px solid var(--border);
@@ -78,9 +95,9 @@
       transition: border-color .2s, box-shadow .2s;
       outline: none;
     }
-    input:focus, textarea:focus, select:focus {
+    input[type=text]:focus, input[type=password]:focus, textarea:focus, select:focus {
       border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(26,86,219,0.15);
+      box-shadow: 0 0 0 3px rgba(var(--primary-rgb),.15);
     }
     textarea { resize: vertical; line-height: 1.6; }
     .btn {
@@ -100,6 +117,8 @@
     .btn-danger:hover { background: #9b1c1c; }
     .btn-ghost { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
     .btn-ghost:hover { background: var(--bg); }
+    .btn-outline-danger { background: transparent; color: var(--danger); border: 1px solid var(--danger); }
+    .btn-outline-danger:hover { background: var(--danger-light); }
     .btn-full { width: 100%; justify-content: center; }
     .btn-sm { padding: 6px 12px; font-size: 13px; }
 
@@ -107,7 +126,6 @@
     #appScreen { display: none; min-height: 100vh; flex-direction: column; }
     #appScreen.active { display: flex; }
 
-    /* Header */
     .app-header {
       height: var(--header-h);
       background: #fff;
@@ -116,32 +134,36 @@
       padding: 0 24px;
       position: sticky; top: 0; z-index: 100;
     }
-    .app-header .logo { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 16px; margin-right: 32px; }
-    .app-header .logo-icon { width: 32px; height: 32px; background: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
-    .app-header .logo-icon i { font-size: 16px; color: #fff; }
-    .header-user { margin-left: auto; display: flex; align-items: center; gap: 12px; }
-    .user-badge {
-      display: flex; align-items: center; gap: 8px;
-      font-size: 13px; color: var(--text-muted);
+    .header-logo { display: flex; align-items: center; gap: 10px; margin-right: 32px; text-decoration: none; }
+    .header-logo-img {
+      height: 36px; max-width: 120px;
+      object-fit: contain;
+      display: none;
     }
+    .header-logo-icon {
+      width: 32px; height: 32px;
+      background: var(--primary);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .header-logo-icon i { font-size: 16px; color: #fff; }
+    .header-logo-text { font-weight: 600; font-size: 15px; color: var(--text); }
+
+    .header-user { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+    .user-badge { display: flex; align-items: center; gap: 8px; font-size: 13px; }
     .user-avatar {
       width: 32px; height: 32px; border-radius: 50%;
       background: var(--primary-light);
       display: flex; align-items: center; justify-content: center;
       font-size: 12px; font-weight: 600; color: var(--primary);
     }
-    .role-badge {
-      font-size: 11px; font-weight: 500;
-      padding: 2px 8px; border-radius: 20px;
-    }
+    .role-badge { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 20px; }
     .role-MASTER { background: #ede9fe; color: #5b21b6; }
     .role-OPERADORES { background: #dbeafe; color: #1e40af; }
     .role-USUARIOS { background: #d1fae5; color: #065f46; }
 
-    /* Body */
     .app-body { display: flex; flex: 1; }
 
-    /* Sidebar */
     .sidebar {
       width: var(--sidebar-w);
       background: #fff;
@@ -165,7 +187,6 @@
     .sidebar-link:hover { background: var(--bg); color: var(--text); }
     .sidebar-link.active { background: var(--primary-light); color: var(--primary); font-weight: 500; }
 
-    /* Content */
     .content { flex: 1; padding: 28px; overflow-y: auto; }
     .page { display: none; }
     .page.active { display: block; }
@@ -174,7 +195,6 @@
     .page-header h2 { font-size: 20px; font-weight: 600; }
     .page-header p { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
 
-    /* Cards */
     .card {
       background: #fff;
       border: 1px solid var(--border);
@@ -185,7 +205,6 @@
     .card-title { font-size: 15px; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
     .card-title i { font-size: 18px; color: var(--primary); }
 
-    /* Table */
     table { width: 100%; border-collapse: collapse; font-size: 14px; }
     th { text-align: left; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--text-muted); padding: 8px 12px; border-bottom: 1px solid var(--border); }
     td { padding: 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
@@ -193,7 +212,6 @@
     tr:hover td { background: #f9fafb; }
     .table-wrap { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
 
-    /* Form questions */
     .question-card {
       background: #fff;
       border: 1px solid var(--border);
@@ -201,14 +219,81 @@
       padding: 16px 20px;
       margin-bottom: 12px;
     }
-    .question-card .q-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
     .question-num { font-size: 11px; font-weight: 600; color: var(--primary); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 4px; }
     .question-text { font-size: 14px; color: var(--text); }
     .question-textarea { margin-top: 12px; }
 
-    /* Alert / toast */
+    /* Formulário banner com logo */
+    .form-banner {
+      display: none;
+      align-items: center;
+      gap: 16px;
+      background: var(--primary-light);
+      border: 1px solid rgba(var(--primary-rgb),.2);
+      border-radius: var(--radius-lg);
+      padding: 20px 24px;
+      margin-bottom: 24px;
+    }
+    .form-banner.visible { display: flex; }
+    .form-banner-logo {
+      height: 52px; max-width: 140px;
+      object-fit: contain;
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+    .form-banner-text h3 { font-size: 15px; font-weight: 600; color: var(--primary); }
+    .form-banner-text p { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+
+    /* Upload de logo */
+    .logo-upload-area {
+      border: 2px dashed var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+      position: relative;
+    }
+    .logo-upload-area:hover, .logo-upload-area.drag { border-color: var(--primary); background: var(--primary-light); }
+    .logo-upload-area input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .logo-upload-area i { font-size: 32px; color: var(--text-light); margin-bottom: 8px; }
+    .logo-upload-area p { font-size: 14px; color: var(--text-muted); }
+    .logo-upload-area small { font-size: 12px; color: var(--text-light); }
+
+    .logo-preview-wrap {
+      display: none;
+      align-items: center;
+      gap: 16px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+    .logo-preview-wrap.visible { display: flex; }
+    .logo-preview-wrap img { height: 56px; max-width: 180px; object-fit: contain; border-radius: 6px; background: #fff; padding: 4px; border: 1px solid var(--border); }
+    .logo-preview-wrap .logo-info { flex: 1; }
+    .logo-preview-wrap .logo-name { font-size: 14px; font-weight: 500; }
+    .logo-preview-wrap .logo-status { font-size: 12px; color: var(--success); margin-top: 2px; }
+
+    /* Paleta de cores extraídas */
+    .palette-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+    .palette-swatch {
+      width: 36px; height: 36px; border-radius: 8px;
+      border: 2px solid transparent;
+      cursor: pointer; transition: transform .15s, border-color .15s;
+      position: relative;
+    }
+    .palette-swatch:hover { transform: scale(1.15); }
+    .palette-swatch.selected { border-color: var(--text); transform: scale(1.1); }
+    .palette-swatch[title]::after {
+      content: attr(title);
+      position: absolute; bottom: -22px; left: 50%; transform: translateX(-50%);
+      font-size: 10px; color: var(--text-muted); white-space: nowrap; pointer-events: none;
+    }
+
+    /* Toast */
+    #toastContainer { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
     .toast {
-      position: fixed; bottom: 24px; right: 24px; z-index: 9999;
       background: var(--text); color: #fff;
       padding: 12px 18px; border-radius: var(--radius);
       font-size: 14px; font-weight: 500;
@@ -221,30 +306,28 @@
     .toast.danger { background: var(--danger); }
     @keyframes slideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-    /* Stats */
     .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 24px; }
     .stat-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 20px; }
     .stat-label { font-size: 12px; color: var(--text-muted); font-weight: 500; margin-bottom: 6px; }
     .stat-value { font-size: 28px; font-weight: 600; color: var(--text); }
 
-    /* Empty state */
     .empty { text-align: center; padding: 40px 20px; color: var(--text-muted); }
-    .empty i { font-size: 40px; margin-bottom: 12px; opacity: .4; }
+    .empty i { font-size: 40px; margin-bottom: 12px; opacity: .4; display: block; }
     .empty p { font-size: 14px; }
 
-    /* Form grid */
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } .sidebar { display: none; } }
-
     .field-row { margin-bottom: 14px; }
     .field-row label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 5px; }
 
-    /* Progress */
     .progress-bar { height: 6px; background: var(--border); border-radius: 99px; overflow: hidden; margin-top: 8px; }
     .progress-fill { height: 100%; background: var(--primary); border-radius: 99px; transition: width .4s; }
 
-    /* Divider */
     .divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+
+    .color-section-label { font-size: 13px; font-weight: 500; margin-bottom: 8px; color: var(--text-muted); }
+
+    canvas { display: none; }
   </style>
 </head>
 <body>
@@ -252,9 +335,15 @@
 <!-- LOGIN -->
 <div id="loginScreen">
   <div class="login-box">
-    <div class="login-logo"><i class="ti ti-clipboard-list"></i></div>
-    <h1>Entrevista de Desligamento</h1>
-    <p>Acesse com suas credenciais para continuar</p>
+    <div class="login-brand">
+      <img id="loginLogoImg" class="login-logo-img" src="" alt="Logo">
+      <div class="login-logo-icon" id="loginLogoIcon"><i class="ti ti-clipboard-list"></i></div>
+      <div class="login-brand-text">
+        <h1 id="loginCompanyName">Entrevista de Desligamento</h1>
+        <p id="loginCompanySub">Acesse com suas credenciais</p>
+      </div>
+    </div>
+    <p class="subtitle">Preencha os campos abaixo para continuar.</p>
     <div class="field">
       <label>Usuário</label>
       <div class="field-icon">
@@ -277,11 +366,11 @@
 
 <!-- APP -->
 <div id="appScreen">
-  <!-- Header -->
   <header class="app-header">
-    <div class="logo">
-      <div class="logo-icon"><i class="ti ti-clipboard-list"></i></div>
-      Desligamento RH
+    <div class="header-logo">
+      <img id="headerLogoImg" class="header-logo-img" src="" alt="Logo">
+      <div class="header-logo-icon" id="headerLogoIcon"><i class="ti ti-clipboard-list"></i></div>
+      <span class="header-logo-text" id="headerLogoText">Desligamento RH</span>
     </div>
     <div class="header-user">
       <div class="user-badge">
@@ -291,39 +380,28 @@
           <span class="role-badge" id="userRole"></span>
         </div>
       </div>
-      <button class="btn btn-ghost btn-sm" id="btnLogout">
-        <i class="ti ti-logout"></i> Sair
-      </button>
+      <button class="btn btn-ghost btn-sm" id="btnLogout"><i class="ti ti-logout"></i> Sair</button>
     </div>
   </header>
 
   <div class="app-body">
-    <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
-      <div class="sidebar-section" id="sidebarFormSection">
+      <div class="sidebar-section">
         <div class="sidebar-title">Formulário</div>
-        <div class="sidebar-link" data-page="formulario">
-          <i class="ti ti-file-text"></i> Preencher entrevista
-        </div>
+        <div class="sidebar-link" data-page="formulario"><i class="ti ti-file-text"></i> Preencher entrevista</div>
       </div>
       <div class="sidebar-section" id="sidebarAdminSection" style="display:none;">
         <div class="sidebar-title">Administração</div>
-        <div class="sidebar-link" data-page="usuarios">
-          <i class="ti ti-users"></i> Usuários
-        </div>
-        <div class="sidebar-link" data-page="perguntas">
-          <i class="ti ti-list"></i> Perguntas
-        </div>
+        <div class="sidebar-link" data-page="usuarios"><i class="ti ti-users"></i> Usuários</div>
+        <div class="sidebar-link" data-page="perguntas"><i class="ti ti-list"></i> Perguntas</div>
+        <div class="sidebar-link" data-page="configuracoes"><i class="ti ti-settings"></i> Configurações</div>
       </div>
       <div class="sidebar-section" id="sidebarDashSection" style="display:none;">
         <div class="sidebar-title">Relatórios</div>
-        <div class="sidebar-link" data-page="dashboard">
-          <i class="ti ti-chart-bar"></i> Dashboard
-        </div>
+        <div class="sidebar-link" data-page="dashboard"><i class="ti ti-chart-bar"></i> Dashboard</div>
       </div>
     </aside>
 
-    <!-- Content -->
     <main class="content">
 
       <!-- FORMULÁRIO -->
@@ -332,9 +410,14 @@
           <h2>Entrevista de Desligamento</h2>
           <p>Responda com sinceridade — suas respostas são confidenciais e nos ajudam a melhorar.</p>
         </div>
-        <div id="formBody">
-          <!-- Perguntas renderizadas aqui -->
+        <div class="form-banner" id="formBanner">
+          <img class="form-banner-logo" id="formBannerLogo" src="" alt="Logo da empresa">
+          <div class="form-banner-text">
+            <h3 id="formBannerName">Empresa</h3>
+            <p>Formulário de entrevista de desligamento</p>
+          </div>
         </div>
+        <div id="formBody"></div>
         <button class="btn btn-success" id="btnSalvarRespostas">
           <i class="ti ti-send"></i> Enviar respostas
         </button>
@@ -344,15 +427,13 @@
       <div class="page" id="page-perguntas">
         <div class="page-header">
           <h2>Gerenciar perguntas</h2>
-          <p>Adicione, visualize ou remova perguntas do formulário de entrevista.</p>
+          <p>Adicione, visualize ou remova perguntas do formulário.</p>
         </div>
         <div class="card">
           <div class="card-title"><i class="ti ti-circle-plus"></i> Nova pergunta</div>
           <div style="display:flex; gap:10px;">
             <input type="text" id="novaPergunta" placeholder="Digite a pergunta...">
-            <button class="btn btn-primary" id="btnAdicionarPergunta" style="white-space:nowrap;">
-              <i class="ti ti-plus"></i> Adicionar
-            </button>
+            <button class="btn btn-primary" id="btnAdicionarPergunta" style="white-space:nowrap;"><i class="ti ti-plus"></i> Adicionar</button>
           </div>
         </div>
         <div class="card">
@@ -370,16 +451,9 @@
         <div class="card">
           <div class="card-title"><i class="ti ti-user-plus"></i> Criar usuário</div>
           <div class="form-grid">
-            <div class="field-row">
-              <label>Nome de usuário</label>
-              <input type="text" id="novoUser" placeholder="ex: joao.silva">
-            </div>
-            <div class="field-row">
-              <label>Senha</label>
-              <input type="password" id="novoPass" placeholder="Senha de acesso">
-            </div>
-            <div class="field-row">
-              <label>Nível de acesso</label>
+            <div class="field-row"><label>Nome de usuário</label><input type="text" id="novoUser" placeholder="ex: joao.silva"></div>
+            <div class="field-row"><label>Senha</label><input type="password" id="novoPass" placeholder="Senha de acesso"></div>
+            <div class="field-row"><label>Nível de acesso</label>
               <select id="novoRole">
                 <option value="USUARIOS">Usuário — só preenche entrevista</option>
                 <option value="OPERADORES">Operador — entrevista + dashboard</option>
@@ -387,17 +461,78 @@
               </select>
             </div>
           </div>
-          <button class="btn btn-primary" id="btnCriarUsuario">
-            <i class="ti ti-user-plus"></i> Criar usuário
-          </button>
+          <button class="btn btn-primary" id="btnCriarUsuario"><i class="ti ti-user-plus"></i> Criar usuário</button>
         </div>
         <div class="card">
           <div class="card-title"><i class="ti ti-users"></i> Usuários cadastrados</div>
           <div class="table-wrap">
-            <table>
-              <thead><tr><th>Usuário</th><th>Nível</th><th>Ações</th></tr></thead>
-              <tbody id="usersTbody"></tbody>
-            </table>
+            <table><thead><tr><th>Usuário</th><th>Nível</th><th>Ações</th></tr></thead>
+            <tbody id="usersTbody"></tbody></table>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONFIGURAÇÕES -->
+      <div class="page" id="page-configuracoes">
+        <div class="page-header">
+          <h2>Configurações da empresa</h2>
+          <p>Personalize a identidade visual do sistema com a logomarca da empresa.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><i class="ti ti-building"></i> Nome da empresa</div>
+          <div style="display:flex; gap:10px; align-items:flex-end;">
+            <div style="flex:1;" class="field-row">
+              <label>Nome exibido no cabeçalho e formulário</label>
+              <input type="text" id="nomeEmpresa" placeholder="Ex: RH Inovação Ltda.">
+            </div>
+            <button class="btn btn-primary btn-sm" id="btnSalvarNome" style="margin-bottom:14px;"><i class="ti ti-check"></i> Salvar</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><i class="ti ti-photo"></i> Logomarca</div>
+
+          <div class="logo-preview-wrap" id="logoPreviewWrap">
+            <img id="logoPreviewImg" src="" alt="Logo">
+            <div class="logo-info">
+              <div class="logo-name" id="logoFileName">—</div>
+              <div class="logo-status"><i class="ti ti-circle-check" style="font-size:13px;"></i> Logomarca aplicada</div>
+            </div>
+            <button class="btn btn-outline-danger btn-sm" id="btnRemoverLogo"><i class="ti ti-trash"></i> Remover</button>
+          </div>
+
+          <div class="logo-upload-area" id="logoUploadArea">
+            <input type="file" id="logoFileInput" accept="image/png,image/jpeg,image/svg+xml,image/webp">
+            <i class="ti ti-cloud-upload"></i>
+            <p>Clique ou arraste a imagem aqui</p>
+            <small>PNG, JPG, SVG ou WEBP — recomendado fundo transparente</small>
+          </div>
+        </div>
+
+        <div class="card" id="paletteCard" style="display:none;">
+          <div class="card-title"><i class="ti ti-palette"></i> Cores extraídas da logomarca</div>
+          <p style="font-size:14px; color:var(--text-muted); margin-bottom:16px;">Selecione a cor principal que será aplicada em todo o sistema. As cores foram detectadas automaticamente a partir da sua logo.</p>
+          <div class="color-section-label">Cor principal do tema</div>
+          <div class="palette-row" id="paletteRow"></div>
+          <div style="margin-top:28px; display:flex; align-items:center; gap:12px;">
+            <button class="btn btn-primary" id="btnAplicarCor"><i class="ti ti-brush"></i> Aplicar cor selecionada</button>
+            <button class="btn btn-ghost btn-sm" id="btnResetarCor"><i class="ti ti-refresh"></i> Restaurar padrão</button>
+          </div>
+          <canvas id="colorCanvas" style="display:none; width:1px; height:1px;"></canvas>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><i class="ti ti-eye"></i> Pré-visualização</div>
+          <div style="background:var(--bg); border-radius:var(--radius); padding:20px;">
+            <div style="background:#fff; border-radius:var(--radius); padding:16px; border:1px solid var(--border); display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+              <img id="previewLogoImg" src="" alt="" style="height:32px; max-width:100px; object-fit:contain; display:none; border-radius:4px;">
+              <div id="previewLogoIcon" style="width:32px;height:32px;background:var(--primary);border-radius:8px;display:flex;align-items:center;justify-content:center;"><i class="ti ti-clipboard-list" style="color:#fff;font-size:16px;"></i></div>
+              <span id="previewCompanyName" style="font-weight:600; font-size:14px;">Desligamento RH</span>
+            </div>
+            <div style="background:var(--primary); color:#fff; border-radius:var(--radius); padding:12px 16px; font-size:13px; font-weight:500; display:inline-flex; align-items:center; gap:6px;">
+              <i class="ti ti-send"></i> Botão principal na cor selecionada
+            </div>
           </div>
         </div>
       </div>
@@ -411,7 +546,8 @@
         <div class="stats-grid" id="statsGrid"></div>
         <div class="card">
           <div class="card-title"><i class="ti ti-chart-bar"></i> Respostas por pergunta</div>
-          <canvas id="graficoRespostas" style="max-height:380px;"></canvas>
+          <canvas id="graficoRespostas" style="max-height:380px; display:block;"></canvas>
+          <div id="dashboardEmpty" class="empty" style="display:none;"><i class="ti ti-inbox"></i><p>Nenhuma resposta enviada ainda.</p></div>
         </div>
       </div>
 
@@ -419,11 +555,10 @@
   </div>
 </div>
 
-<!-- TOAST CONTAINER -->
 <div id="toastContainer"></div>
 
 <script>
-// ===== DADOS =====
+// ===== ESTADO =====
 let usuarioLogado = null;
 let perguntas = [
   { id: 'q1', text: 'Como você avalia sua experiência geral na empresa?' },
@@ -432,18 +567,245 @@ let perguntas = [
   { id: 'q4', text: 'Qual foi o principal motivo da sua saída?' },
 ];
 let respostas = [];
-let localUsers = [
-  { username: 'andrei', password: '#Andrei1996', role: 'MASTER' }
-];
+let localUsers = [{ username: 'andrei', password: '#Andrei1996', role: 'MASTER' }];
+
+let branding = {
+  logoDataUrl: null,
+  logoFileName: null,
+  companyName: '',
+  primaryColor: '#1a56db',
+};
+
+let selectedSwatchColor = null;
 
 // ===== TOAST =====
 function toast(msg, type = '') {
   const el = document.createElement('div');
   el.className = 'toast' + (type ? ' ' + type : '');
-  el.innerHTML = `<i class="ti ti-${type === 'success' ? 'check' : type === 'danger' ? 'alert-circle' : 'info-circle'}"></i> ${msg}`;
+  el.innerHTML = `<i class="ti ti-${type === 'success' ? 'circle-check' : type === 'danger' ? 'alert-circle' : 'info-circle'}"></i> ${msg}`;
   document.getElementById('toastContainer').appendChild(el);
   setTimeout(() => el.remove(), 3500);
 }
+
+// ===== COR / TEMA =====
+function hexToRgb(hex) {
+  hex = hex.replace('#','');
+  if (hex.length === 3) hex = hex.split('').map(c=>c+c).join('');
+  const n = parseInt(hex, 16);
+  return [(n>>16)&255, (n>>8)&255, n&255];
+}
+function darken(hex, amount = 20) {
+  let [r,g,b] = hexToRgb(hex);
+  r = Math.max(0, r-amount); g = Math.max(0, g-amount); b = Math.max(0, b-amount);
+  return '#' + [r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('');
+}
+function lighten(hex, amount = 230) {
+  let [r,g,b] = hexToRgb(hex);
+  r = Math.min(255, Math.round(r+(255-r)*(amount/255)));
+  g = Math.min(255, Math.round(g+(255-g)*(amount/255)));
+  b = Math.min(255, Math.round(b+(255-b)*(amount/255)));
+  return '#' + [r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('');
+}
+function applyThemeColor(hex) {
+  const root = document.documentElement;
+  const [r,g,b] = hexToRgb(hex);
+  root.style.setProperty('--primary', hex);
+  root.style.setProperty('--primary-rgb', `${r},${g},${b}`);
+  root.style.setProperty('--primary-dark', darken(hex, 25));
+  root.style.setProperty('--primary-light', lighten(hex, 230));
+  root.style.setProperty('--login-bg1', hex);
+  root.style.setProperty('--login-bg2', darken(hex, 20));
+  branding.primaryColor = hex;
+  if (window.myChart) window.myChart.data.datasets[0].backgroundColor = hex, window.myChart.update();
+}
+
+// ===== EXTRAÇÃO DE CORES =====
+function extractColorsFromImage(imgEl) {
+  return new Promise(resolve => {
+    const canvas = document.getElementById('colorCanvas');
+    const SIZE = 80;
+    canvas.width = SIZE; canvas.height = SIZE;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(imgEl, 0, 0, SIZE, SIZE);
+    const data = ctx.getImageData(0, 0, SIZE, SIZE).data;
+
+    // Quantização simples: agrupar pixels em cubos de cor
+    const buckets = {};
+    for (let i = 0; i < data.length; i += 4) {
+      const a = data[i+3];
+      if (a < 30) continue; // ignorar transparentes
+      const r = Math.round(data[i]   / 32) * 32;
+      const g = Math.round(data[i+1] / 32) * 32;
+      const b = Math.round(data[i+2] / 32) * 32;
+      // Ignorar tons muito claros (quase branco) e muito escuros (quase preto)
+      const brightness = (r + g + b) / 3;
+      if (brightness > 230 || brightness < 20) continue;
+      // Ignorar tons de cinza (r≈g≈b)
+      const maxC = Math.max(r,g,b), minC = Math.min(r,g,b);
+      if (maxC - minC < 30) continue;
+      const key = `${r},${g},${b}`;
+      buckets[key] = (buckets[key] || 0) + 1;
+    }
+
+    const sorted = Object.entries(buckets).sort((a,b) => b[1]-a[1]);
+    const topColors = sorted.slice(0, 12).map(([key]) => {
+      const [r,g,b] = key.split(',').map(Number);
+      return '#' + [r,g,b].map(x => x.toString(16).padStart(2,'0')).join('');
+    });
+
+    // Filtrar cores muito similares
+    const distinct = [];
+    for (const c of topColors) {
+      const [r1,g1,b1] = hexToRgb(c);
+      const tooClose = distinct.some(d => {
+        const [r2,g2,b2] = hexToRgb(d);
+        return Math.abs(r1-r2)+Math.abs(g1-g2)+Math.abs(b1-b2) < 80;
+      });
+      if (!tooClose) distinct.push(c);
+      if (distinct.length >= 6) break;
+    }
+    resolve(distinct.length ? distinct : ['#1a56db']);
+  });
+}
+
+function renderPalette(colors) {
+  const row = document.getElementById('paletteRow');
+  selectedSwatchColor = colors[0];
+  row.innerHTML = colors.map((c, i) => `
+    <div class="palette-swatch ${i===0?'selected':''}" 
+         style="background:${c};" 
+         title="${c}"
+         onclick="selectSwatch(this, '${c}')">
+    </div>
+  `).join('');
+}
+
+window.selectSwatch = (el, color) => {
+  document.querySelectorAll('.palette-swatch').forEach(s => s.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedSwatchColor = color;
+};
+
+// ===== BRANDING — APLICAR =====
+function applyBranding() {
+  const hasLogo = !!branding.logoDataUrl;
+  const name = branding.companyName || 'Desligamento RH';
+
+  // Header
+  document.getElementById('headerLogoImg').src = hasLogo ? branding.logoDataUrl : '';
+  document.getElementById('headerLogoImg').style.display = hasLogo ? 'block' : 'none';
+  document.getElementById('headerLogoIcon').style.display = hasLogo ? 'none' : 'flex';
+  document.getElementById('headerLogoText').textContent = name;
+
+  // Login
+  document.getElementById('loginLogoImg').src = hasLogo ? branding.logoDataUrl : '';
+  document.getElementById('loginLogoImg').style.display = hasLogo ? 'block' : 'none';
+  document.getElementById('loginLogoIcon').style.display = hasLogo ? 'none' : 'flex';
+  document.getElementById('loginCompanyName').textContent = name;
+
+  // Formulário banner
+  const banner = document.getElementById('formBanner');
+  if (hasLogo) {
+    document.getElementById('formBannerLogo').src = branding.logoDataUrl;
+    document.getElementById('formBannerName').textContent = name;
+    banner.classList.add('visible');
+  } else {
+    banner.classList.remove('visible');
+  }
+
+  // Pré-visualização
+  document.getElementById('previewLogoImg').src = hasLogo ? branding.logoDataUrl : '';
+  document.getElementById('previewLogoImg').style.display = hasLogo ? 'block' : 'none';
+  document.getElementById('previewLogoIcon').style.display = hasLogo ? 'none' : 'flex';
+  document.getElementById('previewCompanyName').textContent = name;
+
+  applyThemeColor(branding.primaryColor);
+}
+
+// ===== UPLOAD DE LOGO =====
+document.getElementById('logoFileInput').addEventListener('change', handleLogoFile);
+
+const uploadArea = document.getElementById('logoUploadArea');
+uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('drag'); });
+uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('drag'));
+uploadArea.addEventListener('drop', e => {
+  e.preventDefault(); uploadArea.classList.remove('drag');
+  const file = e.dataTransfer.files[0];
+  if (file) processLogoFile(file);
+});
+
+function handleLogoFile(e) {
+  const file = e.target.files[0];
+  if (file) processLogoFile(file);
+}
+
+function processLogoFile(file) {
+  if (!file.type.startsWith('image/')) return toast('Selecione um arquivo de imagem válido.', 'danger');
+  const reader = new FileReader();
+  reader.onload = async e => {
+    const dataUrl = e.target.result;
+    branding.logoDataUrl = dataUrl;
+    branding.logoFileName = file.name;
+
+    // Mostrar preview
+    document.getElementById('logoPreviewImg').src = dataUrl;
+    document.getElementById('logoFileName').textContent = file.name;
+    document.getElementById('logoPreviewWrap').classList.add('visible');
+    document.getElementById('logoUploadArea').style.display = 'none';
+
+    // Extrair cores
+    const img = new Image();
+    img.onload = async () => {
+      const colors = await extractColorsFromImage(img);
+      renderPalette(colors);
+      document.getElementById('paletteCard').style.display = 'block';
+      // Aplicar a primeira cor automaticamente
+      if (colors.length) {
+        applyThemeColor(colors[0]);
+        selectedSwatchColor = colors[0];
+      }
+      applyBranding();
+      toast('Logomarca carregada! Selecione a cor principal e clique em Aplicar.', 'success');
+    };
+    img.src = dataUrl;
+  };
+  reader.readAsDataURL(file);
+}
+
+document.getElementById('btnRemoverLogo').addEventListener('click', () => {
+  branding.logoDataUrl = null;
+  branding.logoFileName = null;
+  document.getElementById('logoPreviewWrap').classList.remove('visible');
+  document.getElementById('logoUploadArea').style.display = 'block';
+  document.getElementById('logoFileInput').value = '';
+  document.getElementById('paletteCard').style.display = 'none';
+  applyBranding();
+  toast('Logomarca removida.', 'success');
+});
+
+document.getElementById('btnAplicarCor').addEventListener('click', () => {
+  if (!selectedSwatchColor) return toast('Selecione uma cor primeiro.', 'danger');
+  applyThemeColor(selectedSwatchColor);
+  applyBranding();
+  toast('Cor aplicada com sucesso!', 'success');
+});
+
+document.getElementById('btnResetarCor').addEventListener('click', () => {
+  selectedSwatchColor = '#1a56db';
+  branding.primaryColor = '#1a56db';
+  applyThemeColor('#1a56db');
+  applyBranding();
+  document.querySelectorAll('.palette-swatch').forEach(s => s.classList.remove('selected'));
+  toast('Cor restaurada para o padrão.', 'success');
+});
+
+document.getElementById('btnSalvarNome').addEventListener('click', () => {
+  const nome = document.getElementById('nomeEmpresa').value.trim();
+  if (!nome) return toast('Digite o nome da empresa.', 'danger');
+  branding.companyName = nome;
+  applyBranding();
+  toast('Nome da empresa atualizado!', 'success');
+});
 
 // ===== LOGIN =====
 document.getElementById('btnEntrar').addEventListener('click', handleLogin);
@@ -462,21 +824,17 @@ function handleLogin() {
 function onLoginSucesso() {
   document.getElementById('loginScreen').style.display = 'none';
   document.getElementById('appScreen').classList.add('active');
-
   const r = usuarioLogado.role;
   document.getElementById('userName').textContent = usuarioLogado.username;
   const roleBadge = document.getElementById('userRole');
   roleBadge.textContent = r === 'MASTER' ? 'Master' : r === 'OPERADORES' ? 'Operador' : 'Usuário';
   roleBadge.className = 'role-badge role-' + r;
   document.getElementById('userAvatar').textContent = usuarioLogado.username[0].toUpperCase();
-
   document.getElementById('sidebarAdminSection').style.display = r === 'MASTER' ? 'block' : 'none';
   document.getElementById('sidebarDashSection').style.display = (r === 'MASTER' || r === 'OPERADORES') ? 'block' : 'none';
-
   navTo('formulario');
 }
 
-// ===== LOGOUT =====
 document.getElementById('btnLogout').addEventListener('click', () => {
   usuarioLogado = null;
   document.getElementById('appScreen').classList.remove('active');
@@ -511,12 +869,8 @@ function renderFormulario() {
   }
   body.innerHTML = perguntas.map((p, i) => `
     <div class="question-card">
-      <div class="q-header">
-        <div>
-          <div class="question-num">Pergunta ${i + 1}</div>
-          <div class="question-text">${p.text}</div>
-        </div>
-      </div>
+      <div class="question-num">Pergunta ${i + 1}</div>
+      <div class="question-text">${p.text}</div>
       <div class="question-textarea">
         <textarea id="resp_${i}" rows="3" placeholder="Escreva sua resposta aqui..."></textarea>
       </div>
@@ -544,9 +898,9 @@ function renderPerguntas() {
     return;
   }
   el.innerHTML = perguntas.map((p, i) => `
-    <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid var(--border);">
-      <div style="display:flex; align-items:center; gap:12px;">
-        <span style="font-size:12px; font-weight:600; color:var(--primary); background:var(--primary-light); padding:2px 8px; border-radius:20px;">Q${i + 1}</span>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="font-size:12px;font-weight:600;color:var(--primary);background:var(--primary-light);padding:2px 8px;border-radius:20px;">Q${i+1}</span>
         <span style="font-size:14px;">${p.text}</span>
       </div>
       ${usuarioLogado?.role === 'MASTER' ? `<button class="btn btn-danger btn-sm" onclick="excluirPergunta('${p.id}')"><i class="ti ti-trash"></i></button>` : ''}
@@ -575,22 +929,22 @@ window.excluirPergunta = id => {
 function renderUsuarios() {
   const tbody = document.getElementById('usersTbody');
   if (!localUsers.length) {
-    tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:var(--text-muted); padding:24px;">Nenhum usuário cadastrado.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:var(--text-muted);padding:24px;">Nenhum usuário cadastrado.</td></tr>';
     return;
   }
   tbody.innerHTML = localUsers.map(u => `
     <tr>
       <td>
-        <div style="display:flex; align-items:center; gap:10px;">
+        <div style="display:flex;align-items:center;gap:10px;">
           <div class="user-avatar" style="width:30px;height:30px;font-size:11px;">${u.username[0].toUpperCase()}</div>
           <span style="font-weight:500;">${u.username}</span>
         </div>
       </td>
-      <td><span class="role-badge role-${u.role}">${u.role === 'MASTER' ? 'Master' : u.role === 'OPERADORES' ? 'Operador' : 'Usuário'}</span></td>
+      <td><span class="role-badge role-${u.role}">${u.role==='MASTER'?'Master':u.role==='OPERADORES'?'Operador':'Usuário'}</span></td>
       <td>
-        ${usuarioLogado?.role === 'MASTER' && usuarioLogado.username !== u.username ?
-          `<button class="btn btn-danger btn-sm" onclick="excluirUsuario('${u.username}')"><i class="ti ti-trash"></i> Remover</button>` : 
-          '<span style="color:var(--text-light);font-size:13px;">—</span>'}
+        ${usuarioLogado?.role==='MASTER' && usuarioLogado.username!==u.username
+          ? `<button class="btn btn-danger btn-sm" onclick="excluirUsuario('${u.username}')"><i class="ti ti-trash"></i> Remover</button>`
+          : '<span style="color:var(--text-light);font-size:13px;">—</span>'}
       </td>
     </tr>
   `).join('');
@@ -621,42 +975,41 @@ window.excluirUsuario = username => {
 let myChart = null;
 
 function renderDashboard() {
-  const totalRespostas = respostas.length;
-  const totalPerguntas = perguntas.length;
-  const respostasComConteudo = respostas.reduce((acc, r) => acc + r.answers.filter(a => a.length > 3).length, 0);
-  const taxaResposta = totalRespostas ? Math.round((respostasComConteudo / (totalRespostas * totalPerguntas)) * 100) : 0;
+  const total = respostas.length;
+  const totalQ = perguntas.length;
+  const comConteudo = respostas.reduce((acc, r) => acc + r.answers.filter(a => a.length > 3).length, 0);
+  const taxa = total ? Math.round((comConteudo / (total * Math.max(totalQ,1))) * 100) : 0;
 
   document.getElementById('statsGrid').innerHTML = `
-    <div class="stat-card"><div class="stat-label">Entrevistas realizadas</div><div class="stat-value">${totalRespostas}</div></div>
-    <div class="stat-card"><div class="stat-label">Perguntas ativas</div><div class="stat-value">${totalPerguntas}</div></div>
-    <div class="stat-card"><div class="stat-label">Taxa de resposta</div><div class="stat-value">${taxaResposta}%</div>
-      <div class="progress-bar"><div class="progress-fill" style="width:${taxaResposta}%"></div></div>
+    <div class="stat-card"><div class="stat-label">Entrevistas realizadas</div><div class="stat-value">${total}</div></div>
+    <div class="stat-card"><div class="stat-label">Perguntas ativas</div><div class="stat-value">${totalQ}</div></div>
+    <div class="stat-card"><div class="stat-label">Taxa de resposta</div><div class="stat-value">${taxa}%</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${taxa}%"></div></div>
     </div>
   `;
 
-  const ctx = document.getElementById('graficoRespostas').getContext('2d');
-  if (myChart) myChart.destroy();
+  const canvas = document.getElementById('graficoRespostas');
+  const empty = document.getElementById('dashboardEmpty');
 
-  if (!respostas.length) {
-    ctx.canvas.style.display = 'none';
+  if (!total) {
+    canvas.style.display = 'none';
+    empty.style.display = 'block';
+    if (myChart) { myChart.destroy(); myChart = null; }
     return;
   }
-  ctx.canvas.style.display = 'block';
+  canvas.style.display = 'block';
+  empty.style.display = 'none';
 
-  const data = perguntas.map((_, i) =>
-    respostas.filter(r => r.answers[i] && r.answers[i].length > 3).length
-  );
+  const ctx = canvas.getContext('2d');
+  if (myChart) myChart.destroy();
+
+  const data = perguntas.map((_, i) => respostas.filter(r => r.answers[i] && r.answers[i].length > 3).length);
 
   myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: perguntas.map(p => p.text.length > 40 ? p.text.substring(0, 40) + '...' : p.text),
-      datasets: [{
-        label: 'Respostas recebidas',
-        data,
-        backgroundColor: '#1a56db',
-        borderRadius: 6,
-      }]
+      labels: perguntas.map(p => p.text.length > 40 ? p.text.substring(0, 40) + '…' : p.text),
+      datasets: [{ label: 'Respostas recebidas', data, backgroundColor: branding.primaryColor, borderRadius: 6 }]
     },
     options: {
       responsive: true,
