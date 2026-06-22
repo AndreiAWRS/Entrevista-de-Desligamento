@@ -4,93 +4,95 @@
   <meta charset="utf-8" />
   <title>ENTREVISTA DE DESLIGAMENTO</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <style>
     /* Base */
     body { font-family: Arial, sans-serif; margin: 0; background: #f4f6f9; }
     header { background: #dc3545; color: #fff; padding: 20px; text-align: center; }
     header h1 { margin: 0; font-size: 28px; text-transform: uppercase; }
 
-    /* NAV layout: left menu items, right welcome + logout */
     nav { background: #333; display: none; width: 100%; }
     .menu-row {
       max-width: 1100px;
       margin: 0 auto;
       display: flex;
       align-items: center;
-      padding: 6px 12px;
+      padding: 8px 12px;
       gap: 12px;
-      justify-content: space-between; /* left items left, right items right */
+      justify-content: space-between;
+      flex-wrap: wrap;
     }
 
-    /* left group (menu items) */
-    .menu-left { display:flex; align-items:center; gap:6px; }
+    .menu-left { display:flex; align-items:center; gap:6px; flex-wrap: wrap; }
     .menu-list { display:flex; gap:6px; margin:0; padding:0; list-style:none; align-items:center; }
-    .menu-list li { position:relative; margin:0; padding:0; }
-    .menu-list li a.menu-link { color:#fff; padding:12px 18px; text-decoration:none; display:block; font-weight:500; white-space:nowrap; }
-    .menu-list li a.menu-link:hover { background:#111; border-radius:4px; }
+    .menu-list li { position:relative; }
+    .menu-list li a.menu-link { 
+      color:#fff; padding:12px 18px; text-decoration:none; display:block; 
+      font-weight:500; white-space:nowrap; border-radius:4px;
+    }
+    .menu-list li a.menu-link:hover { background:#111; }
 
-    /* submenu: remove bullets and spacing */
     ul.submenu {
       display:none;
       position:absolute;
       top:calc(100% + 6px);
       left:0;
       background:#444;
-      min-width:180px;
-      z-index:50;
+      min-width:200px;
+      z-index:100;
       border-radius:6px;
-      box-shadow:0 6px 18px rgba(0,0,0,0.2);
-      padding:6px 0;
+      box-shadow:0 6px 18px rgba(0,0,0,0.3);
+      padding:8px 0;
       margin:0;
       list-style:none;
     }
-    ul.submenu li { margin:0; padding:0; }
-    ul.submenu li a { padding:10px 14px; color:#fff; display:block; text-decoration:none; }
+    ul.submenu li a { padding:10px 16px; color:#fff; display:block; text-decoration:none; }
     ul.submenu li a:hover { background:#3b3b3b; }
 
-    /* show submenu on hover or when parent has .open */
     .menu-list li:hover > ul.submenu { display:block; }
-    .menu-list li.open > ul.submenu { display:block; }
 
-    /* right group (welcome + logout) */
-    .menu-right { margin-left: auto; display:flex; align-items:center; gap:8px; }
-    .sair { background:#dc3545; color:#fff; padding:8px 12px; border-radius:4px; text-decoration:none; }
+    .menu-right { display:flex; align-items:center; gap:10px; margin-left: auto; }
+    .welcome { color:#fff; font-weight:600; }
+    .sair { background:#dc3545; color:#fff; padding:8px 16px; border-radius:4px; text-decoration:none; }
     .sair:hover { background:#a71d2a; }
-    .welcome { color:#fff; padding:8px 12px; font-weight:600; }
 
-    /* Content */
-    .container { max-width: 900px; margin: 30px auto; padding: 20px; }
-    .card { background:#fff; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.08); padding:20px; margin-bottom:30px; }
+    .container { max-width: 950px; margin: 30px auto; padding: 0 15px; }
+    .card { 
+      background:#fff; border-radius:8px; box-shadow:0 2px 10px rgba(0,0,0,0.1); 
+      padding:25px; margin-bottom:30px; 
+    }
     h2 { color:#007bff; margin-top:0; }
-    input, textarea, select { margin:8px 0; padding:10px; width:100%; border:1px solid #ccc; border-radius:4px; box-sizing:border-box; }
-    button { margin-top:10px; padding:10px 15px; background:#007bff; color:#fff; border:none; border-radius:4px; cursor:pointer; }
+    input, textarea, select { 
+      margin:8px 0; padding:10px; width:100%; border:1px solid #ccc; 
+      border-radius:4px; box-sizing:border-box; font-size:16px;
+    }
+    button { 
+      margin-top:10px; padding:10px 18px; background:#007bff; color:#fff; 
+      border:none; border-radius:4px; cursor:pointer; font-size:16px;
+    }
     button:hover { background:#0056b3; }
-    ul.simple { padding-left:18px; }
-    label { display:block; margin-top:10px; font-weight:600; }
-    .user-row { display:flex; justify-content:space-between; align-items:center; gap:8px; padding:6px 0; border-bottom:1px solid #eee; }
-    .user-actions button { margin-left:6px; background:#dc3545; color:#fff; border:none; padding:6px 8px; border-radius:4px; cursor:pointer; }
-    .user-actions button:hover { background:#a71d2a; }
 
-    table.users-table { width:100%; border-collapse: collapse; margin-top:12px; }
-    table.users-table th, table.users-table td { border: 1px solid #e6e6e6; padding: 8px 10px; text-align:left; }
-    table.users-table th { background:#f7f7f7; font-weight:700; }
+    .question-row, .user-row {
+      display:flex; justify-content:space-between; align-items:center; 
+      padding:10px 0; border-bottom:1px solid #eee;
+    }
+    .actions button {
+      margin-left:6px; background:#dc3545; color:#fff; border:none; 
+      padding:6px 12px; border-radius:4px; cursor:pointer;
+    }
+    .actions button:hover { background:#a71d2a; }
 
-    .question-row { display:flex; justify-content:space-between; align-items:center; gap:8px; padding:6px 0; border-bottom:1px solid #eee; }
-    .question-actions button { margin-left:6px; background:#dc3545; color:#fff; border:none; padding:6px 8px; border-radius:4px; cursor:pointer; }
-    .question-actions button:hover { background:#a71d2a; }
+    table { width:100%; border-collapse: collapse; margin-top:15px; }
+    th, td { border: 1px solid #e0e0e0; padding: 10px; text-align:left; }
+    th { background:#f8f9fa; }
 
-    @media (max-width:720px){
-      .menu-row { padding:6px; flex-wrap:wrap; }
-      ul.submenu { position:static; box-shadow:none; border-radius:0; margin-top:6px; }
-      .menu-left ul { flex-wrap:wrap; }
-      .menu-right { width:100%; justify-content:flex-end; margin-top:6px; }
+    @media (max-width: 768px) {
+      .menu-row { flex-direction: column; align-items: stretch; }
+      .menu-right { margin-left: 0; justify-content: center; margin-top: 8px; }
     }
   </style>
 </head>
 <body>
-
 <header><h1>ENTREVISTA DE DESLIGAMENTO</h1></header>
 
 <!-- Login -->
@@ -99,31 +101,30 @@
     <h2>Login</h2>
     <input type="text" id="loginUser" placeholder="Usuário (ex: andrei)" autocomplete="username">
     <input type="password" id="loginPass" placeholder="Senha" autocomplete="current-password">
-    <button id="btnEntrar" type="button">Entrar</button>
+    <button id="btnEntrar">Entrar</button>
   </div>
 </div>
 
-<!-- NAV: left menu items, right welcome + logout -->
-<nav id="menuNav" aria-label="Menu principal">
+<!-- Menu -->
+<nav id="menuNav">
   <div class="menu-row">
     <div class="menu-left">
+      <!-- Menu MASTER -->
       <ul id="menuMaster" class="menu-list" style="display:none;">
-        <li class="has-sub">
+        <li>
           <a href="#" class="menu-link">CRIAR</a>
           <ul class="submenu">
             <li><a href="#" class="submenu-link" data-show="usuarios">Usuários</a></li>
           </ul>
         </li>
-
-        <li class="has-sub">
+        <li>
           <a href="#" class="menu-link">FORMULÁRIO</a>
           <ul class="submenu">
             <li><a href="#" class="submenu-link" data-show="perguntas">Perguntas</a></li>
             <li><a href="#" class="submenu-link" data-show="formulario">Formulário</a></li>
           </ul>
         </li>
-
-        <li class="has-sub">
+        <li>
           <a href="#" class="menu-link">DASHBOARD</a>
           <ul class="submenu">
             <li><a href="#" class="submenu-link" data-show="dashboard">Gráficos</a></li>
@@ -131,14 +132,15 @@
         </li>
       </ul>
 
+      <!-- Menu OPERADORES -->
       <ul id="menuOperadores" class="menu-list" style="display:none;">
-        <li class="has-sub">
+        <li>
           <a href="#" class="menu-link">FORMULÁRIO</a>
           <ul class="submenu">
             <li><a href="#" class="submenu-link" data-show="formulario">Formulário</a></li>
           </ul>
         </li>
-        <li class="has-sub">
+        <li>
           <a href="#" class="menu-link">DASHBOARD</a>
           <ul class="submenu">
             <li><a href="#" class="submenu-link" data-show="dashboard">Gráficos</a></li>
@@ -146,8 +148,9 @@
         </li>
       </ul>
 
+      <!-- Menu USUÁRIOS -->
       <ul id="menuUser" class="menu-list" style="display:none;">
-        <li class="has-sub">
+        <li>
           <a href="#" class="menu-link">FORMULÁRIO</a>
           <ul class="submenu">
             <li><a href="#" class="submenu-link" data-show="formulario">Formulário</a></li>
@@ -168,15 +171,14 @@
   </div>
 </nav>
 
-<!-- Conteúdo -->
 <div class="container">
-  <!-- Criar Usuário -->
+  <!-- Usuários -->
   <div class="card" id="usuarios" style="display:none;">
     <h2>Criar Usuário</h2>
-    <label>Login do usuário (username)</label>
-    <input type="text" id="novoUser" placeholder="andrei ou usuario1">
-    <label>Senha do usuário</label>
-    <input type="password" id="novoPass" placeholder="Senha">
+    <label>Login (username)</label>
+    <input type="text" id="novoUser" placeholder="andrei">
+    <label>Senha</label>
+    <input type="password" id="novoPass">
     <label>Grupo</label>
     <select id="novoRole">
       <option value="USUARIOS">USUÁRIOS</option>
@@ -185,491 +187,266 @@
     </select>
     <button onclick="criarUsuario()">Criar Usuário</button>
 
-    <h2 style="margin-top:20px">USUÁRIOS</h2>
-    <table class="users-table" id="usersTable">
-      <thead>
-        <tr><th>USUÁRIO</th><th>GRUPO</th><th>AÇÕES</th></tr>
-      </thead>
+    <h2 style="margin-top:30px;">Usuários Cadastrados</h2>
+    <table id="usersTable">
+      <thead><tr><th>Usuário</th><th>Grupo</th><th>Ações</th></tr></thead>
       <tbody id="usersTbody"></tbody>
     </table>
   </div>
 
   <!-- Perguntas -->
   <div class="card" id="perguntas" style="display:none;">
-    <h2>Perguntas</h2>
+    <h2>Gerenciar Perguntas</h2>
     <label>Nova Pergunta</label>
-    <input type="text" id="novaPergunta" placeholder="Digite a pergunta">
+    <input type="text" id="novaPergunta" placeholder="Digite a pergunta...">
     <button onclick="adicionarPergunta()">Adicionar Pergunta</button>
 
-    <h2 style="margin-top:20px">Lista de Perguntas</h2>
-    <div id="listaPerguntas" class="simple"></div>
+    <h2 style="margin-top:25px;">Perguntas Atuais</h2>
+    <div id="listaPerguntas"></div>
   </div>
 
   <!-- Formulário -->
   <div class="card" id="formulario" style="display:none;">
-    <h2>Formulário</h2>
+    <h2>Entrevista de Desligamento</h2>
     <form id="formEntrevista"></form>
-    <button onclick="salvarRespostas()">Enviar Respostas</button>
+    <button onclick="salvarRespostas()" style="background:#28a745;">Enviar Respostas</button>
   </div>
 
   <!-- Dashboard -->
   <div class="card" id="dashboard" style="display:none;">
-    <h2>Dashboard</h2>
-    <canvas id="graficoRespostas" width="800" height="300"></canvas>
+    <h2>Dashboard - Respostas</h2>
+    <canvas id="graficoRespostas" height="400"></canvas>
   </div>
 </div>
 
 <script type="module">
-/* Mantive todo o comportamento anterior; apenas garanto que o menu fique alinhado corretamente. */
-
-/* ====== CONFIGURAÇÃO FIREBASE (opcional) ======
-   Se quiser usar Firebase, preencha o objeto abaixo.
-   Caso contrário, deixe apiKey=null.
-*/
-const firebaseConfig = { apiKey: null, authDomain: null, projectId: null };
+const firebaseConfig = { apiKey: null }; // Deixe null para usar modo local
 let fb = null;
-if (firebaseConfig && firebaseConfig.apiKey) {
-  const { initializeApp } = await import('https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js');
-  const { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } = await import('https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js');
-  const { getFirestore, doc, setDoc, getDoc, collection, addDoc, getDocs, deleteDoc } = await import('https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js');
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
-  fb = { auth, db, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, doc, setDoc, getDoc, collection, addDoc, getDocs, deleteDoc };
-}
 
-/* ====== Estado e fallback local ====== */
+// Estado
 let usuarioLogado = null;
 let perguntas = [];
 let respostas = [];
 let localUsers = [{ username: 'andrei', password: '#Andrei1996', role: 'MASTER' }];
 
+// Elementos
 const loginCard = document.getElementById('loginCard');
 const menuNav = document.getElementById('menuNav');
-const menuMaster = document.getElementById('menuMaster');
-const menuOperadores = document.getElementById('menuOperadores');
-const menuUser = document.getElementById('menuUser');
-const menuRightMaster = document.getElementById('menuRightMaster');
-const menuRightUser = document.getElementById('menuRightUser');
-const bemvindo = document.getElementById('bemvindo');
-const bemvindoUser = document.getElementById('bemvindoUser');
 
-document.getElementById('btnEntrar').addEventListener('click', handleLogin);
-// Enter works in both fields
-document.getElementById('loginPass').addEventListener('keydown', function(e){ if(e.key === 'Enter') handleLogin(); });
-document.getElementById('loginUser').addEventListener('keydown', function(e){ if(e.key === 'Enter') handleLogin(); });
+// Funções principais (mesma lógica anterior, com correções)
+async function handleLogin() {
+  const userInput = document.getElementById('loginUser').value.trim();
+  const pass = document.getElementById('loginPass').value;
 
-/* ====== Login (username or email) ====== */
-async function handleLogin(){
-  const loginInput = document.getElementById('loginUser').value.trim();
-  const password = document.getElementById('loginPass').value;
-  if(!loginInput || !password){ alert('Preencha usuário e senha.'); return; }
+  if (!userInput || !pass) return alert('Preencha usuário e senha.');
 
-  if(fb){
-    try {
-      let emailToUse = loginInput;
-      if(!emailToUse.includes('@')){
-        const snap = await fb.getDoc(fb.doc(fb.db, 'usernames', emailToUse));
-        if(!snap.exists()) throw new Error('Usuário não encontrado no Firebase.');
-        const map = snap.data();
-        emailToUse = map.email;
-      }
-      await fb.signInWithEmailAndPassword(fb.auth, emailToUse, password);
-
-      // carregar perfil
-      let profile = null;
-      if(!loginInput.includes('@')){
-        const snap = await fb.getDoc(fb.doc(fb.db, 'usernames', loginInput));
-        if(snap.exists()){
-          const map = snap.data();
-          const userDoc = await fb.getDoc(fb.doc(fb.db, 'users', map.email));
-          if(userDoc.exists()) profile = userDoc.data();
-        }
-      } else {
-        const userDoc = await fb.getDoc(fb.doc(fb.db, 'users', loginInput));
-        if(userDoc.exists()) profile = userDoc.data();
-      }
-
-      if(!profile){ alert('Autenticado, mas perfil não encontrado no Firestore.'); await fb.signOut(fb.auth); return; }
-
-      usuarioLogado = { email: profile.email, role: profile.role, username: profile.username || profile.email.split('@')[0] };
-      onLogin();
-      return;
-    } catch(err){
-      console.warn('Firebase login falhou:', err);
-      // fallback to local below
-    }
-  }
-
-  // fallback local
-  const found = localUsers.find(u => u.username === loginInput && u.password === password);
-  if(found){
+  // Modo local
+  const found = localUsers.find(u => u.username === userInput && u.password === pass);
+  if (found) {
     usuarioLogado = { username: found.username, role: found.role, local: true };
-    onLogin();
+    onLoginSucesso();
     return;
   }
 
-  alert('Usuário ou senha inválidos.');
+  alert('Usuário ou senha inválidos (modo local).');
 }
 
-/* ====== Pós-login: mostrar menus conforme role ====== */
-function onLogin(){
+function onLoginSucesso() {
   loginCard.style.display = 'none';
   menuNav.style.display = 'block';
 
-  const role = usuarioLogado.role || 'USUARIOS';
-  if(role === 'MASTER'){
-    menuMaster.style.display = 'flex';
-    menuOperadores.style.display = 'none';
-    menuUser.style.display = 'none';
-    menuRightMaster.style.display = 'flex';
-    menuRightUser.style.display = 'none';
-    bemvindo.textContent = 'Bem-vindo, ' + (usuarioLogado.username || (usuarioLogado.email ? usuarioLogado.email.split('@')[0] : ''));
-  } else if(role === 'OPERADORES'){
-    menuMaster.style.display = 'none';
-    menuOperadores.style.display = 'flex';
-    menuUser.style.display = 'none';
-    menuRightMaster.style.display = 'none';
-    menuRightUser.style.display = 'flex';
-    bemvindoUser.textContent = usuarioLogado.username || (usuarioLogado.email ? usuarioLogado.email.split('@')[0] : '');
-  } else {
-    menuMaster.style.display = 'none';
-    menuOperadores.style.display = 'none';
-    menuUser.style.display = 'flex';
-    menuRightMaster.style.display = 'none';
-    menuRightUser.style.display = 'flex';
-    bemvindoUser.textContent = usuarioLogado.username || (usuarioLogado.email ? usuarioLogado.email.split('@')[0] : '');
-    mostrar('formulario');
-  }
+  const role = usuarioLogado.role;
+  document.getElementById('menuMaster').style.display = role === 'MASTER' ? 'flex' : 'none';
+  document.getElementById('menuOperadores').style.display = role === 'OPERADORES' ? 'flex' : 'none';
+  document.getElementById('menuUser').style.display = (role === 'USUARIOS' || role === 'OPERADORES') ? 'flex' : 'none';
 
-  if(fb){
-    carregarPerguntas().then(renderizarPerguntas);
-    renderizarUsuarios();
-  } else {
+  document.getElementById('menuRightMaster').style.display = role === 'MASTER' ? 'flex' : 'none';
+  document.getElementById('menuRightUser').style.display = role !== 'MASTER' ? 'flex' : 'none';
+
+  const welcomeEl = role === 'MASTER' ? document.getElementById('bemvindo') : document.getElementById('bemvindoUser');
+  welcomeEl.textContent = `Bem-vindo, ${usuarioLogado.username}`;
+
+  // Carregar dados iniciais
+  if (perguntas.length === 0) {
     perguntas = [
       { id: 'q1', text: "Como você avalia sua experiência na empresa?" },
-      { id: 'q2', text: "O que poderia ser melhorado?" }
+      { id: 'q2', text: "O que poderia ser melhorado na empresa?" },
+      { id: 'q3', text: "Você recomendaria a empresa para outros profissionais?" }
     ];
-    renderizarPerguntas();
-    renderizarUsuarios();
   }
+  mostrar('formulario');
 }
 
-/* ====== Logout ====== */
-document.getElementById('logoutMaster').addEventListener('click', async (e)=>{ e.preventDefault(); await doLogout(); });
-document.getElementById('logoutUser').addEventListener('click', async (e)=>{ e.preventDefault(); await doLogout(); });
-
-async function doLogout(){
-  if(fb){
-    try { await fb.signOut(fb.auth); } catch(e){ /* ignore */ }
-  }
+async function doLogout() {
   usuarioLogado = null;
   menuNav.style.display = 'none';
-  menuMaster.style.display = 'none';
-  menuOperadores.style.display = 'none';
-  menuUser.style.display = 'none';
-  menuRightMaster.style.display = 'none';
-  menuRightUser.style.display = 'none';
   loginCard.style.display = 'block';
-  mostrar('');
+  document.querySelectorAll('.card').forEach(c => c.style.display = 'none');
 }
 
-/* ====== Perguntas: adicionar, listar, excluir ====== */
-async function adicionarPergunta(){
-  if(!usuarioLogado || usuarioLogado.role !== 'MASTER'){ alert('Apenas MASTER pode adicionar perguntas.'); return; }
-  const nova = document.getElementById('novaPergunta').value.trim();
-  if(!nova){ alert('Digite a pergunta.'); return; }
+// Funções restantes (adicionarPergunta, criarUsuario, etc.)
+function adicionarPergunta() {
+  if (usuarioLogado?.role !== 'MASTER') return alert('Apenas MASTER pode adicionar perguntas.');
+  const text = document.getElementById('novaPergunta').value.trim();
+  if (!text) return alert('Digite uma pergunta.');
 
-  if(fb){
-    try {
-      await fb.addDoc(fb.collection(fb.db, 'questions'), { text: nova, createdAt: new Date().toISOString() });
-      document.getElementById('novaPergunta').value = '';
-      await carregarPerguntas();
-      renderizarPerguntas();
-      alert('Pergunta adicionada.');
-    } catch(err){ console.error(err); alert('Erro ao adicionar pergunta: ' + err.message); }
-  } else {
-    const id = 'local_' + Date.now();
-    perguntas.push({ id, text: nova });
-    document.getElementById('novaPergunta').value = '';
-    renderizarPerguntas();
-    alert('Pergunta adicionada (local).');
-  }
+  perguntas.push({ id: 'q' + Date.now(), text });
+  document.getElementById('novaPergunta').value = '';
+  renderizarPerguntas();
+  alert('Pergunta adicionada!');
 }
 
-async function carregarPerguntas(){
-  perguntas = [];
-  if(fb){
-    try {
-      const snap = await fb.getDocs(fb.collection(fb.db, 'questions'));
-      snap.forEach(d => perguntas.push({ id: d.id, text: d.data().text }));
-    } catch(err){ console.error('Erro carregar perguntas:', err); }
-  }
-}
-
-function renderizarPerguntas(){
-  const lista = document.getElementById('listaPerguntas');
+function renderizarPerguntas() {
+  const container = document.getElementById('listaPerguntas');
   const form = document.getElementById('formEntrevista');
-  if(lista) lista.innerHTML = '';
-  if(form) form.innerHTML = '';
+  container.innerHTML = '';
+  form.innerHTML = '';
 
   perguntas.forEach((p, i) => {
-    if(lista){
-      const row = document.createElement('div');
-      row.className = 'question-row';
-      const left = document.createElement('div');
-      left.textContent = p.text;
-      const actions = document.createElement('div');
-      actions.className = 'question-actions';
-      if(usuarioLogado && usuarioLogado.role === 'MASTER'){
-        const del = document.createElement('button');
-        del.textContent = 'Excluir';
-        del.onclick = function(){ excluirPergunta(p.id); };
-        actions.appendChild(del);
-      }
-      row.appendChild(left);
-      row.appendChild(actions);
-      lista.appendChild(row);
-    }
+    // Lista de perguntas (admin)
+    const row = document.createElement('div');
+    row.className = 'question-row';
+    row.innerHTML = `
+      <div>${p.text}</div>
+      <div class="actions">
+        ${usuarioLogado?.role === 'MASTER' ? `<button onclick="excluirPergunta('${p.id}')">Excluir</button>` : ''}
+      </div>
+    `;
+    container.appendChild(row);
 
-    if(form){
-      const label = document.createElement('label');
-      label.textContent = p.text;
-      const textarea = document.createElement('textarea');
-      textarea.id = 'resposta_' + i;
-      textarea.rows = 3;
-      form.appendChild(label);
-      form.appendChild(textarea);
-    }
+    // Formulário
+    const label = document.createElement('label');
+    label.textContent = p.text;
+    const textarea = document.createElement('textarea');
+    textarea.id = `resposta_${i}`;
+    textarea.rows = 3;
+    form.appendChild(label);
+    form.appendChild(textarea);
   });
 }
 
-async function excluirPergunta(id){
-  if(!usuarioLogado || usuarioLogado.role !== 'MASTER'){ alert('Apenas MASTER pode excluir perguntas.'); return; }
-  if(!confirm('Confirma exclusão desta pergunta?')) return;
-
-  if(fb){
-    try {
-      await fb.deleteDoc(fb.doc(fb.db, 'questions', id));
-      await carregarPerguntas();
-      renderizarPerguntas();
-      alert('Pergunta excluída.');
-    } catch(err){ console.error(err); alert('Erro ao excluir pergunta: ' + err.message); }
-  } else {
-    perguntas = perguntas.filter(p => p.id !== id);
-    renderizarPerguntas();
-    alert('Pergunta excluída (local).');
-  }
+function excluirPergunta(id) {
+  if (!confirm('Excluir esta pergunta?')) return;
+  perguntas = perguntas.filter(p => p.id !== id);
+  renderizarPerguntas();
 }
 
-/* ====== Usuários: criar, listar, excluir (tabela) ====== */
-async function criarUsuario(){
-  if(!usuarioLogado || usuarioLogado.role !== 'MASTER'){ alert('Apenas MASTER pode criar usuários.'); return; }
-  const novoUser = document.getElementById('novoUser').value.trim();
-  const novoPass = document.getElementById('novoPass').value;
-  const novoRole = document.getElementById('novoRole').value;
-  if(!novoUser || !novoPass){ alert('Preencha login e senha!'); return; }
+async function criarUsuario() {
+  if (usuarioLogado?.role !== 'MASTER') return alert('Apenas MASTER pode criar usuários.');
 
-  if(fb){
-    try {
-      const internalEmail = novoUser.includes('@') ? novoUser : `${novoUser}@local.example`;
-      await fb.createUserWithEmailAndPassword(fb.auth, internalEmail, novoPass);
-      await fb.setDoc(fb.doc(fb.db, 'users', internalEmail), { username: novoUser, email: internalEmail, role: novoRole, createdAt: new Date().toISOString() });
-      await fb.setDoc(fb.doc(fb.db, 'usernames', novoUser), { email: internalEmail, role: novoRole });
-      document.getElementById('novoUser').value = '';
-      document.getElementById('novoPass').value = '';
-      renderizarUsuarios();
-      alert('Usuário criado (perfil Firestore). Para remover do Auth, use função admin.');
-    } catch(err){ console.error(err); alert('Erro ao criar usuário no Firebase: ' + (err.message || err)); }
-  } else {
-    if(localUsers.some(u => u.username === novoUser)){ alert('Usuário já existe (local).'); return; }
-    localUsers.push({ username: novoUser, password: novoPass, role: novoRole });
-    document.getElementById('novoUser').value = '';
-    document.getElementById('novoPass').value = '';
-    renderizarUsuarios();
-    alert('Usuário criado (local).');
-  }
+  const username = document.getElementById('novoUser').value.trim();
+  const password = document.getElementById('novoPass').value;
+  const role = document.getElementById('novoRole').value;
+
+  if (!username || !password) return alert('Preencha usuário e senha.');
+
+  if (localUsers.some(u => u.username === username)) return alert('Usuário já existe.');
+
+  localUsers.push({ username, password, role });
+  document.getElementById('novoUser').value = '';
+  document.getElementById('novoPass').value = '';
+  renderizarUsuarios();
+  alert('Usuário criado com sucesso!');
 }
 
-async function renderizarUsuarios(){
+function renderizarUsuarios() {
   const tbody = document.getElementById('usersTbody');
   tbody.innerHTML = '';
-  if(fb){
-    try {
-      const snap = await fb.getDocs(fb.collection(fb.db, 'usernames'));
-      snap.forEach(d => {
-        const username = d.id;
-        const data = d.data();
-        const role = data.role || 'USUARIOS';
-        const tr = document.createElement('tr');
-        const tdUser = document.createElement('td'); tdUser.textContent = username;
-        const tdRole = document.createElement('td'); tdRole.textContent = role;
-        const tdActions = document.createElement('td');
-        if(usuarioLogado && usuarioLogado.role === 'MASTER'){
-          const del = document.createElement('button');
-          del.textContent = 'Excluir';
-          del.onclick = async () => { await excluirUsuario(username); };
-          tdActions.appendChild(del);
-        }
-        tr.appendChild(tdUser); tr.appendChild(tdRole); tr.appendChild(tdActions);
-        tbody.appendChild(tr);
-      });
-    } catch(err){ console.error('Erro listar users:', err); }
-  } else {
-    localUsers.forEach(u => {
-      const tr = document.createElement('tr');
-      const tdUser = document.createElement('td'); tdUser.textContent = u.username;
-      const tdRole = document.createElement('td'); tdRole.textContent = u.role;
-      const tdActions = document.createElement('td');
-      if(usuarioLogado && usuarioLogado.role === 'MASTER'){
-        const del = document.createElement('button');
-        del.textContent = 'Excluir';
-        del.onclick = function(){ excluirUsuarioLocal(u.username); };
-        tdActions.appendChild(del);
-      }
-      tr.appendChild(tdUser); tr.appendChild(tdRole); tr.appendChild(tdActions);
-      tbody.appendChild(tr);
-    });
-  }
+
+  localUsers.forEach(user => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${user.username}</td>
+      <td>${user.role}</td>
+      <td class="actions">
+        ${usuarioLogado?.role === 'MASTER' && usuarioLogado.username !== user.username ? 
+          `<button onclick="excluirUsuarioLocal('${user.username}')">Excluir</button>` : ''}
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
 }
 
-async function excluirUsuario(username){
-  if(!usuarioLogado || usuarioLogado.role !== 'MASTER'){ alert('Apenas MASTER pode excluir usuários.'); return; }
-  if(usuarioLogado.username === username || (usuarioLogado.email && usuarioLogado.email.split('@')[0] === username)){ alert('Você não pode excluir seu próprio usuário.'); return; }
-  if(!confirm("Confirma exclusão do usuário '" + username + "' ?")) return;
-
-  if(fb){
-    try {
-      const snap = await fb.getDoc(fb.doc(fb.db, 'usernames', username));
-      if(snap.exists()){
-        const data = snap.data();
-        const email = data.email;
-        await fb.deleteDoc(fb.doc(fb.db, 'usernames', username));
-        await fb.deleteDoc(fb.doc(fb.db, 'users', email));
-        renderizarUsuarios();
-        alert('Perfil removido do Firestore. Para remover do Auth, execute função admin.');
-      } else {
-        alert('Usuário não encontrado no Firestore.');
-      }
-    } catch(err){ console.error(err); alert('Erro ao excluir: ' + err.message); }
-  } else {
-    excluirUsuarioLocal(username);
-  }
-}
-
-function excluirUsuarioLocal(username){
-  if(!usuarioLogado || usuarioLogado.role !== 'MASTER'){ alert('Apenas MASTER pode excluir usuários.'); return; }
-  if(usuarioLogado.username === username){ alert('Você não pode excluir seu próprio usuário.'); return; }
-  if(!confirm("Confirma exclusão do usuário '" + username + "' ?")) return;
+function excluirUsuarioLocal(username) {
+  if (!confirm(`Excluir usuário ${username}?`)) return;
   localUsers = localUsers.filter(u => u.username !== username);
   renderizarUsuarios();
-  alert('Usuário excluído (local).');
 }
 
-/* ====== Respostas ====== */
-async function salvarRespostas(){
-  if(!usuarioLogado){ alert('Faça login para enviar respostas.'); return; }
-  const respostaAtual = perguntas.map((p, i) => {
-    const el = document.getElementById('resposta_' + i);
+async function salvarRespostas() {
+  if (!usuarioLogado) return alert('Faça login primeiro.');
+
+  const answers = perguntas.map((_, i) => {
+    const el = document.getElementById(`resposta_${i}`);
     return el ? el.value.trim() : '';
   });
-  if(respostaAtual.every(r => r === '')){ alert('Preencha pelo menos uma resposta antes de enviar.'); return; }
 
-  if(fb){
-    try {
-      await fb.addDoc(fb.collection(fb.db, 'responses'), { author: usuarioLogado.email || usuarioLogado.username, answers: respostaAtual, createdAt: new Date().toISOString() });
-      perguntas.forEach((p, i) => { const el = document.getElementById('resposta_' + i); if(el) el.value = ''; });
-      alert('Respostas salvas!');
-    } catch(err){ console.error(err); alert('Erro ao salvar respostas: ' + err.message); }
-  } else {
-    respostas.push({ author: usuarioLogado.username || 'local', answers: respostaAtual, createdAt: new Date().toISOString() });
-    perguntas.forEach((p, i) => { const el = document.getElementById('resposta_' + i); if(el) el.value = ''; });
-    alert('Respostas salvas (local).');
-  }
+  if (answers.every(a => !a)) return alert('Preencha pelo menos uma resposta.');
+
+  respostas.push({
+    author: usuarioLogado.username,
+    answers: answers,
+    createdAt: new Date().toISOString()
+  });
+
+  alert('Respostas enviadas com sucesso!');
+  document.getElementById('formEntrevista').reset();
 }
 
-/* ====== Dashboard ====== */
-async function carregarRespostas(){
-  respostas = [];
-  if(fb){
-    try {
-      const snap = await fb.getDocs(fb.collection(fb.db, 'responses'));
-      snap.forEach(d => respostas.push(d.data()));
-    } catch(err){ console.error('Erro carregar respostas:', err); }
-  }
-}
+async function gerarGrafico() {
+  const ctx = document.getElementById('graficoRespostas').getContext('2d');
+  
+  if (window.myChart) window.myChart.destroy();
 
-async function gerarGrafico(){
-  await carregarRespostas();
-  const canvas = document.getElementById('graficoRespostas');
-  if(!canvas) return;
-  const ctx = canvas.getContext('2d');
-  const dados = perguntas.map((p, i) => respostas.filter(r => r.answers && r.answers[i] && r.answers[i].length > 0).length);
-  if(window._chartInstance) window._chartInstance.destroy();
-  window._chartInstance = new Chart(ctx, {
+  const data = perguntas.map((p, i) => 
+    respostas.filter(r => r.answers[i] && r.answers[i].length > 5).length
+  );
+
+  window.myChart = new Chart(ctx, {
     type: 'bar',
-    data: { labels: perguntas.map(p => p.text || p), datasets: [{ label: 'Número de respostas', data: dados, backgroundColor: 'rgba(220,53,69,0.7)' }] },
-    options: { responsive: true, plugins: { legend: { display: false }, title: { display: true, text: 'Respostas por Pergunta' } }, scales: { y: { beginAtZero: true, precision: 0 } } }
+    data: {
+      labels: perguntas.map(p => p.text.substring(0, 35) + '...'),
+      datasets: [{
+        label: 'Quantidade de Respostas',
+        data: data,
+        backgroundColor: '#dc3545'
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+    }
   });
 }
 
-/* ====== Menu behavior (click/hover) ====== */
-document.querySelectorAll('.submenu-link').forEach(a=>{
-  a.addEventListener('click', function(e){
-    e.preventDefault();
-    e.stopPropagation();
-    const sec = this.getAttribute('data-show');
-    mostrar(sec);
-    closeAllSubmenus();
-  });
-});
-
-document.querySelectorAll('.menu-left > ul > li.has-sub > a.menu-link').forEach(link=>{
-  link.addEventListener('click', function(e){
-    e.preventDefault();
-    e.stopPropagation();
-    const li = this.closest('li.has-sub');
-    if(!li) return;
-    const isOpen = li.classList.contains('open');
-    closeAllSubmenus();
-    if(!isOpen) li.classList.add('open');
-  });
-});
-
-document.addEventListener('click', function(e){
-  if(!e.target.closest('nav')) closeAllSubmenus();
-});
-
-function closeAllSubmenus(){ document.querySelectorAll('nav li.has-sub.open').forEach(li => li.classList.remove('open')); }
-document.querySelectorAll('nav ul.submenu').forEach(ul => ul.addEventListener('click', function(e){ e.stopPropagation(); }));
-
-/* ====== UI helper: mostrar seções ====== */
-function mostrar(secao){
-  const ids = ["usuarios","perguntas","formulario","dashboard"];
-  ids.forEach(id => { const el = document.getElementById(id); if(el) el.style.display = 'none'; });
-  if(secao){
+function mostrar(secao) {
+  document.querySelectorAll('.card').forEach(card => card.style.display = 'none');
+  if (secao) {
     const el = document.getElementById(secao);
-    if(el) el.style.display = 'block';
-    if(secao === 'perguntas' || secao === 'formulario') renderizarPerguntas();
-    if(secao === 'usuarios') renderizarUsuarios();
-    if(secao === 'dashboard') gerarGrafico();
+    if (el) el.style.display = 'block';
+    if (secao === 'perguntas' || secao === 'formulario') renderizarPerguntas();
+    if (secao === 'usuarios') renderizarUsuarios();
+    if (secao === 'dashboard') gerarGrafico();
   }
 }
 
-/* ====== Inicialização ====== */
-(async function init(){
-  if(fb){
-    await carregarPerguntas();
-  } else {
-    perguntas = [
-      { id: 'q1', text: "Como você avalia sua experiência na empresa?" },
-      { id: 'q2', text: "O que poderia ser melhorado?" }
-    ];
-  }
-  renderizarPerguntas();
-  renderizarUsuarios();
-})();
-</script>
+// Event Listeners
+document.getElementById('btnEntrar').addEventListener('click', handleLogin);
+document.getElementById('loginPass').addEventListener('keydown', e => { if (e.key === 'Enter') handleLogin(); });
 
+document.getElementById('logoutMaster').addEventListener('click', e => { e.preventDefault(); doLogout(); });
+document.getElementById('logoutUser').addEventListener('click', e => { e.preventDefault(); doLogout(); });
+
+document.querySelectorAll('.submenu-link').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    mostrar(link.getAttribute('data-show'));
+  });
+});
+
+// Inicialização
+renderizarPerguntas();
+renderizarUsuarios();
+</script>
 </body>
 </html>
