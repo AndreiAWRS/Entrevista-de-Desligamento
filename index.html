@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <style>
-    /* Base */
     body { font-family: Arial, sans-serif; margin: 0; background: #f4f6f9; }
     header { background: #dc3545; color: #fff; padding: 20px; text-align: center; }
     header h1 { margin: 0; font-size: 28px; text-transform: uppercase; }
@@ -33,22 +32,12 @@
     .menu-list li a.menu-link:hover { background:#111; }
 
     ul.submenu {
-      display:none;
-      position:absolute;
-      top:calc(100% + 6px);
-      left:0;
-      background:#444;
-      min-width:200px;
-      z-index:100;
-      border-radius:6px;
-      box-shadow:0 6px 18px rgba(0,0,0,0.3);
-      padding:8px 0;
-      margin:0;
-      list-style:none;
+      display:none; position:absolute; top:calc(100% + 6px); left:0;
+      background:#444; min-width:200px; z-index:100; border-radius:6px;
+      box-shadow:0 6px 18px rgba(0,0,0,0.3); padding:8px 0; margin:0; list-style:none;
     }
     ul.submenu li a { padding:10px 16px; color:#fff; display:block; text-decoration:none; }
     ul.submenu li a:hover { background:#3b3b3b; }
-
     .menu-list li:hover > ul.submenu { display:block; }
 
     .menu-right { display:flex; align-items:center; gap:10px; margin-left: auto; }
@@ -72,10 +61,7 @@
     }
     button:hover { background:#0056b3; }
 
-    .question-row, .user-row {
-      display:flex; justify-content:space-between; align-items:center; 
-      padding:10px 0; border-bottom:1px solid #eee;
-    }
+    .question-row { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid #eee; }
     .actions button {
       margin-left:6px; background:#dc3545; color:#fff; border:none; 
       padding:6px 12px; border-radius:4px; cursor:pointer;
@@ -85,11 +71,6 @@
     table { width:100%; border-collapse: collapse; margin-top:15px; }
     th, td { border: 1px solid #e0e0e0; padding: 10px; text-align:left; }
     th { background:#f8f9fa; }
-
-    @media (max-width: 768px) {
-      .menu-row { flex-direction: column; align-items: stretch; }
-      .menu-right { margin-left: 0; justify-content: center; margin-top: 8px; }
-    }
   </style>
 </head>
 <body>
@@ -109,52 +90,37 @@
 <nav id="menuNav">
   <div class="menu-row">
     <div class="menu-left">
-      <!-- Menu MASTER -->
       <ul id="menuMaster" class="menu-list" style="display:none;">
-        <li>
-          <a href="#" class="menu-link">CRIAR</a>
+        <li><a href="#" class="menu-link">CRIAR</a>
           <ul class="submenu">
             <li><a href="#" class="submenu-link" data-show="usuarios">Usuários</a></li>
           </ul>
         </li>
-        <li>
-          <a href="#" class="menu-link">FORMULÁRIO</a>
+        <li><a href="#" class="menu-link">FORMULÁRIO</a>
           <ul class="submenu">
             <li><a href="#" class="submenu-link" data-show="perguntas">Perguntas</a></li>
             <li><a href="#" class="submenu-link" data-show="formulario">Formulário</a></li>
           </ul>
         </li>
-        <li>
-          <a href="#" class="menu-link">DASHBOARD</a>
+        <li><a href="#" class="menu-link">DASHBOARD</a>
           <ul class="submenu">
             <li><a href="#" class="submenu-link" data-show="dashboard">Gráficos</a></li>
           </ul>
         </li>
       </ul>
 
-      <!-- Menu OPERADORES -->
       <ul id="menuOperadores" class="menu-list" style="display:none;">
-        <li>
-          <a href="#" class="menu-link">FORMULÁRIO</a>
-          <ul class="submenu">
-            <li><a href="#" class="submenu-link" data-show="formulario">Formulário</a></li>
-          </ul>
+        <li><a href="#" class="menu-link">FORMULÁRIO</a>
+          <ul class="submenu"><li><a href="#" class="submenu-link" data-show="formulario">Formulário</a></li></ul>
         </li>
-        <li>
-          <a href="#" class="menu-link">DASHBOARD</a>
-          <ul class="submenu">
-            <li><a href="#" class="submenu-link" data-show="dashboard">Gráficos</a></li>
-          </ul>
+        <li><a href="#" class="menu-link">DASHBOARD</a>
+          <ul class="submenu"><li><a href="#" class="submenu-link" data-show="dashboard">Gráficos</a></li></ul>
         </li>
       </ul>
 
-      <!-- Menu USUÁRIOS -->
       <ul id="menuUser" class="menu-list" style="display:none;">
-        <li>
-          <a href="#" class="menu-link">FORMULÁRIO</a>
-          <ul class="submenu">
-            <li><a href="#" class="submenu-link" data-show="formulario">Formulário</a></li>
-          </ul>
+        <li><a href="#" class="menu-link">FORMULÁRIO</a>
+          <ul class="submenu"><li><a href="#" class="submenu-link" data-show="formulario">Formulário</a></li></ul>
         </li>
       </ul>
     </div>
@@ -176,7 +142,7 @@
   <div class="card" id="usuarios" style="display:none;">
     <h2>Criar Usuário</h2>
     <label>Login (username)</label>
-    <input type="text" id="novoUser" placeholder="andrei">
+    <input type="text" id="novoUser" placeholder="">
     <label>Senha</label>
     <input type="password" id="novoPass">
     <label>Grupo</label>
@@ -185,7 +151,7 @@
       <option value="OPERADORES">OPERADORES</option>
       <option value="MASTER">MASTER</option>
     </select>
-    <button onclick="criarUsuario()">Criar Usuário</button>
+    <button id="btnCriarUsuario">Criar Usuário</button>
 
     <h2 style="margin-top:30px;">Usuários Cadastrados</h2>
     <table id="usersTable">
@@ -199,7 +165,7 @@
     <h2>Gerenciar Perguntas</h2>
     <label>Nova Pergunta</label>
     <input type="text" id="novaPergunta" placeholder="Digite a pergunta...">
-    <button onclick="adicionarPergunta()">Adicionar Pergunta</button>
+    <button id="btnAdicionarPergunta">Adicionar Pergunta</button>
 
     <h2 style="margin-top:25px;">Perguntas Atuais</h2>
     <div id="listaPerguntas"></div>
@@ -209,7 +175,7 @@
   <div class="card" id="formulario" style="display:none;">
     <h2>Entrevista de Desligamento</h2>
     <form id="formEntrevista"></form>
-    <button onclick="salvarRespostas()" style="background:#28a745;">Enviar Respostas</button>
+    <button id="btnSalvarRespostas" style="background:#28a745;">Enviar Respostas</button>
   </div>
 
   <!-- Dashboard -->
@@ -219,36 +185,36 @@
   </div>
 </div>
 
-<script type="module">
-const firebaseConfig = { apiKey: null }; // Deixe null para usar modo local
-let fb = null;
-
-// Estado
+<script>
+// Variáveis globais
 let usuarioLogado = null;
 let perguntas = [];
 let respostas = [];
 let localUsers = [{ username: 'andrei', password: '#Andrei1996', role: 'MASTER' }];
 
-// Elementos
+// Elementos DOM
 const loginCard = document.getElementById('loginCard');
 const menuNav = document.getElementById('menuNav');
 
-// Funções principais (mesma lógica anterior, com correções)
-async function handleLogin() {
+// ==================== LOGIN ====================
+document.getElementById('btnEntrar').addEventListener('click', handleLogin);
+document.getElementById('loginPass').addEventListener('keydown', e => {
+  if (e.key === 'Enter') handleLogin();
+});
+
+function handleLogin() {
   const userInput = document.getElementById('loginUser').value.trim();
   const pass = document.getElementById('loginPass').value;
 
   if (!userInput || !pass) return alert('Preencha usuário e senha.');
 
-  // Modo local
   const found = localUsers.find(u => u.username === userInput && u.password === pass);
   if (found) {
-    usuarioLogado = { username: found.username, role: found.role, local: true };
+    usuarioLogado = { username: found.username, role: found.role };
     onLoginSucesso();
-    return;
+  } else {
+    alert('Usuário ou senha inválidos.');
   }
-
-  alert('Usuário ou senha inválidos (modo local).');
 }
 
 function onLoginSucesso() {
@@ -258,7 +224,7 @@ function onLoginSucesso() {
   const role = usuarioLogado.role;
   document.getElementById('menuMaster').style.display = role === 'MASTER' ? 'flex' : 'none';
   document.getElementById('menuOperadores').style.display = role === 'OPERADORES' ? 'flex' : 'none';
-  document.getElementById('menuUser').style.display = (role === 'USUARIOS' || role === 'OPERADORES') ? 'flex' : 'none';
+  document.getElementById('menuUser').style.display = role !== 'MASTER' ? 'flex' : 'none';
 
   document.getElementById('menuRightMaster').style.display = role === 'MASTER' ? 'flex' : 'none';
   document.getElementById('menuRightUser').style.display = role !== 'MASTER' ? 'flex' : 'none';
@@ -266,72 +232,30 @@ function onLoginSucesso() {
   const welcomeEl = role === 'MASTER' ? document.getElementById('bemvindo') : document.getElementById('bemvindoUser');
   welcomeEl.textContent = `Bem-vindo, ${usuarioLogado.username}`;
 
-  // Carregar dados iniciais
-  if (perguntas.length === 0) {
-    perguntas = [
-      { id: 'q1', text: "Como você avalia sua experiência na empresa?" },
-      { id: 'q2', text: "O que poderia ser melhorado na empresa?" },
-      { id: 'q3', text: "Você recomendaria a empresa para outros profissionais?" }
-    ];
-  }
+  perguntas = perguntas.length ? perguntas : [
+    { id: 'q1', text: "Como você avalia sua experiência na empresa?" },
+    { id: 'q2', text: "O que poderia ser melhorado na empresa?" },
+    { id: 'q3', text: "Você recomendaria a empresa para outros profissionais?" }
+  ];
+
   mostrar('formulario');
 }
 
-async function doLogout() {
+// ==================== LOGOUT ====================
+document.getElementById('logoutMaster').addEventListener('click', e => { e.preventDefault(); doLogout(); });
+document.getElementById('logoutUser').addEventListener('click', e => { e.preventDefault(); doLogout(); });
+
+function doLogout() {
   usuarioLogado = null;
   menuNav.style.display = 'none';
   loginCard.style.display = 'block';
   document.querySelectorAll('.card').forEach(c => c.style.display = 'none');
 }
 
-// Funções restantes (adicionarPergunta, criarUsuario, etc.)
-function adicionarPergunta() {
-  if (usuarioLogado?.role !== 'MASTER') return alert('Apenas MASTER pode adicionar perguntas.');
-  const text = document.getElementById('novaPergunta').value.trim();
-  if (!text) return alert('Digite uma pergunta.');
+// ==================== USUÁRIOS ====================
+document.getElementById('btnCriarUsuario').addEventListener('click', criarUsuario);
 
-  perguntas.push({ id: 'q' + Date.now(), text });
-  document.getElementById('novaPergunta').value = '';
-  renderizarPerguntas();
-  alert('Pergunta adicionada!');
-}
-
-function renderizarPerguntas() {
-  const container = document.getElementById('listaPerguntas');
-  const form = document.getElementById('formEntrevista');
-  container.innerHTML = '';
-  form.innerHTML = '';
-
-  perguntas.forEach((p, i) => {
-    // Lista de perguntas (admin)
-    const row = document.createElement('div');
-    row.className = 'question-row';
-    row.innerHTML = `
-      <div>${p.text}</div>
-      <div class="actions">
-        ${usuarioLogado?.role === 'MASTER' ? `<button onclick="excluirPergunta('${p.id}')">Excluir</button>` : ''}
-      </div>
-    `;
-    container.appendChild(row);
-
-    // Formulário
-    const label = document.createElement('label');
-    label.textContent = p.text;
-    const textarea = document.createElement('textarea');
-    textarea.id = `resposta_${i}`;
-    textarea.rows = 3;
-    form.appendChild(label);
-    form.appendChild(textarea);
-  });
-}
-
-function excluirPergunta(id) {
-  if (!confirm('Excluir esta pergunta?')) return;
-  perguntas = perguntas.filter(p => p.id !== id);
-  renderizarPerguntas();
-}
-
-async function criarUsuario() {
+function criarUsuario() {
   if (usuarioLogado?.role !== 'MASTER') return alert('Apenas MASTER pode criar usuários.');
 
   const username = document.getElementById('novoUser').value.trim();
@@ -339,8 +263,7 @@ async function criarUsuario() {
   const role = document.getElementById('novoRole').value;
 
   if (!username || !password) return alert('Preencha usuário e senha.');
-
-  if (localUsers.some(u => u.username === username)) return alert('Usuário já existe.');
+  if (localUsers.some(u => u.username === username)) return alert('Este usuário já existe.');
 
   localUsers.push({ username, password, role });
   document.getElementById('novoUser').value = '';
@@ -367,13 +290,65 @@ function renderizarUsuarios() {
   });
 }
 
-function excluirUsuarioLocal(username) {
+window.excluirUsuarioLocal = function(username) {
   if (!confirm(`Excluir usuário ${username}?`)) return;
   localUsers = localUsers.filter(u => u.username !== username);
   renderizarUsuarios();
+};
+
+// ==================== PERGUNTAS ====================
+document.getElementById('btnAdicionarPergunta').addEventListener('click', adicionarPergunta);
+
+function adicionarPergunta() {
+  if (usuarioLogado?.role !== 'MASTER') return alert('Apenas MASTER pode adicionar perguntas.');
+  const text = document.getElementById('novaPergunta').value.trim();
+  if (!text) return alert('Digite uma pergunta.');
+
+  perguntas.push({ id: 'q' + Date.now(), text });
+  document.getElementById('novaPergunta').value = '';
+  renderizarPerguntas();
+  alert('Pergunta adicionada!');
 }
 
-async function salvarRespostas() {
+function renderizarPerguntas() {
+  const container = document.getElementById('listaPerguntas');
+  const form = document.getElementById('formEntrevista');
+  container.innerHTML = '';
+  form.innerHTML = '';
+
+  perguntas.forEach((p, i) => {
+    // Lista para administração
+    const row = document.createElement('div');
+    row.className = 'question-row';
+    row.innerHTML = `
+      <div>${p.text}</div>
+      <div class="actions">
+        ${usuarioLogado?.role === 'MASTER' ? `<button onclick="excluirPergunta('${p.id}')">Excluir</button>` : ''}
+      </div>
+    `;
+    container.appendChild(row);
+
+    // Formulário de respostas
+    const label = document.createElement('label');
+    label.textContent = p.text;
+    const textarea = document.createElement('textarea');
+    textarea.id = `resposta_${i}`;
+    textarea.rows = 3;
+    form.appendChild(label);
+    form.appendChild(textarea);
+  });
+}
+
+window.excluirPergunta = function(id) {
+  if (!confirm('Excluir esta pergunta?')) return;
+  perguntas = perguntas.filter(p => p.id !== id);
+  renderizarPerguntas();
+};
+
+// ==================== FORMULÁRIO ====================
+document.getElementById('btnSalvarRespostas').addEventListener('click', salvarRespostas);
+
+function salvarRespostas() {
   if (!usuarioLogado) return alert('Faça login primeiro.');
 
   const answers = perguntas.map((_, i) => {
@@ -393,19 +368,19 @@ async function salvarRespostas() {
   document.getElementById('formEntrevista').reset();
 }
 
-async function gerarGrafico() {
+// ==================== DASHBOARD ====================
+function gerarGrafico() {
   const ctx = document.getElementById('graficoRespostas').getContext('2d');
-  
   if (window.myChart) window.myChart.destroy();
 
-  const data = perguntas.map((p, i) => 
+  const data = perguntas.map((_, i) => 
     respostas.filter(r => r.answers[i] && r.answers[i].length > 5).length
   );
 
   window.myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: perguntas.map(p => p.text.substring(0, 35) + '...'),
+      labels: perguntas.map(p => p.text.substring(0, 35) + (p.text.length > 35 ? '...' : '')),
       datasets: [{
         label: 'Quantidade de Respostas',
         data: data,
@@ -419,6 +394,7 @@ async function gerarGrafico() {
   });
 }
 
+// ==================== NAVEGAÇÃO ====================
 function mostrar(secao) {
   document.querySelectorAll('.card').forEach(card => card.style.display = 'none');
   if (secao) {
@@ -429,13 +405,6 @@ function mostrar(secao) {
     if (secao === 'dashboard') gerarGrafico();
   }
 }
-
-// Event Listeners
-document.getElementById('btnEntrar').addEventListener('click', handleLogin);
-document.getElementById('loginPass').addEventListener('keydown', e => { if (e.key === 'Enter') handleLogin(); });
-
-document.getElementById('logoutMaster').addEventListener('click', e => { e.preventDefault(); doLogout(); });
-document.getElementById('logoutUser').addEventListener('click', e => { e.preventDefault(); doLogout(); });
 
 document.querySelectorAll('.submenu-link').forEach(link => {
   link.addEventListener('click', e => {
