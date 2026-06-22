@@ -2,420 +2,672 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8" />
-  <title>ENTREVISTA DE DESLIGAMENTO</title>
+  <title>Entrevista de Desligamento</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; background: #f4f6f9; }
-    header { background: #dc3545; color: #fff; padding: 20px; text-align: center; }
-    header h1 { margin: 0; font-size: 28px; text-transform: uppercase; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    nav { background: #333; display: none; width: 100%; }
-    .menu-row {
-      max-width: 1100px;
-      margin: 0 auto;
+    :root {
+      --primary: #1a56db;
+      --primary-light: #e8f0fe;
+      --primary-dark: #1039a8;
+      --danger: #c81e1e;
+      --danger-light: #fde8e8;
+      --success: #057a55;
+      --success-light: #def7ec;
+      --warning: #c27803;
+      --warning-light: #fdf6b2;
+      --text: #111928;
+      --text-muted: #6b7280;
+      --text-light: #9ca3af;
+      --border: #e5e7eb;
+      --bg: #f3f4f6;
+      --card: #ffffff;
+      --sidebar-w: 240px;
+      --header-h: 64px;
+      --radius: 10px;
+      --radius-lg: 14px;
+    }
+
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* ===== LOGIN ===== */
+    #loginScreen {
+      min-height: 100vh;
       display: flex;
       align-items: center;
-      padding: 8px 12px;
-      gap: 12px;
-      justify-content: space-between;
-      flex-wrap: wrap;
+      justify-content: center;
+      background: linear-gradient(135deg, #1a56db 0%, #1039a8 100%);
     }
+    .login-box {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    }
+    .login-logo {
+      width: 48px; height: 48px;
+      background: var(--primary);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px;
+    }
+    .login-logo i { font-size: 24px; color: #fff; }
+    .login-box h1 { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
+    .login-box p { font-size: 14px; color: var(--text-muted); margin-bottom: 28px; }
+    .field { margin-bottom: 16px; }
+    .field label { display: block; font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 6px; }
+    .field-icon { position: relative; }
+    .field-icon i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 16px; color: var(--text-light); }
+    .field-icon input { padding-left: 38px; }
+    input, textarea, select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--text);
+      background: #fff;
+      transition: border-color .2s, box-shadow .2s;
+      outline: none;
+    }
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(26,86,219,0.15);
+    }
+    textarea { resize: vertical; line-height: 1.6; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 18px;
+      border: none; border-radius: var(--radius);
+      font-size: 14px; font-weight: 500; font-family: inherit;
+      cursor: pointer; transition: background .2s, transform .1s;
+      text-decoration: none;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-dark); }
+    .btn-success { background: var(--success); color: #fff; }
+    .btn-success:hover { background: #046c4e; }
+    .btn-danger { background: var(--danger); color: #fff; }
+    .btn-danger:hover { background: #9b1c1c; }
+    .btn-ghost { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
+    .btn-ghost:hover { background: var(--bg); }
+    .btn-full { width: 100%; justify-content: center; }
+    .btn-sm { padding: 6px 12px; font-size: 13px; }
 
-    .menu-left { display:flex; align-items:center; gap:6px; flex-wrap: wrap; }
-    .menu-list { display:flex; gap:6px; margin:0; padding:0; list-style:none; align-items:center; }
-    .menu-list li { position:relative; }
-    .menu-list li a.menu-link { 
-      color:#fff; padding:12px 18px; text-decoration:none; display:block; 
-      font-weight:500; white-space:nowrap; border-radius:4px;
-    }
-    .menu-list li a.menu-link:hover { background:#111; }
+    /* ===== APP LAYOUT ===== */
+    #appScreen { display: none; min-height: 100vh; flex-direction: column; }
+    #appScreen.active { display: flex; }
 
-    ul.submenu {
-      display:none; position:absolute; top:calc(100% + 6px); left:0;
-      background:#444; min-width:200px; z-index:100; border-radius:6px;
-      box-shadow:0 6px 18px rgba(0,0,0,0.3); padding:8px 0; margin:0; list-style:none;
+    /* Header */
+    .app-header {
+      height: var(--header-h);
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center;
+      padding: 0 24px;
+      position: sticky; top: 0; z-index: 100;
     }
-    ul.submenu li a { padding:10px 16px; color:#fff; display:block; text-decoration:none; }
-    ul.submenu li a:hover { background:#3b3b3b; }
-    .menu-list li:hover > ul.submenu { display:block; }
+    .app-header .logo { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 16px; margin-right: 32px; }
+    .app-header .logo-icon { width: 32px; height: 32px; background: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+    .app-header .logo-icon i { font-size: 16px; color: #fff; }
+    .header-user { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+    .user-badge {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; color: var(--text-muted);
+    }
+    .user-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--primary-light);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 600; color: var(--primary);
+    }
+    .role-badge {
+      font-size: 11px; font-weight: 500;
+      padding: 2px 8px; border-radius: 20px;
+    }
+    .role-MASTER { background: #ede9fe; color: #5b21b6; }
+    .role-OPERADORES { background: #dbeafe; color: #1e40af; }
+    .role-USUARIOS { background: #d1fae5; color: #065f46; }
 
-    .menu-right { display:flex; align-items:center; gap:10px; margin-left: auto; }
-    .welcome { color:#fff; font-weight:600; }
-    .sair { background:#dc3545; color:#fff; padding:8px 16px; border-radius:4px; text-decoration:none; }
-    .sair:hover { background:#a71d2a; }
+    /* Body */
+    .app-body { display: flex; flex: 1; }
 
-    .container { max-width: 950px; margin: 30px auto; padding: 0 15px; }
-    .card { 
-      background:#fff; border-radius:8px; box-shadow:0 2px 10px rgba(0,0,0,0.1); 
-      padding:25px; margin-bottom:30px; 
+    /* Sidebar */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: #fff;
+      border-right: 1px solid var(--border);
+      padding: 20px 12px;
+      position: sticky; top: var(--header-h);
+      height: calc(100vh - var(--header-h));
+      overflow-y: auto;
+      flex-shrink: 0;
     }
-    h2 { color:#007bff; margin-top:0; }
-    input, textarea, select { 
-      margin:8px 0; padding:10px; width:100%; border:1px solid #ccc; 
-      border-radius:4px; box-sizing:border-box; font-size:16px;
+    .sidebar-section { margin-bottom: 24px; }
+    .sidebar-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--text-light); padding: 0 8px; margin-bottom: 6px; }
+    .sidebar-link {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 10px; border-radius: 8px;
+      font-size: 14px; color: var(--text-muted);
+      cursor: pointer; transition: all .15s;
+      margin-bottom: 2px;
     }
-    button { 
-      margin-top:10px; padding:10px 18px; background:#007bff; color:#fff; 
-      border:none; border-radius:4px; cursor:pointer; font-size:16px;
-    }
-    button:hover { background:#0056b3; }
+    .sidebar-link i { font-size: 18px; }
+    .sidebar-link:hover { background: var(--bg); color: var(--text); }
+    .sidebar-link.active { background: var(--primary-light); color: var(--primary); font-weight: 500; }
 
-    .question-row { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid #eee; }
-    .actions button {
-      margin-left:6px; background:#dc3545; color:#fff; border:none; 
-      padding:6px 12px; border-radius:4px; cursor:pointer;
-    }
-    .actions button:hover { background:#a71d2a; }
+    /* Content */
+    .content { flex: 1; padding: 28px; overflow-y: auto; }
+    .page { display: none; }
+    .page.active { display: block; }
 
-    table { width:100%; border-collapse: collapse; margin-top:15px; }
-    th, td { border: 1px solid #e0e0e0; padding: 10px; text-align:left; }
-    th { background:#f8f9fa; }
+    .page-header { margin-bottom: 24px; }
+    .page-header h2 { font-size: 20px; font-weight: 600; }
+    .page-header p { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
+
+    /* Cards */
+    .card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    .card-title { font-size: 15px; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    .card-title i { font-size: 18px; color: var(--primary); }
+
+    /* Table */
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th { text-align: left; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--text-muted); padding: 8px 12px; border-bottom: 1px solid var(--border); }
+    td { padding: 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #f9fafb; }
+    .table-wrap { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+
+    /* Form questions */
+    .question-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-bottom: 12px;
+    }
+    .question-card .q-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+    .question-num { font-size: 11px; font-weight: 600; color: var(--primary); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 4px; }
+    .question-text { font-size: 14px; color: var(--text); }
+    .question-textarea { margin-top: 12px; }
+
+    /* Alert / toast */
+    .toast {
+      position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+      background: var(--text); color: #fff;
+      padding: 12px 18px; border-radius: var(--radius);
+      font-size: 14px; font-weight: 500;
+      box-shadow: 0 8px 24px rgba(0,0,0,.2);
+      display: flex; align-items: center; gap: 8px;
+      animation: slideIn .3s ease;
+      max-width: 320px;
+    }
+    .toast.success { background: var(--success); }
+    .toast.danger { background: var(--danger); }
+    @keyframes slideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+    /* Stats */
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 24px; }
+    .stat-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 20px; }
+    .stat-label { font-size: 12px; color: var(--text-muted); font-weight: 500; margin-bottom: 6px; }
+    .stat-value { font-size: 28px; font-weight: 600; color: var(--text); }
+
+    /* Empty state */
+    .empty { text-align: center; padding: 40px 20px; color: var(--text-muted); }
+    .empty i { font-size: 40px; margin-bottom: 12px; opacity: .4; }
+    .empty p { font-size: 14px; }
+
+    /* Form grid */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } .sidebar { display: none; } }
+
+    .field-row { margin-bottom: 14px; }
+    .field-row label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 5px; }
+
+    /* Progress */
+    .progress-bar { height: 6px; background: var(--border); border-radius: 99px; overflow: hidden; margin-top: 8px; }
+    .progress-fill { height: 100%; background: var(--primary); border-radius: 99px; transition: width .4s; }
+
+    /* Divider */
+    .divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
   </style>
 </head>
 <body>
-<header><h1>ENTREVISTA DE DESLIGAMENTO</h1></header>
 
-<!-- Login -->
-<div class="container" id="loginCard">
-  <div class="card">
-    <h2>Login</h2>
-    <input type="text" id="loginUser" placeholder="Usuário (ex: andrei)" autocomplete="username">
-    <input type="password" id="loginPass" placeholder="Senha" autocomplete="current-password">
-    <button id="btnEntrar">Entrar</button>
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo"><i class="ti ti-clipboard-list"></i></div>
+    <h1>Entrevista de Desligamento</h1>
+    <p>Acesse com suas credenciais para continuar</p>
+    <div class="field">
+      <label>Usuário</label>
+      <div class="field-icon">
+        <i class="ti ti-user"></i>
+        <input type="text" id="loginUser" placeholder="Seu nome de usuário" autocomplete="username">
+      </div>
+    </div>
+    <div class="field">
+      <label>Senha</label>
+      <div class="field-icon">
+        <i class="ti ti-lock"></i>
+        <input type="password" id="loginPass" placeholder="Sua senha" autocomplete="current-password">
+      </div>
+    </div>
+    <button class="btn btn-primary btn-full" id="btnEntrar" style="margin-top: 8px;">
+      <i class="ti ti-login"></i> Entrar
+    </button>
   </div>
 </div>
 
-<!-- Menu -->
-<nav id="menuNav">
-  <div class="menu-row">
-    <div class="menu-left">
-      <ul id="menuMaster" class="menu-list" style="display:none;">
-        <li><a href="#" class="menu-link">CRIAR</a>
-          <ul class="submenu">
-            <li><a href="#" class="submenu-link" data-show="usuarios">Usuários</a></li>
-          </ul>
-        </li>
-        <li><a href="#" class="menu-link">FORMULÁRIO</a>
-          <ul class="submenu">
-            <li><a href="#" class="submenu-link" data-show="perguntas">Perguntas</a></li>
-            <li><a href="#" class="submenu-link" data-show="formulario">Formulário</a></li>
-          </ul>
-        </li>
-        <li><a href="#" class="menu-link">DASHBOARD</a>
-          <ul class="submenu">
-            <li><a href="#" class="submenu-link" data-show="dashboard">Gráficos</a></li>
-          </ul>
-        </li>
-      </ul>
-
-      <ul id="menuOperadores" class="menu-list" style="display:none;">
-        <li><a href="#" class="menu-link">FORMULÁRIO</a>
-          <ul class="submenu"><li><a href="#" class="submenu-link" data-show="formulario">Formulário</a></li></ul>
-        </li>
-        <li><a href="#" class="menu-link">DASHBOARD</a>
-          <ul class="submenu"><li><a href="#" class="submenu-link" data-show="dashboard">Gráficos</a></li></ul>
-        </li>
-      </ul>
-
-      <ul id="menuUser" class="menu-list" style="display:none;">
-        <li><a href="#" class="menu-link">FORMULÁRIO</a>
-          <ul class="submenu"><li><a href="#" class="submenu-link" data-show="formulario">Formulário</a></li></ul>
-        </li>
-      </ul>
+<!-- APP -->
+<div id="appScreen">
+  <!-- Header -->
+  <header class="app-header">
+    <div class="logo">
+      <div class="logo-icon"><i class="ti ti-clipboard-list"></i></div>
+      Desligamento RH
     </div>
-
-    <div class="menu-right" id="menuRightMaster" style="display:none;">
-      <span id="bemvindo" class="welcome"></span>
-      <a href="#" class="sair" id="logoutMaster">SAIR</a>
+    <div class="header-user">
+      <div class="user-badge">
+        <div class="user-avatar" id="userAvatar">?</div>
+        <div>
+          <div id="userName" style="font-size:13px; font-weight:500; color: var(--text);"></div>
+          <span class="role-badge" id="userRole"></span>
+        </div>
+      </div>
+      <button class="btn btn-ghost btn-sm" id="btnLogout">
+        <i class="ti ti-logout"></i> Sair
+      </button>
     </div>
+  </header>
 
-    <div class="menu-right" id="menuRightUser" style="display:none;">
-      <span id="bemvindoUser" class="welcome"></span>
-      <a href="#" class="sair" id="logoutUser">SAIR</a>
-    </div>
-  </div>
-</nav>
+  <div class="app-body">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-section" id="sidebarFormSection">
+        <div class="sidebar-title">Formulário</div>
+        <div class="sidebar-link" data-page="formulario">
+          <i class="ti ti-file-text"></i> Preencher entrevista
+        </div>
+      </div>
+      <div class="sidebar-section" id="sidebarAdminSection" style="display:none;">
+        <div class="sidebar-title">Administração</div>
+        <div class="sidebar-link" data-page="usuarios">
+          <i class="ti ti-users"></i> Usuários
+        </div>
+        <div class="sidebar-link" data-page="perguntas">
+          <i class="ti ti-list"></i> Perguntas
+        </div>
+      </div>
+      <div class="sidebar-section" id="sidebarDashSection" style="display:none;">
+        <div class="sidebar-title">Relatórios</div>
+        <div class="sidebar-link" data-page="dashboard">
+          <i class="ti ti-chart-bar"></i> Dashboard
+        </div>
+      </div>
+    </aside>
 
-<div class="container">
-  <!-- Usuários -->
-  <div class="card" id="usuarios" style="display:none;">
-    <h2>Criar Usuário</h2>
-    <label>Login (username)</label>
-    <input type="text" id="novoUser" placeholder="">
-    <label>Senha</label>
-    <input type="password" id="novoPass">
-    <label>Grupo</label>
-    <select id="novoRole">
-      <option value="USUARIOS">USUÁRIOS</option>
-      <option value="OPERADORES">OPERADORES</option>
-      <option value="MASTER">MASTER</option>
-    </select>
-    <button id="btnCriarUsuario">Criar Usuário</button>
+    <!-- Content -->
+    <main class="content">
 
-    <h2 style="margin-top:30px;">Usuários Cadastrados</h2>
-    <table id="usersTable">
-      <thead><tr><th>Usuário</th><th>Grupo</th><th>Ações</th></tr></thead>
-      <tbody id="usersTbody"></tbody>
-    </table>
-  </div>
+      <!-- FORMULÁRIO -->
+      <div class="page" id="page-formulario">
+        <div class="page-header">
+          <h2>Entrevista de Desligamento</h2>
+          <p>Responda com sinceridade — suas respostas são confidenciais e nos ajudam a melhorar.</p>
+        </div>
+        <div id="formBody">
+          <!-- Perguntas renderizadas aqui -->
+        </div>
+        <button class="btn btn-success" id="btnSalvarRespostas">
+          <i class="ti ti-send"></i> Enviar respostas
+        </button>
+      </div>
 
-  <!-- Perguntas -->
-  <div class="card" id="perguntas" style="display:none;">
-    <h2>Gerenciar Perguntas</h2>
-    <label>Nova Pergunta</label>
-    <input type="text" id="novaPergunta" placeholder="Digite a pergunta...">
-    <button id="btnAdicionarPergunta">Adicionar Pergunta</button>
+      <!-- PERGUNTAS -->
+      <div class="page" id="page-perguntas">
+        <div class="page-header">
+          <h2>Gerenciar perguntas</h2>
+          <p>Adicione, visualize ou remova perguntas do formulário de entrevista.</p>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="ti ti-circle-plus"></i> Nova pergunta</div>
+          <div style="display:flex; gap:10px;">
+            <input type="text" id="novaPergunta" placeholder="Digite a pergunta...">
+            <button class="btn btn-primary" id="btnAdicionarPergunta" style="white-space:nowrap;">
+              <i class="ti ti-plus"></i> Adicionar
+            </button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="ti ti-list"></i> Perguntas cadastradas</div>
+          <div id="listaPerguntas"></div>
+        </div>
+      </div>
 
-    <h2 style="margin-top:25px;">Perguntas Atuais</h2>
-    <div id="listaPerguntas"></div>
-  </div>
+      <!-- USUÁRIOS -->
+      <div class="page" id="page-usuarios">
+        <div class="page-header">
+          <h2>Gerenciar usuários</h2>
+          <p>Crie e gerencie acessos por nível de permissão.</p>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="ti ti-user-plus"></i> Criar usuário</div>
+          <div class="form-grid">
+            <div class="field-row">
+              <label>Nome de usuário</label>
+              <input type="text" id="novoUser" placeholder="ex: joao.silva">
+            </div>
+            <div class="field-row">
+              <label>Senha</label>
+              <input type="password" id="novoPass" placeholder="Senha de acesso">
+            </div>
+            <div class="field-row">
+              <label>Nível de acesso</label>
+              <select id="novoRole">
+                <option value="USUARIOS">Usuário — só preenche entrevista</option>
+                <option value="OPERADORES">Operador — entrevista + dashboard</option>
+                <option value="MASTER">Master — acesso completo</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn btn-primary" id="btnCriarUsuario">
+            <i class="ti ti-user-plus"></i> Criar usuário
+          </button>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="ti ti-users"></i> Usuários cadastrados</div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Usuário</th><th>Nível</th><th>Ações</th></tr></thead>
+              <tbody id="usersTbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
 
-  <!-- Formulário -->
-  <div class="card" id="formulario" style="display:none;">
-    <h2>Entrevista de Desligamento</h2>
-    <form id="formEntrevista"></form>
-    <button id="btnSalvarRespostas" style="background:#28a745;">Enviar Respostas</button>
-  </div>
+      <!-- DASHBOARD -->
+      <div class="page" id="page-dashboard">
+        <div class="page-header">
+          <h2>Dashboard</h2>
+          <p>Visão geral das respostas coletadas nas entrevistas de desligamento.</p>
+        </div>
+        <div class="stats-grid" id="statsGrid"></div>
+        <div class="card">
+          <div class="card-title"><i class="ti ti-chart-bar"></i> Respostas por pergunta</div>
+          <canvas id="graficoRespostas" style="max-height:380px;"></canvas>
+        </div>
+      </div>
 
-  <!-- Dashboard -->
-  <div class="card" id="dashboard" style="display:none;">
-    <h2>Dashboard - Respostas</h2>
-    <canvas id="graficoRespostas" height="400"></canvas>
+    </main>
   </div>
 </div>
+
+<!-- TOAST CONTAINER -->
+<div id="toastContainer"></div>
 
 <script>
-// Variáveis globais
+// ===== DADOS =====
 let usuarioLogado = null;
-let perguntas = [];
+let perguntas = [
+  { id: 'q1', text: 'Como você avalia sua experiência geral na empresa?' },
+  { id: 'q2', text: 'O que poderia ter sido melhorado no seu ambiente de trabalho?' },
+  { id: 'q3', text: 'Você recomendaria a empresa como um bom lugar para trabalhar?' },
+  { id: 'q4', text: 'Qual foi o principal motivo da sua saída?' },
+];
 let respostas = [];
-let localUsers = [{ username: 'andrei', password: '#Andrei1996', role: 'MASTER' }];
+let localUsers = [
+  { username: 'andrei', password: '#Andrei1996', role: 'MASTER' }
+];
 
-// Elementos DOM
-const loginCard = document.getElementById('loginCard');
-const menuNav = document.getElementById('menuNav');
+// ===== TOAST =====
+function toast(msg, type = '') {
+  const el = document.createElement('div');
+  el.className = 'toast' + (type ? ' ' + type : '');
+  el.innerHTML = `<i class="ti ti-${type === 'success' ? 'check' : type === 'danger' ? 'alert-circle' : 'info-circle'}"></i> ${msg}`;
+  document.getElementById('toastContainer').appendChild(el);
+  setTimeout(() => el.remove(), 3500);
+}
 
-// ==================== LOGIN ====================
+// ===== LOGIN =====
 document.getElementById('btnEntrar').addEventListener('click', handleLogin);
-document.getElementById('loginPass').addEventListener('keydown', e => {
-  if (e.key === 'Enter') handleLogin();
-});
+document.getElementById('loginPass').addEventListener('keydown', e => { if (e.key === 'Enter') handleLogin(); });
 
 function handleLogin() {
-  const userInput = document.getElementById('loginUser').value.trim();
-  const pass = document.getElementById('loginPass').value;
-
-  if (!userInput || !pass) return alert('Preencha usuário e senha.');
-
-  const found = localUsers.find(u => u.username === userInput && u.password === pass);
-  if (found) {
-    usuarioLogado = { username: found.username, role: found.role };
-    onLoginSucesso();
-  } else {
-    alert('Usuário ou senha inválidos.');
-  }
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value;
+  if (!u || !p) return toast('Preencha usuário e senha.', 'danger');
+  const found = localUsers.find(x => x.username === u && x.password === p);
+  if (!found) return toast('Usuário ou senha inválidos.', 'danger');
+  usuarioLogado = { username: found.username, role: found.role };
+  onLoginSucesso();
 }
 
 function onLoginSucesso() {
-  loginCard.style.display = 'none';
-  menuNav.style.display = 'block';
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('appScreen').classList.add('active');
 
-  const role = usuarioLogado.role;
-  document.getElementById('menuMaster').style.display = role === 'MASTER' ? 'flex' : 'none';
-  document.getElementById('menuOperadores').style.display = role === 'OPERADORES' ? 'flex' : 'none';
-  document.getElementById('menuUser').style.display = role !== 'MASTER' ? 'flex' : 'none';
+  const r = usuarioLogado.role;
+  document.getElementById('userName').textContent = usuarioLogado.username;
+  const roleBadge = document.getElementById('userRole');
+  roleBadge.textContent = r === 'MASTER' ? 'Master' : r === 'OPERADORES' ? 'Operador' : 'Usuário';
+  roleBadge.className = 'role-badge role-' + r;
+  document.getElementById('userAvatar').textContent = usuarioLogado.username[0].toUpperCase();
 
-  document.getElementById('menuRightMaster').style.display = role === 'MASTER' ? 'flex' : 'none';
-  document.getElementById('menuRightUser').style.display = role !== 'MASTER' ? 'flex' : 'none';
+  document.getElementById('sidebarAdminSection').style.display = r === 'MASTER' ? 'block' : 'none';
+  document.getElementById('sidebarDashSection').style.display = (r === 'MASTER' || r === 'OPERADORES') ? 'block' : 'none';
 
-  const welcomeEl = role === 'MASTER' ? document.getElementById('bemvindo') : document.getElementById('bemvindoUser');
-  welcomeEl.textContent = `Bem-vindo, ${usuarioLogado.username}`;
-
-  perguntas = perguntas.length ? perguntas : [
-    { id: 'q1', text: "Como você avalia sua experiência na empresa?" },
-    { id: 'q2', text: "O que poderia ser melhorado na empresa?" },
-    { id: 'q3', text: "Você recomendaria a empresa para outros profissionais?" }
-  ];
-
-  mostrar('formulario');
+  navTo('formulario');
 }
 
-// ==================== LOGOUT ====================
-document.getElementById('logoutMaster').addEventListener('click', e => { e.preventDefault(); doLogout(); });
-document.getElementById('logoutUser').addEventListener('click', e => { e.preventDefault(); doLogout(); });
-
-function doLogout() {
+// ===== LOGOUT =====
+document.getElementById('btnLogout').addEventListener('click', () => {
   usuarioLogado = null;
-  menuNav.style.display = 'none';
-  loginCard.style.display = 'block';
-  document.querySelectorAll('.card').forEach(c => c.style.display = 'none');
+  document.getElementById('appScreen').classList.remove('active');
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('loginUser').value = '';
+  document.getElementById('loginPass').value = '';
+});
+
+// ===== NAVEGAÇÃO =====
+function navTo(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  const link = document.querySelector(`.sidebar-link[data-page="${page}"]`);
+  if (link) link.classList.add('active');
+  if (page === 'formulario') renderFormulario();
+  if (page === 'perguntas') renderPerguntas();
+  if (page === 'usuarios') renderUsuarios();
+  if (page === 'dashboard') renderDashboard();
 }
 
-// ==================== USUÁRIOS ====================
-document.getElementById('btnCriarUsuario').addEventListener('click', criarUsuario);
+document.querySelectorAll('.sidebar-link').forEach(l => {
+  l.addEventListener('click', () => navTo(l.dataset.page));
+});
 
-function criarUsuario() {
-  if (usuarioLogado?.role !== 'MASTER') return alert('Apenas MASTER pode criar usuários.');
+// ===== FORMULÁRIO =====
+function renderFormulario() {
+  const body = document.getElementById('formBody');
+  if (!perguntas.length) {
+    body.innerHTML = '<div class="empty"><i class="ti ti-file-off"></i><p>Nenhuma pergunta cadastrada ainda.</p></div>';
+    return;
+  }
+  body.innerHTML = perguntas.map((p, i) => `
+    <div class="question-card">
+      <div class="q-header">
+        <div>
+          <div class="question-num">Pergunta ${i + 1}</div>
+          <div class="question-text">${p.text}</div>
+        </div>
+      </div>
+      <div class="question-textarea">
+        <textarea id="resp_${i}" rows="3" placeholder="Escreva sua resposta aqui..."></textarea>
+      </div>
+    </div>
+  `).join('');
+}
 
+document.getElementById('btnSalvarRespostas').addEventListener('click', () => {
+  if (!usuarioLogado) return;
+  const answers = perguntas.map((_, i) => {
+    const el = document.getElementById(`resp_${i}`);
+    return el ? el.value.trim() : '';
+  });
+  if (answers.every(a => !a)) return toast('Preencha pelo menos uma resposta antes de enviar.', 'danger');
+  respostas.push({ author: usuarioLogado.username, answers, createdAt: new Date().toISOString() });
+  toast('Respostas enviadas com sucesso!', 'success');
+  renderFormulario();
+});
+
+// ===== PERGUNTAS =====
+function renderPerguntas() {
+  const el = document.getElementById('listaPerguntas');
+  if (!perguntas.length) {
+    el.innerHTML = '<div class="empty"><i class="ti ti-list-search"></i><p>Nenhuma pergunta cadastrada.</p></div>';
+    return;
+  }
+  el.innerHTML = perguntas.map((p, i) => `
+    <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid var(--border);">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <span style="font-size:12px; font-weight:600; color:var(--primary); background:var(--primary-light); padding:2px 8px; border-radius:20px;">Q${i + 1}</span>
+        <span style="font-size:14px;">${p.text}</span>
+      </div>
+      ${usuarioLogado?.role === 'MASTER' ? `<button class="btn btn-danger btn-sm" onclick="excluirPergunta('${p.id}')"><i class="ti ti-trash"></i></button>` : ''}
+    </div>
+  `).join('');
+}
+
+document.getElementById('btnAdicionarPergunta').addEventListener('click', () => {
+  if (usuarioLogado?.role !== 'MASTER') return toast('Apenas MASTER pode gerenciar perguntas.', 'danger');
+  const text = document.getElementById('novaPergunta').value.trim();
+  if (!text) return toast('Digite a pergunta antes de adicionar.', 'danger');
+  perguntas.push({ id: 'q' + Date.now(), text });
+  document.getElementById('novaPergunta').value = '';
+  renderPerguntas();
+  toast('Pergunta adicionada!', 'success');
+});
+
+window.excluirPergunta = id => {
+  if (!confirm('Excluir esta pergunta?')) return;
+  perguntas = perguntas.filter(p => p.id !== id);
+  renderPerguntas();
+  toast('Pergunta removida.', 'success');
+};
+
+// ===== USUÁRIOS =====
+function renderUsuarios() {
+  const tbody = document.getElementById('usersTbody');
+  if (!localUsers.length) {
+    tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:var(--text-muted); padding:24px;">Nenhum usuário cadastrado.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = localUsers.map(u => `
+    <tr>
+      <td>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div class="user-avatar" style="width:30px;height:30px;font-size:11px;">${u.username[0].toUpperCase()}</div>
+          <span style="font-weight:500;">${u.username}</span>
+        </div>
+      </td>
+      <td><span class="role-badge role-${u.role}">${u.role === 'MASTER' ? 'Master' : u.role === 'OPERADORES' ? 'Operador' : 'Usuário'}</span></td>
+      <td>
+        ${usuarioLogado?.role === 'MASTER' && usuarioLogado.username !== u.username ?
+          `<button class="btn btn-danger btn-sm" onclick="excluirUsuario('${u.username}')"><i class="ti ti-trash"></i> Remover</button>` : 
+          '<span style="color:var(--text-light);font-size:13px;">—</span>'}
+      </td>
+    </tr>
+  `).join('');
+}
+
+document.getElementById('btnCriarUsuario').addEventListener('click', () => {
+  if (usuarioLogado?.role !== 'MASTER') return toast('Apenas MASTER pode criar usuários.', 'danger');
   const username = document.getElementById('novoUser').value.trim();
   const password = document.getElementById('novoPass').value;
   const role = document.getElementById('novoRole').value;
-
-  if (!username || !password) return alert('Preencha usuário e senha.');
-  if (localUsers.some(u => u.username === username)) return alert('Este usuário já existe.');
-
+  if (!username || !password) return toast('Preencha usuário e senha.', 'danger');
+  if (localUsers.some(u => u.username === username)) return toast('Este nome de usuário já existe.', 'danger');
   localUsers.push({ username, password, role });
   document.getElementById('novoUser').value = '';
   document.getElementById('novoPass').value = '';
-  renderizarUsuarios();
-  alert('Usuário criado com sucesso!');
-}
+  renderUsuarios();
+  toast('Usuário criado com sucesso!', 'success');
+});
 
-function renderizarUsuarios() {
-  const tbody = document.getElementById('usersTbody');
-  tbody.innerHTML = '';
-
-  localUsers.forEach(user => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${user.username}</td>
-      <td>${user.role}</td>
-      <td class="actions">
-        ${usuarioLogado?.role === 'MASTER' && usuarioLogado.username !== user.username ? 
-          `<button onclick="excluirUsuarioLocal('${user.username}')">Excluir</button>` : ''}
-      </td>
-    `;
-    tbody.appendChild(tr);
-  });
-}
-
-window.excluirUsuarioLocal = function(username) {
-  if (!confirm(`Excluir usuário ${username}?`)) return;
+window.excluirUsuario = username => {
+  if (!confirm(`Remover o usuário "${username}"?`)) return;
   localUsers = localUsers.filter(u => u.username !== username);
-  renderizarUsuarios();
+  renderUsuarios();
+  toast('Usuário removido.', 'success');
 };
 
-// ==================== PERGUNTAS ====================
-document.getElementById('btnAdicionarPergunta').addEventListener('click', adicionarPergunta);
+// ===== DASHBOARD =====
+let myChart = null;
 
-function adicionarPergunta() {
-  if (usuarioLogado?.role !== 'MASTER') return alert('Apenas MASTER pode adicionar perguntas.');
-  const text = document.getElementById('novaPergunta').value.trim();
-  if (!text) return alert('Digite uma pergunta.');
+function renderDashboard() {
+  const totalRespostas = respostas.length;
+  const totalPerguntas = perguntas.length;
+  const respostasComConteudo = respostas.reduce((acc, r) => acc + r.answers.filter(a => a.length > 3).length, 0);
+  const taxaResposta = totalRespostas ? Math.round((respostasComConteudo / (totalRespostas * totalPerguntas)) * 100) : 0;
 
-  perguntas.push({ id: 'q' + Date.now(), text });
-  document.getElementById('novaPergunta').value = '';
-  renderizarPerguntas();
-  alert('Pergunta adicionada!');
-}
+  document.getElementById('statsGrid').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Entrevistas realizadas</div><div class="stat-value">${totalRespostas}</div></div>
+    <div class="stat-card"><div class="stat-label">Perguntas ativas</div><div class="stat-value">${totalPerguntas}</div></div>
+    <div class="stat-card"><div class="stat-label">Taxa de resposta</div><div class="stat-value">${taxaResposta}%</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${taxaResposta}%"></div></div>
+    </div>
+  `;
 
-function renderizarPerguntas() {
-  const container = document.getElementById('listaPerguntas');
-  const form = document.getElementById('formEntrevista');
-  container.innerHTML = '';
-  form.innerHTML = '';
-
-  perguntas.forEach((p, i) => {
-    // Lista para administração
-    const row = document.createElement('div');
-    row.className = 'question-row';
-    row.innerHTML = `
-      <div>${p.text}</div>
-      <div class="actions">
-        ${usuarioLogado?.role === 'MASTER' ? `<button onclick="excluirPergunta('${p.id}')">Excluir</button>` : ''}
-      </div>
-    `;
-    container.appendChild(row);
-
-    // Formulário de respostas
-    const label = document.createElement('label');
-    label.textContent = p.text;
-    const textarea = document.createElement('textarea');
-    textarea.id = `resposta_${i}`;
-    textarea.rows = 3;
-    form.appendChild(label);
-    form.appendChild(textarea);
-  });
-}
-
-window.excluirPergunta = function(id) {
-  if (!confirm('Excluir esta pergunta?')) return;
-  perguntas = perguntas.filter(p => p.id !== id);
-  renderizarPerguntas();
-};
-
-// ==================== FORMULÁRIO ====================
-document.getElementById('btnSalvarRespostas').addEventListener('click', salvarRespostas);
-
-function salvarRespostas() {
-  if (!usuarioLogado) return alert('Faça login primeiro.');
-
-  const answers = perguntas.map((_, i) => {
-    const el = document.getElementById(`resposta_${i}`);
-    return el ? el.value.trim() : '';
-  });
-
-  if (answers.every(a => !a)) return alert('Preencha pelo menos uma resposta.');
-
-  respostas.push({
-    author: usuarioLogado.username,
-    answers: answers,
-    createdAt: new Date().toISOString()
-  });
-
-  alert('Respostas enviadas com sucesso!');
-  document.getElementById('formEntrevista').reset();
-}
-
-// ==================== DASHBOARD ====================
-function gerarGrafico() {
   const ctx = document.getElementById('graficoRespostas').getContext('2d');
-  if (window.myChart) window.myChart.destroy();
+  if (myChart) myChart.destroy();
 
-  const data = perguntas.map((_, i) => 
-    respostas.filter(r => r.answers[i] && r.answers[i].length > 5).length
+  if (!respostas.length) {
+    ctx.canvas.style.display = 'none';
+    return;
+  }
+  ctx.canvas.style.display = 'block';
+
+  const data = perguntas.map((_, i) =>
+    respostas.filter(r => r.answers[i] && r.answers[i].length > 3).length
   );
 
-  window.myChart = new Chart(ctx, {
+  myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: perguntas.map(p => p.text.substring(0, 35) + (p.text.length > 35 ? '...' : '')),
+      labels: perguntas.map(p => p.text.length > 40 ? p.text.substring(0, 40) + '...' : p.text),
       datasets: [{
-        label: 'Quantidade de Respostas',
-        data: data,
-        backgroundColor: '#dc3545'
+        label: 'Respostas recebidas',
+        data,
+        backgroundColor: '#1a56db',
+        borderRadius: 6,
       }]
     },
     options: {
       responsive: true,
-      scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { beginAtZero: true, ticks: { stepSize: 1 }, grid: { color: '#f3f4f6' } },
+        x: { grid: { display: false } }
+      }
     }
   });
 }
-
-// ==================== NAVEGAÇÃO ====================
-function mostrar(secao) {
-  document.querySelectorAll('.card').forEach(card => card.style.display = 'none');
-  if (secao) {
-    const el = document.getElementById(secao);
-    if (el) el.style.display = 'block';
-    if (secao === 'perguntas' || secao === 'formulario') renderizarPerguntas();
-    if (secao === 'usuarios') renderizarUsuarios();
-    if (secao === 'dashboard') gerarGrafico();
-  }
-}
-
-document.querySelectorAll('.submenu-link').forEach(link => {
-  link.addEventListener('click', e => {
-    e.preventDefault();
-    mostrar(link.getAttribute('data-show'));
-  });
-});
-
-// Inicialização
-renderizarPerguntas();
-renderizarUsuarios();
 </script>
 </body>
 </html>
