@@ -5,329 +5,231 @@
   <title>Entrevista de Desligamento</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --primary: #1a56db;
-      --primary-light: #e8f0fe;
-      --primary-dark: #1039a8;
+      --primary: #1a56db; --primary-light: #e8f0fe; --primary-dark: #1039a8;
       --primary-rgb: 26,86,219;
-      --danger: #c81e1e;
-      --danger-light: #fde8e8;
-      --success: #057a55;
-      --success-light: #def7ec;
-      --warning: #c27803;
-      --warning-light: #fdf6b2;
-      --text: #111928;
-      --text-muted: #6b7280;
-      --text-light: #9ca3af;
-      --border: #e5e7eb;
-      --bg: #f3f4f6;
-      --card: #ffffff;
-      --sidebar-w: 240px;
-      --header-h: 64px;
-      --radius: 10px;
-      --radius-lg: 14px;
-      --login-bg1: #1a56db;
-      --login-bg2: #1039a8;
+      --danger: #c81e1e; --danger-light: #fde8e8;
+      --success: #057a55; --success-light: #def7ec;
+      --warning: #c27803; --warning-light: #fdf6b2;
+      --text: #111928; --text-muted: #6b7280; --text-light: #9ca3af;
+      --border: #e5e7eb; --bg: #f3f4f6; --card: #ffffff;
+      --sidebar-w: 240px; --header-h: 64px;
+      --radius: 10px; --radius-lg: 14px;
+      --login-bg1: #1a56db; --login-bg2: #1039a8;
     }
-
     body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
     /* ===== LOGIN ===== */
-    #loginScreen {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, var(--login-bg1) 0%, var(--login-bg2) 100%);
-    }
-    .login-box {
-      background: #fff;
-      border-radius: var(--radius-lg);
-      padding: 40px;
-      width: 100%;
-      max-width: 400px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.18);
-    }
-    .login-brand {
-      display: flex; align-items: center; gap: 14px;
-      margin-bottom: 24px;
-    }
-    .login-logo-img {
-      width: 52px; height: 52px;
-      border-radius: 12px;
-      object-fit: contain;
-      background: var(--primary-light);
-      padding: 4px;
-      display: none;
-    }
-    .login-logo-icon {
-      width: 52px; height: 52px;
-      background: var(--primary);
-      border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
-    .login-logo-icon i { font-size: 26px; color: #fff; }
-    .login-brand-text h1 { font-size: 18px; font-weight: 600; line-height: 1.3; }
-    .login-brand-text p { font-size: 13px; color: var(--text-muted); }
+    #loginScreen { min-height:100vh; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,var(--login-bg1),var(--login-bg2)); }
+    .login-box { background:#fff; border-radius:var(--radius-lg); padding:40px; width:100%; max-width:400px; box-shadow:0 20px 60px rgba(0,0,0,.18); }
+    .login-brand { display:flex; align-items:center; gap:14px; margin-bottom:24px; }
+    .login-logo-img { width:52px;height:52px;border-radius:12px;object-fit:contain;background:var(--primary-light);padding:4px;display:none; }
+    .login-logo-icon { width:52px;height:52px;background:var(--primary);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+    .login-logo-icon i { font-size:26px;color:#fff; }
+    .login-brand-text h1 { font-size:18px;font-weight:600;line-height:1.3; }
+    .login-brand-text p { font-size:13px;color:var(--text-muted); }
+    .login-box .subtitle { font-size:14px;color:var(--text-muted);margin-bottom:24px; }
 
-    .login-box .subtitle { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; }
-    .field { margin-bottom: 16px; }
-    .field label { display: block; font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 6px; }
-    .field-icon { position: relative; }
-    .field-icon i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 16px; color: var(--text-light); pointer-events: none; }
-    .field-icon input { padding-left: 38px; }
-    input[type=text], input[type=password], input[type=email], textarea, select {
-      width: 100%;
-      padding: 10px 12px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      font-size: 14px;
-      font-family: inherit;
-      color: var(--text);
-      background: #fff;
-      transition: border-color .2s, box-shadow .2s;
-      outline: none;
+    /* ===== INPUTS ===== */
+    .field { margin-bottom:16px; }
+    .field label { display:block;font-size:13px;font-weight:500;color:var(--text);margin-bottom:6px; }
+    .field-icon { position:relative; }
+    .field-icon i { position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--text-light);pointer-events:none; }
+    .field-icon input { padding-left:38px; }
+    input[type=text],input[type=password],input[type=email],input[type=date],input[type=number],textarea,select {
+      width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--radius);font-size:14px;font-family:inherit;color:var(--text);background:#fff;transition:border-color .2s,box-shadow .2s;outline:none;
     }
-    input[type=text]:focus, input[type=password]:focus, textarea:focus, select:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(var(--primary-rgb),.15);
-    }
-    textarea { resize: vertical; line-height: 1.6; }
-    .btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 10px 18px;
-      border: none; border-radius: var(--radius);
-      font-size: 14px; font-weight: 500; font-family: inherit;
-      cursor: pointer; transition: background .2s, transform .1s;
-      text-decoration: none;
-    }
-    .btn:active { transform: scale(0.98); }
-    .btn-primary { background: var(--primary); color: #fff; }
-    .btn-primary:hover { background: var(--primary-dark); }
-    .btn-success { background: var(--success); color: #fff; }
-    .btn-success:hover { background: #046c4e; }
-    .btn-danger { background: var(--danger); color: #fff; }
-    .btn-danger:hover { background: #9b1c1c; }
-    .btn-ghost { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
-    .btn-ghost:hover { background: var(--bg); }
-    .btn-outline-danger { background: transparent; color: var(--danger); border: 1px solid var(--danger); }
-    .btn-outline-danger:hover { background: var(--danger-light); }
-    .btn-full { width: 100%; justify-content: center; }
-    .btn-sm { padding: 6px 12px; font-size: 13px; }
+    input:focus,textarea:focus,select:focus { border-color:var(--primary);box-shadow:0 0 0 3px rgba(var(--primary-rgb),.15); }
+    input:disabled,select:disabled,textarea:disabled { background:#f9fafb;color:var(--text-muted);cursor:not-allowed; }
+    textarea { resize:vertical;line-height:1.6; }
+
+    /* ===== BUTTONS ===== */
+    .btn { display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:none;border-radius:var(--radius);font-size:14px;font-weight:500;font-family:inherit;cursor:pointer;transition:background .2s,transform .1s;text-decoration:none; }
+    .btn:active { transform:scale(.98); }
+    .btn-primary { background:var(--primary);color:#fff; }
+    .btn-primary:hover { background:var(--primary-dark); }
+    .btn-success { background:var(--success);color:#fff; }
+    .btn-success:hover { background:#046c4e; }
+    .btn-danger { background:var(--danger);color:#fff; }
+    .btn-danger:hover { background:#9b1c1c; }
+    .btn-ghost { background:transparent;color:var(--text-muted);border:1px solid var(--border); }
+    .btn-ghost:hover { background:var(--bg); }
+    .btn-outline-danger { background:transparent;color:var(--danger);border:1px solid var(--danger); }
+    .btn-outline-danger:hover { background:var(--danger-light); }
+    .btn-warning { background:#d97706;color:#fff; }
+    .btn-warning:hover { background:#b45309; }
+    .btn-full { width:100%;justify-content:center; }
+    .btn-sm { padding:6px 12px;font-size:13px; }
 
     /* ===== APP LAYOUT ===== */
-    #appScreen { display: none; min-height: 100vh; flex-direction: column; }
-    #appScreen.active { display: flex; }
+    #appScreen { display:none;min-height:100vh;flex-direction:column; }
+    #appScreen.active { display:flex; }
+    .app-header { height:var(--header-h);background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;position:sticky;top:0;z-index:100; }
+    .header-logo { display:flex;align-items:center;gap:10px;margin-right:32px; }
+    .header-logo-img { height:36px;max-width:120px;object-fit:contain;display:none; }
+    .header-logo-icon { width:32px;height:32px;background:var(--primary);border-radius:8px;display:flex;align-items:center;justify-content:center; }
+    .header-logo-icon i { font-size:16px;color:#fff; }
+    .header-logo-text { font-weight:600;font-size:15px;color:var(--text); }
+    .header-user { margin-left:auto;display:flex;align-items:center;gap:12px; }
+    .user-badge { display:flex;align-items:center;gap:8px;font-size:13px; }
+    .user-avatar { width:32px;height:32px;border-radius:50%;background:var(--primary-light);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--primary); }
+    .role-badge { font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px; }
+    .role-MASTER { background:#ede9fe;color:#5b21b6; }
+    .role-OPERADORES { background:#dbeafe;color:#1e40af; }
+    .role-USUARIOS { background:#d1fae5;color:#065f46; }
+    .app-body { display:flex;flex:1; }
+    .sidebar { width:var(--sidebar-w);background:#fff;border-right:1px solid var(--border);padding:20px 12px;position:sticky;top:var(--header-h);height:calc(100vh - var(--header-h));overflow-y:auto;flex-shrink:0; }
+    .sidebar-section { margin-bottom:24px; }
+    .sidebar-title { font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-light);padding:0 8px;margin-bottom:6px; }
+    .sidebar-link { display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;font-size:14px;color:var(--text-muted);cursor:pointer;transition:all .15s;margin-bottom:2px; }
+    .sidebar-link i { font-size:18px; }
+    .sidebar-link:hover { background:var(--bg);color:var(--text); }
+    .sidebar-link.active { background:var(--primary-light);color:var(--primary);font-weight:500; }
+    .content { flex:1;padding:28px;overflow-y:auto; }
+    .page { display:none; }
+    .page.active { display:block; }
+    .page-header { margin-bottom:24px; }
+    .page-header h2 { font-size:20px;font-weight:600; }
+    .page-header p { font-size:14px;color:var(--text-muted);margin-top:4px; }
 
-    .app-header {
-      height: var(--header-h);
-      background: #fff;
-      border-bottom: 1px solid var(--border);
-      display: flex; align-items: center;
-      padding: 0 24px;
-      position: sticky; top: 0; z-index: 100;
-    }
-    .header-logo { display: flex; align-items: center; gap: 10px; margin-right: 32px; text-decoration: none; }
-    .header-logo-img {
-      height: 36px; max-width: 120px;
-      object-fit: contain;
-      display: none;
-    }
-    .header-logo-icon {
-      width: 32px; height: 32px;
-      background: var(--primary);
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .header-logo-icon i { font-size: 16px; color: #fff; }
-    .header-logo-text { font-weight: 600; font-size: 15px; color: var(--text); }
+    /* ===== CARDS ===== */
+    .card { background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:20px; }
+    .card-title { font-size:15px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px; }
+    .card-title i { font-size:18px;color:var(--primary); }
 
-    .header-user { margin-left: auto; display: flex; align-items: center; gap: 12px; }
-    .user-badge { display: flex; align-items: center; gap: 8px; font-size: 13px; }
-    .user-avatar {
-      width: 32px; height: 32px; border-radius: 50%;
-      background: var(--primary-light);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 12px; font-weight: 600; color: var(--primary);
-    }
-    .role-badge { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 20px; }
-    .role-MASTER { background: #ede9fe; color: #5b21b6; }
-    .role-OPERADORES { background: #dbeafe; color: #1e40af; }
-    .role-USUARIOS { background: #d1fae5; color: #065f46; }
+    /* ===== TABLE ===== */
+    table { width:100%;border-collapse:collapse;font-size:14px; }
+    th { text-align:left;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--text-muted);padding:8px 12px;border-bottom:1px solid var(--border); }
+    td { padding:12px;border-bottom:1px solid var(--border);vertical-align:middle; }
+    tr:last-child td { border-bottom:none; }
+    tr:hover td { background:#f9fafb; }
+    .table-wrap { border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;overflow-x:auto; }
 
-    .app-body { display: flex; flex: 1; }
+    /* ===== FORMULÁRIO ===== */
+    .form-banner { display:none;align-items:center;gap:16px;background:var(--primary-light);border:1px solid rgba(var(--primary-rgb),.2);border-radius:var(--radius-lg);padding:20px 24px;margin-bottom:24px; }
+    .form-banner.visible { display:flex; }
+    .form-banner-logo { height:52px;max-width:140px;object-fit:contain;border-radius:8px;flex-shrink:0; }
+    .form-banner-text h3 { font-size:15px;font-weight:600;color:var(--primary); }
+    .form-banner-text p { font-size:13px;color:var(--text-muted);margin-top:2px; }
 
-    .sidebar {
-      width: var(--sidebar-w);
-      background: #fff;
-      border-right: 1px solid var(--border);
-      padding: 20px 12px;
-      position: sticky; top: var(--header-h);
-      height: calc(100vh - var(--header-h));
-      overflow-y: auto;
-      flex-shrink: 0;
-    }
-    .sidebar-section { margin-bottom: 24px; }
-    .sidebar-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--text-light); padding: 0 8px; margin-bottom: 6px; }
-    .sidebar-link {
-      display: flex; align-items: center; gap: 10px;
-      padding: 9px 10px; border-radius: 8px;
-      font-size: 14px; color: var(--text-muted);
-      cursor: pointer; transition: all .15s;
-      margin-bottom: 2px;
-    }
-    .sidebar-link i { font-size: 18px; }
-    .sidebar-link:hover { background: var(--bg); color: var(--text); }
-    .sidebar-link.active { background: var(--primary-light); color: var(--primary); font-weight: 500; }
+    .section-divider { display:flex;align-items:center;gap:12px;margin:24px 0 16px; }
+    .section-divider span { font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--primary);background:var(--primary-light);padding:4px 12px;border-radius:20px; }
+    .section-divider::before,.section-divider::after { content:'';flex:1;height:1px;background:var(--border); }
 
-    .content { flex: 1; padding: 28px; overflow-y: auto; }
-    .page { display: none; }
-    .page.active { display: block; }
+    .form-grid-3 { display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px; }
+    .form-grid-2 { display:grid;grid-template-columns:1fr 1fr;gap:14px; }
+    @media(max-width:700px) { .form-grid-3,.form-grid-2 { grid-template-columns:1fr; } }
+    .field-row { margin-bottom:0; }
+    .field-row label { display:block;font-size:13px;font-weight:500;margin-bottom:5px;color:var(--text-muted); }
+    .field-row label span.req { color:var(--danger); }
 
-    .page-header { margin-bottom: 24px; }
-    .page-header h2 { font-size: 20px; font-weight: 600; }
-    .page-header p { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
+    /* auto-filled badge */
+    .auto-filled-badge { display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--success);background:var(--success-light);padding:2px 8px;border-radius:20px;margin-left:8px;font-weight:500; }
 
-    .card {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 24px;
-      margin-bottom: 20px;
-    }
-    .card-title { font-size: 15px; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
-    .card-title i { font-size: 18px; color: var(--primary); }
+    /* ===== QUESTION CARD ===== */
+    .question-card { background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin-bottom:12px; }
+    .question-num { font-size:11px;font-weight:600;color:var(--primary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;display:flex;align-items:center;gap:8px; }
+    .question-type-badge { font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px; }
+    .type-aberta { background:#fef3c7;color:#92400e; }
+    .type-multipla { background:#dbeafe;color:#1e40af; }
+    .type-escala { background:#d1fae5;color:#065f46; }
+    .question-text { font-size:14px;font-weight:500;color:var(--text); }
 
-    table { width: 100%; border-collapse: collapse; font-size: 14px; }
-    th { text-align: left; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--text-muted); padding: 8px 12px; border-bottom: 1px solid var(--border); }
-    td { padding: 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
-    tr:last-child td { border-bottom: none; }
-    tr:hover td { background: #f9fafb; }
-    .table-wrap { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    /* Múltipla escolha */
+    .mc-options { display:flex;flex-direction:column;gap:8px;margin-top:12px; }
+    .mc-option { display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s; }
+    .mc-option:hover { border-color:var(--primary);background:var(--primary-light); }
+    .mc-option input[type=radio],.mc-option input[type=checkbox] { accent-color:var(--primary);width:16px;height:16px;flex-shrink:0; }
+    .mc-option label { font-size:14px;cursor:pointer;flex:1; }
 
-    .question-card {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px 20px;
-      margin-bottom: 12px;
-    }
-    .question-num { font-size: 11px; font-weight: 600; color: var(--primary); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 4px; }
-    .question-text { font-size: 14px; color: var(--text); }
-    .question-textarea { margin-top: 12px; }
+    /* Escala 1-10 */
+    .scale-wrap { margin-top:12px; }
+    .scale-labels { display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);margin-bottom:6px; }
+    .scale-slider { width:100%;accent-color:var(--primary); }
+    .scale-value-display { text-align:center;font-size:22px;font-weight:700;color:var(--primary);margin-top:6px; }
+    .scale-bar-row { display:flex;gap:4px;margin-top:10px;justify-content:center; }
+    .scale-bar-btn { width:34px;height:34px;border-radius:6px;border:2px solid var(--border);background:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;color:var(--text-muted); }
+    .scale-bar-btn:hover { border-color:var(--primary);color:var(--primary); }
+    .scale-bar-btn.active { background:var(--primary);border-color:var(--primary);color:#fff; }
 
-    /* Formulário banner com logo */
-    .form-banner {
-      display: none;
-      align-items: center;
-      gap: 16px;
-      background: var(--primary-light);
-      border: 1px solid rgba(var(--primary-rgb),.2);
-      border-radius: var(--radius-lg);
-      padding: 20px 24px;
-      margin-bottom: 24px;
-    }
-    .form-banner.visible { display: flex; }
-    .form-banner-logo {
-      height: 52px; max-width: 140px;
-      object-fit: contain;
-      border-radius: 8px;
-      flex-shrink: 0;
-    }
-    .form-banner-text h3 { font-size: 15px; font-weight: 600; color: var(--primary); }
-    .form-banner-text p { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+    /* ===== PERGUNTAS ADMIN ===== */
+    .perg-admin-card { background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:10px; }
+    .perg-admin-header { display:flex;align-items:center;justify-content:space-between;gap:10px; }
+    .perg-admin-info { flex:1; }
+    .perg-admin-text { font-size:14px;font-weight:500; }
+    .perg-admin-sub { font-size:12px;color:var(--text-muted);margin-top:3px; }
 
-    /* Upload de logo */
-    .logo-upload-area {
-      border: 2px dashed var(--border);
-      border-radius: var(--radius-lg);
-      padding: 32px 20px;
-      text-align: center;
-      cursor: pointer;
-      transition: border-color .2s, background .2s;
-      position: relative;
-    }
-    .logo-upload-area:hover, .logo-upload-area.drag { border-color: var(--primary); background: var(--primary-light); }
-    .logo-upload-area input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-    .logo-upload-area i { font-size: 32px; color: var(--text-light); margin-bottom: 8px; }
-    .logo-upload-area p { font-size: 14px; color: var(--text-muted); }
-    .logo-upload-area small { font-size: 12px; color: var(--text-light); }
+    /* Criação de pergunta */
+    .type-selector { display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap; }
+    .type-btn { padding:8px 16px;border:2px solid var(--border);border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;background:#fff;color:var(--text-muted);transition:all .15s; }
+    .type-btn.active { border-color:var(--primary);color:var(--primary);background:var(--primary-light); }
+    .options-builder { margin-top:12px; }
+    .option-row { display:flex;gap:8px;align-items:center;margin-bottom:8px; }
+    .option-row input { flex:1; }
+    .option-row .btn-sm { flex-shrink:0; }
 
-    .logo-preview-wrap {
-      display: none;
-      align-items: center;
-      gap: 16px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px;
-    }
-    .logo-preview-wrap.visible { display: flex; }
-    .logo-preview-wrap img { height: 56px; max-width: 180px; object-fit: contain; border-radius: 6px; background: #fff; padding: 4px; border: 1px solid var(--border); }
-    .logo-preview-wrap .logo-info { flex: 1; }
-    .logo-preview-wrap .logo-name { font-size: 14px; font-weight: 500; }
-    .logo-preview-wrap .logo-status { font-size: 12px; color: var(--success); margin-top: 2px; }
+    /* ===== COLABORADORES ===== */
+    .colab-tag { display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:2px 8px;border-radius:20px; }
+    .colab-ativo { background:#d1fae5;color:#065f46; }
+    .colab-desligado { background:#fde8e8;color:#c81e1e; }
 
-    /* Paleta de cores extraídas */
-    .palette-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
-    .palette-swatch {
-      width: 36px; height: 36px; border-radius: 8px;
-      border: 2px solid transparent;
-      cursor: pointer; transition: transform .15s, border-color .15s;
-      position: relative;
-    }
-    .palette-swatch:hover { transform: scale(1.15); }
-    .palette-swatch.selected { border-color: var(--text); transform: scale(1.1); }
-    .palette-swatch[title]::after {
-      content: attr(title);
-      position: absolute; bottom: -22px; left: 50%; transform: translateX(-50%);
-      font-size: 10px; color: var(--text-muted); white-space: nowrap; pointer-events: none;
-    }
+    /* ===== CONFIGURAÇÕES ===== */
+    .logo-upload-area { border:2px dashed var(--border);border-radius:var(--radius-lg);padding:32px 20px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;position:relative; }
+    .logo-upload-area:hover,.logo-upload-area.drag { border-color:var(--primary);background:var(--primary-light); }
+    .logo-upload-area input[type=file] { position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%; }
+    .logo-upload-area i { font-size:32px;color:var(--text-light);margin-bottom:8px; }
+    .logo-upload-area p { font-size:14px;color:var(--text-muted); }
+    .logo-upload-area small { font-size:12px;color:var(--text-light); }
+    .logo-preview-wrap { display:none;align-items:center;gap:16px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:16px; }
+    .logo-preview-wrap.visible { display:flex; }
+    .logo-preview-wrap img { height:56px;max-width:180px;object-fit:contain;border-radius:6px;background:#fff;padding:4px;border:1px solid var(--border); }
+    .logo-preview-wrap .logo-info { flex:1; }
+    .logo-preview-wrap .logo-name { font-size:14px;font-weight:500; }
+    .logo-preview-wrap .logo-status { font-size:12px;color:var(--success);margin-top:2px; }
+    .palette-row { display:flex;gap:8px;flex-wrap:wrap;margin-top:16px; }
+    .palette-swatch { width:36px;height:36px;border-radius:8px;border:2px solid transparent;cursor:pointer;transition:transform .15s,border-color .15s;position:relative; }
+    .palette-swatch:hover { transform:scale(1.15); }
+    .palette-swatch.selected { border-color:var(--text);transform:scale(1.1); }
 
-    /* Toast */
-    #toastContainer { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
-    .toast {
-      background: var(--text); color: #fff;
-      padding: 12px 18px; border-radius: var(--radius);
-      font-size: 14px; font-weight: 500;
-      box-shadow: 0 8px 24px rgba(0,0,0,.2);
-      display: flex; align-items: center; gap: 8px;
-      animation: slideIn .3s ease;
-      max-width: 320px;
-    }
-    .toast.success { background: var(--success); }
-    .toast.danger { background: var(--danger); }
-    @keyframes slideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    /* ===== STATS ===== */
+    .stats-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:24px; }
+    .stat-card { background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px; }
+    .stat-label { font-size:12px;color:var(--text-muted);font-weight:500;margin-bottom:6px; }
+    .stat-value { font-size:28px;font-weight:600;color:var(--text); }
+    .progress-bar { height:6px;background:var(--border);border-radius:99px;overflow:hidden;margin-top:8px; }
+    .progress-fill { height:100%;background:var(--primary);border-radius:99px;transition:width .4s; }
 
-    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 24px; }
-    .stat-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 20px; }
-    .stat-label { font-size: 12px; color: var(--text-muted); font-weight: 500; margin-bottom: 6px; }
-    .stat-value { font-size: 28px; font-weight: 600; color: var(--text); }
+    /* ===== MISC ===== */
+    .empty { text-align:center;padding:40px 20px;color:var(--text-muted); }
+    .empty i { font-size:40px;margin-bottom:12px;opacity:.4;display:block; }
+    .empty p { font-size:14px; }
+    .form-grid { display:grid;grid-template-columns:1fr 1fr;gap:16px; }
+    @media(max-width:600px) { .form-grid { grid-template-columns:1fr; } .sidebar { display:none; } }
+    .divider { border:none;border-top:1px solid var(--border);margin:20px 0; }
 
-    .empty { text-align: center; padding: 40px 20px; color: var(--text-muted); }
-    .empty i { font-size: 40px; margin-bottom: 12px; opacity: .4; display: block; }
-    .empty p { font-size: 14px; }
+    #toastContainer { position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px; }
+    .toast { background:var(--text);color:#fff;padding:12px 18px;border-radius:var(--radius);font-size:14px;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.2);display:flex;align-items:center;gap:8px;animation:slideIn .3s ease;max-width:320px; }
+    .toast.success { background:var(--success); }
+    .toast.danger { background:var(--danger); }
+    @keyframes slideIn { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
 
-    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } .sidebar { display: none; } }
-    .field-row { margin-bottom: 14px; }
-    .field-row label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 5px; }
+    canvas#colorCanvas { display:none;width:1px;height:1px; }
 
-    .progress-bar { height: 6px; background: var(--border); border-radius: 99px; overflow: hidden; margin-top: 8px; }
-    .progress-fill { height: 100%; background: var(--primary); border-radius: 99px; transition: width .4s; }
+    .toolbar { display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px; }
 
-    .divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
-
-    .color-section-label { font-size: 13px; font-weight: 500; margin-bottom: 8px; color: var(--text-muted); }
-
-    canvas { display: none; }
+    /* Modal */
+    .modal-overlay { position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px; }
+    .modal-overlay.hidden { display:none; }
+    .modal { background:#fff;border-radius:var(--radius-lg);padding:28px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto; }
+    .modal-header { display:flex;align-items:center;justify-content:space-between;margin-bottom:20px; }
+    .modal-header h3 { font-size:16px;font-weight:600; }
+    .modal-close { background:none;border:none;cursor:pointer;font-size:20px;color:var(--text-muted);padding:4px; }
   </style>
 </head>
 <body>
@@ -346,21 +248,13 @@
     <p class="subtitle">Preencha os campos abaixo para continuar.</p>
     <div class="field">
       <label>Usuário</label>
-      <div class="field-icon">
-        <i class="ti ti-user"></i>
-        <input type="text" id="loginUser" placeholder="Seu nome de usuário" autocomplete="username">
-      </div>
+      <div class="field-icon"><i class="ti ti-user"></i><input type="text" id="loginUser" placeholder="Seu nome de usuário" autocomplete="username"></div>
     </div>
     <div class="field">
       <label>Senha</label>
-      <div class="field-icon">
-        <i class="ti ti-lock"></i>
-        <input type="password" id="loginPass" placeholder="Sua senha" autocomplete="current-password">
-      </div>
+      <div class="field-icon"><i class="ti ti-lock"></i><input type="password" id="loginPass" placeholder="Sua senha" autocomplete="current-password"></div>
     </div>
-    <button class="btn btn-primary btn-full" id="btnEntrar" style="margin-top: 8px;">
-      <i class="ti ti-login"></i> Entrar
-    </button>
+    <button class="btn btn-primary btn-full" id="btnEntrar" style="margin-top:8px;"><i class="ti ti-login"></i> Entrar</button>
   </div>
 </div>
 
@@ -376,7 +270,7 @@
       <div class="user-badge">
         <div class="user-avatar" id="userAvatar">?</div>
         <div>
-          <div id="userName" style="font-size:13px; font-weight:500; color: var(--text);"></div>
+          <div id="userName" style="font-size:13px;font-weight:500;color:var(--text);"></div>
           <span class="role-badge" id="userRole"></span>
         </div>
       </div>
@@ -392,6 +286,7 @@
       </div>
       <div class="sidebar-section" id="sidebarAdminSection" style="display:none;">
         <div class="sidebar-title">Administração</div>
+        <div class="sidebar-link" data-page="colaboradores"><i class="ti ti-id-badge"></i> Colaboradores</div>
         <div class="sidebar-link" data-page="usuarios"><i class="ti ti-users"></i> Usuários</div>
         <div class="sidebar-link" data-page="perguntas"><i class="ti ti-list"></i> Perguntas</div>
         <div class="sidebar-link" data-page="configuracoes"><i class="ti ti-settings"></i> Configurações</div>
@@ -399,50 +294,201 @@
       <div class="sidebar-section" id="sidebarDashSection" style="display:none;">
         <div class="sidebar-title">Relatórios</div>
         <div class="sidebar-link" data-page="dashboard"><i class="ti ti-chart-bar"></i> Dashboard</div>
+        <div class="sidebar-link" data-page="relatorios"><i class="ti ti-file-spreadsheet"></i> Exportar dados</div>
       </div>
     </aside>
 
     <main class="content">
 
-      <!-- FORMULÁRIO -->
+      <!-- ===== FORMULÁRIO ===== -->
       <div class="page" id="page-formulario">
         <div class="page-header">
           <h2>Entrevista de Desligamento</h2>
           <p>Responda com sinceridade — suas respostas são confidenciais e nos ajudam a melhorar.</p>
         </div>
         <div class="form-banner" id="formBanner">
-          <img class="form-banner-logo" id="formBannerLogo" src="" alt="Logo da empresa">
+          <img class="form-banner-logo" id="formBannerLogo" src="" alt="Logo">
           <div class="form-banner-text">
             <h3 id="formBannerName">Empresa</h3>
             <p>Formulário de entrevista de desligamento</p>
           </div>
         </div>
+
+        <!-- Identificação do colaborador -->
+        <div class="card">
+          <div class="card-title"><i class="ti ti-id-badge"></i> Identificação do colaborador</div>
+
+          <div class="form-grid-2" style="margin-bottom:14px;">
+            <div class="field-row">
+              <label>Matrícula <span class="req">*</span></label>
+              <div style="display:flex;gap:8px;">
+                <input type="text" id="fMatricula" placeholder="Ex: 00123">
+                <button class="btn btn-primary btn-sm" id="btnBuscarColab"><i class="ti ti-search"></i> Buscar</button>
+              </div>
+            </div>
+            <div class="field-row">
+              <label>Nome completo <span class="req">*</span></label>
+              <input type="text" id="fNome" placeholder="Nome do colaborador">
+            </div>
+          </div>
+
+          <div class="form-grid-3" style="margin-bottom:14px;">
+            <div class="field-row">
+              <label>Data de admissão <span id="admissaoAuto"></span></label>
+              <input type="date" id="fAdmissao">
+            </div>
+            <div class="field-row">
+              <label>Local <span id="localAuto"></span></label>
+              <input type="text" id="fLocal" placeholder="Ex: São Paulo">
+            </div>
+            <div class="field-row">
+              <label>Turno <span id="turnoAuto"></span></label>
+              <input type="text" id="fTurno" placeholder="Ex: Manhã">
+            </div>
+          </div>
+
+          <div class="form-grid-3" style="margin-bottom:14px;">
+            <div class="field-row">
+              <label>Filial <span id="filialAuto"></span></label>
+              <input type="text" id="fFilial" placeholder="Ex: Filial Norte">
+            </div>
+            <div class="field-row">
+              <label>Gestor imediato <span id="gestorAuto"></span></label>
+              <input type="text" id="fGestor" placeholder="Nome do gestor">
+            </div>
+            <div class="field-row">
+              <label>Gerente <span id="gerenteAuto"></span></label>
+              <input type="text" id="fGerente" placeholder="Nome do gerente">
+            </div>
+          </div>
+
+          <div class="section-divider"><span>Desligamento</span></div>
+
+          <div class="form-grid-2">
+            <div class="field-row">
+              <label>Data de desligamento <span class="req">*</span></label>
+              <input type="date" id="fDataDeslig">
+            </div>
+            <div class="field-row">
+              <label>Motivo do desligamento <span class="req">*</span></label>
+              <select id="fMotivo">
+                <option value="">Selecione o motivo...</option>
+                <option>Pedido de demissão</option>
+                <option>Demissão sem justa causa</option>
+                <option>Demissão por justa causa</option>
+                <option>Acordo entre partes</option>
+                <option>Término de contrato</option>
+                <option>Aposentadoria</option>
+                <option>Outro</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-row" style="margin-top:14px;" id="motivoOutroWrap" style="display:none;">
+            <label>Especifique o motivo</label>
+            <input type="text" id="fMotivoOutro" placeholder="Descreva o motivo...">
+          </div>
+        </div>
+
+        <!-- Perguntas -->
         <div id="formBody"></div>
-        <button class="btn btn-success" id="btnSalvarRespostas">
+
+        <button class="btn btn-success" id="btnSalvarRespostas" style="margin-top:8px;">
           <i class="ti ti-send"></i> Enviar respostas
         </button>
       </div>
 
-      <!-- PERGUNTAS -->
+      <!-- ===== COLABORADORES ===== -->
+      <div class="page" id="page-colaboradores">
+        <div class="page-header">
+          <h2>Base de colaboradores</h2>
+          <p>Cadastre e gerencie a base de colaboradores para preenchimento automático do formulário.</p>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="ti ti-user-plus"></i> Cadastrar colaborador</div>
+          <div class="form-grid-3" style="margin-bottom:14px;">
+            <div class="field-row"><label>Matrícula <span class="req">*</span></label><input type="text" id="cMatricula" placeholder="Ex: 00123"></div>
+            <div class="field-row" style="grid-column:span 2;"><label>Nome completo <span class="req">*</span></label><input type="text" id="cNome" placeholder="Nome do colaborador"></div>
+          </div>
+          <div class="form-grid-3" style="margin-bottom:14px;">
+            <div class="field-row"><label>Data de admissão</label><input type="date" id="cAdmissao"></div>
+            <div class="field-row"><label>Local</label><input type="text" id="cLocal" placeholder="Ex: São Paulo"></div>
+            <div class="field-row"><label>Turno</label><input type="text" id="cTurno" placeholder="Ex: Manhã"></div>
+          </div>
+          <div class="form-grid-3" style="margin-bottom:16px;">
+            <div class="field-row"><label>Filial</label><input type="text" id="cFilial" placeholder="Ex: Filial Norte"></div>
+            <div class="field-row"><label>Gestor</label><input type="text" id="cGestor" placeholder="Nome do gestor"></div>
+            <div class="field-row"><label>Gerente</label><input type="text" id="cGerente" placeholder="Nome do gerente"></div>
+          </div>
+          <button class="btn btn-primary" id="btnCadastrarColab"><i class="ti ti-plus"></i> Cadastrar colaborador</button>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="ti ti-users"></i> Colaboradores cadastrados</div>
+          <div class="toolbar">
+            <input type="text" id="searchColab" placeholder="Buscar por nome ou matrícula..." style="max-width:280px;">
+            <button class="btn btn-success btn-sm" id="btnExportarColabs"><i class="ti ti-file-spreadsheet"></i> Exportar Excel</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr>
+                <th>Matrícula</th><th>Nome</th><th>Admissão</th><th>Local</th><th>Turno</th><th>Filial</th><th>Gestor</th><th>Gerente</th><th>Ações</th>
+              </tr></thead>
+              <tbody id="colabTbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== PERGUNTAS ===== -->
       <div class="page" id="page-perguntas">
         <div class="page-header">
           <h2>Gerenciar perguntas</h2>
-          <p>Adicione, visualize ou remova perguntas do formulário.</p>
+          <p>Crie perguntas abertas, de múltipla escolha ou em escala de 1 a 10.</p>
         </div>
         <div class="card">
           <div class="card-title"><i class="ti ti-circle-plus"></i> Nova pergunta</div>
-          <div style="display:flex; gap:10px;">
+
+          <div class="field-row" style="margin-bottom:14px;">
+            <label>Texto da pergunta</label>
             <input type="text" id="novaPergunta" placeholder="Digite a pergunta...">
-            <button class="btn btn-primary" id="btnAdicionarPergunta" style="white-space:nowrap;"><i class="ti ti-plus"></i> Adicionar</button>
+          </div>
+
+          <div class="field-row" style="margin-bottom:14px;">
+            <label>Tipo de pergunta</label>
+            <div class="type-selector">
+              <button class="type-btn active" data-type="aberta"><i class="ti ti-align-left"></i> Aberta</button>
+              <button class="type-btn" data-type="multipla"><i class="ti ti-list-check"></i> Múltipla escolha</button>
+              <button class="type-btn" data-type="escala"><i class="ti ti-chart-bar"></i> Escala 1–10</button>
+            </div>
+          </div>
+
+          <!-- Múltipla escolha builder -->
+          <div id="mcBuilder" style="display:none;">
+            <div class="field-row" style="margin-bottom:10px;">
+              <label>Tipo de seleção</label>
+              <select id="mcTipoSelecao" style="max-width:260px;">
+                <option value="radio">Única resposta</option>
+                <option value="checkbox">Múltiplas respostas</option>
+              </select>
+            </div>
+            <div class="options-builder">
+              <label style="font-size:13px;font-weight:500;margin-bottom:8px;display:block;">Opções de resposta</label>
+              <div id="optionsList"></div>
+              <button class="btn btn-ghost btn-sm" id="btnAddOption" style="margin-top:6px;"><i class="ti ti-plus"></i> Adicionar opção</button>
+            </div>
+          </div>
+
+          <div style="margin-top:14px;">
+            <button class="btn btn-primary" id="btnAdicionarPergunta"><i class="ti ti-plus"></i> Adicionar pergunta</button>
           </div>
         </div>
+
         <div class="card">
           <div class="card-title"><i class="ti ti-list"></i> Perguntas cadastradas</div>
           <div id="listaPerguntas"></div>
         </div>
       </div>
 
-      <!-- USUÁRIOS -->
+      <!-- ===== USUÁRIOS ===== -->
       <div class="page" id="page-usuarios">
         <div class="page-header">
           <h2>Gerenciar usuários</h2>
@@ -461,7 +507,7 @@
               </select>
             </div>
           </div>
-          <button class="btn btn-primary" id="btnCriarUsuario"><i class="ti ti-user-plus"></i> Criar usuário</button>
+          <button class="btn btn-primary" id="btnCriarUsuario" style="margin-top:4px;"><i class="ti ti-user-plus"></i> Criar usuário</button>
         </div>
         <div class="card">
           <div class="card-title"><i class="ti ti-users"></i> Usuários cadastrados</div>
@@ -472,27 +518,24 @@
         </div>
       </div>
 
-      <!-- CONFIGURAÇÕES -->
+      <!-- ===== CONFIGURAÇÕES ===== -->
       <div class="page" id="page-configuracoes">
         <div class="page-header">
           <h2>Configurações da empresa</h2>
           <p>Personalize a identidade visual do sistema com a logomarca da empresa.</p>
         </div>
-
         <div class="card">
           <div class="card-title"><i class="ti ti-building"></i> Nome da empresa</div>
-          <div style="display:flex; gap:10px; align-items:flex-end;">
+          <div style="display:flex;gap:10px;align-items:flex-end;">
             <div style="flex:1;" class="field-row">
               <label>Nome exibido no cabeçalho e formulário</label>
               <input type="text" id="nomeEmpresa" placeholder="Ex: RH Inovação Ltda.">
             </div>
-            <button class="btn btn-primary btn-sm" id="btnSalvarNome" style="margin-bottom:14px;"><i class="ti ti-check"></i> Salvar</button>
+            <button class="btn btn-primary btn-sm" id="btnSalvarNome" style="margin-bottom:0;"><i class="ti ti-check"></i> Salvar</button>
           </div>
         </div>
-
         <div class="card">
           <div class="card-title"><i class="ti ti-photo"></i> Logomarca</div>
-
           <div class="logo-preview-wrap" id="logoPreviewWrap">
             <img id="logoPreviewImg" src="" alt="Logo">
             <div class="logo-info">
@@ -501,7 +544,6 @@
             </div>
             <button class="btn btn-outline-danger btn-sm" id="btnRemoverLogo"><i class="ti ti-trash"></i> Remover</button>
           </div>
-
           <div class="logo-upload-area" id="logoUploadArea">
             <input type="file" id="logoFileInput" accept="image/png,image/jpeg,image/svg+xml,image/webp">
             <i class="ti ti-cloud-upload"></i>
@@ -509,45 +551,66 @@
             <small>PNG, JPG, SVG ou WEBP — recomendado fundo transparente</small>
           </div>
         </div>
-
         <div class="card" id="paletteCard" style="display:none;">
           <div class="card-title"><i class="ti ti-palette"></i> Cores extraídas da logomarca</div>
-          <p style="font-size:14px; color:var(--text-muted); margin-bottom:16px;">Selecione a cor principal que será aplicada em todo o sistema. As cores foram detectadas automaticamente a partir da sua logo.</p>
-          <div class="color-section-label">Cor principal do tema</div>
+          <p style="font-size:14px;color:var(--text-muted);margin-bottom:16px;">Selecione a cor principal que será aplicada em todo o sistema.</p>
           <div class="palette-row" id="paletteRow"></div>
-          <div style="margin-top:28px; display:flex; align-items:center; gap:12px;">
+          <div style="margin-top:24px;display:flex;align-items:center;gap:12px;">
             <button class="btn btn-primary" id="btnAplicarCor"><i class="ti ti-brush"></i> Aplicar cor selecionada</button>
             <button class="btn btn-ghost btn-sm" id="btnResetarCor"><i class="ti ti-refresh"></i> Restaurar padrão</button>
           </div>
-          <canvas id="colorCanvas" style="display:none; width:1px; height:1px;"></canvas>
+          <canvas id="colorCanvas"></canvas>
         </div>
-
         <div class="card">
           <div class="card-title"><i class="ti ti-eye"></i> Pré-visualização</div>
-          <div style="background:var(--bg); border-radius:var(--radius); padding:20px;">
-            <div style="background:#fff; border-radius:var(--radius); padding:16px; border:1px solid var(--border); display:flex; align-items:center; gap:12px; margin-bottom:12px;">
-              <img id="previewLogoImg" src="" alt="" style="height:32px; max-width:100px; object-fit:contain; display:none; border-radius:4px;">
+          <div style="background:var(--bg);border-radius:var(--radius);padding:20px;">
+            <div style="background:#fff;border-radius:var(--radius);padding:16px;border:1px solid var(--border);display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+              <img id="previewLogoImg" src="" alt="" style="height:32px;max-width:100px;object-fit:contain;display:none;border-radius:4px;">
               <div id="previewLogoIcon" style="width:32px;height:32px;background:var(--primary);border-radius:8px;display:flex;align-items:center;justify-content:center;"><i class="ti ti-clipboard-list" style="color:#fff;font-size:16px;"></i></div>
-              <span id="previewCompanyName" style="font-weight:600; font-size:14px;">Desligamento RH</span>
+              <span id="previewCompanyName" style="font-weight:600;font-size:14px;">Desligamento RH</span>
             </div>
-            <div style="background:var(--primary); color:#fff; border-radius:var(--radius); padding:12px 16px; font-size:13px; font-weight:500; display:inline-flex; align-items:center; gap:6px;">
+            <div style="background:var(--primary);color:#fff;border-radius:var(--radius);padding:12px 16px;font-size:13px;font-weight:500;display:inline-flex;align-items:center;gap:6px;">
               <i class="ti ti-send"></i> Botão principal na cor selecionada
             </div>
           </div>
         </div>
       </div>
 
-      <!-- DASHBOARD -->
+      <!-- ===== DASHBOARD ===== -->
       <div class="page" id="page-dashboard">
         <div class="page-header">
           <h2>Dashboard</h2>
-          <p>Visão geral das respostas coletadas nas entrevistas de desligamento.</p>
+          <p>Visão geral das entrevistas de desligamento coletadas.</p>
         </div>
         <div class="stats-grid" id="statsGrid"></div>
         <div class="card">
           <div class="card-title"><i class="ti ti-chart-bar"></i> Respostas por pergunta</div>
-          <canvas id="graficoRespostas" style="max-height:380px; display:block;"></canvas>
+          <canvas id="graficoRespostas" style="max-height:380px;display:block;"></canvas>
           <div id="dashboardEmpty" class="empty" style="display:none;"><i class="ti ti-inbox"></i><p>Nenhuma resposta enviada ainda.</p></div>
+        </div>
+      </div>
+
+      <!-- ===== EXPORTAR DADOS ===== -->
+      <div class="page" id="page-relatorios">
+        <div class="page-header">
+          <h2>Exportar dados</h2>
+          <p>Baixe as informações em formato Excel para análise externa.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;" class="export-grid">
+          <div class="card">
+            <div class="card-title"><i class="ti ti-users"></i> Colaboradores desligados</div>
+            <p style="font-size:14px;color:var(--text-muted);margin-bottom:16px;">Exporta a lista completa de colaboradores com seus dados cadastrais e informações de desligamento.</p>
+            <button class="btn btn-success" id="btnExportarColabsRel"><i class="ti ti-file-spreadsheet"></i> Baixar Excel — Colaboradores</button>
+          </div>
+          <div class="card">
+            <div class="card-title"><i class="ti ti-file-text"></i> Respostas das entrevistas</div>
+            <p style="font-size:14px;color:var(--text-muted);margin-bottom:16px;">Exporta todas as entrevistas preenchidas com as respostas para cada pergunta.</p>
+            <button class="btn btn-primary" id="btnExportarEntrevistas"><i class="ti ti-file-spreadsheet"></i> Baixar Excel — Entrevistas</button>
+          </div>
+        </div>
+        <div class="card" style="margin-top:0;">
+          <div class="card-title"><i class="ti ti-table"></i> Prévia dos dados de entrevistas</div>
+          <div id="previaEntrevistas"></div>
         </div>
       </div>
 
@@ -560,379 +623,530 @@
 <script>
 // ===== ESTADO =====
 let usuarioLogado = null;
+
 let perguntas = [
-  { id: 'q1', text: 'Como você avalia sua experiência geral na empresa?' },
-  { id: 'q2', text: 'O que poderia ter sido melhorado no seu ambiente de trabalho?' },
-  { id: 'q3', text: 'Você recomendaria a empresa como um bom lugar para trabalhar?' },
-  { id: 'q4', text: 'Qual foi o principal motivo da sua saída?' },
+  { id: 'q1', text: 'Como você avalia sua experiência geral na empresa?', tipo: 'escala' },
+  { id: 'q2', text: 'O que poderia ter sido melhorado no seu ambiente de trabalho?', tipo: 'aberta' },
+  { id: 'q3', text: 'Você recomendaria a empresa como um bom lugar para trabalhar?', tipo: 'multipla', selecao: 'radio', opcoes: ['Sim, com certeza', 'Talvez', 'Não recomendaria'] },
+  { id: 'q4', text: 'Qual foi o principal motivo da sua saída?', tipo: 'aberta' },
 ];
+
 let respostas = [];
+
+let colaboradores = [
+  { matricula: '00001', nome: 'Maria Silva', admissao: '2019-03-15', local: 'São Paulo', turno: 'Manhã', filial: 'Filial Centro', gestor: 'Carlos Mendes', gerente: 'Ana Beatriz' },
+  { matricula: '00002', nome: 'João Pereira', admissao: '2021-07-10', local: 'Campinas', turno: 'Tarde', filial: 'Filial Norte', gestor: 'Fernanda Lima', gerente: 'Ricardo Torres' },
+];
+
 let localUsers = [{ username: 'andrei', password: '#Andrei1996', role: 'MASTER' }];
 
-let branding = {
-  logoDataUrl: null,
-  logoFileName: null,
-  companyName: '',
-  primaryColor: '#1a56db',
-};
-
+let branding = { logoDataUrl: null, logoFileName: null, companyName: '', primaryColor: '#1a56db' };
 let selectedSwatchColor = null;
+let novaPergTipo = 'aberta';
+let mcOpcoes = [];
 
 // ===== TOAST =====
 function toast(msg, type = '') {
   const el = document.createElement('div');
   el.className = 'toast' + (type ? ' ' + type : '');
-  el.innerHTML = `<i class="ti ti-${type === 'success' ? 'circle-check' : type === 'danger' ? 'alert-circle' : 'info-circle'}"></i> ${msg}`;
+  const icon = type === 'success' ? 'circle-check' : type === 'danger' ? 'alert-circle' : 'info-circle';
+  el.innerHTML = `<i class="ti ti-${icon}"></i> ${msg}`;
   document.getElementById('toastContainer').appendChild(el);
   setTimeout(() => el.remove(), 3500);
 }
 
-// ===== COR / TEMA =====
+// ===== CORES =====
 function hexToRgb(hex) {
   hex = hex.replace('#','');
-  if (hex.length === 3) hex = hex.split('').map(c=>c+c).join('');
-  const n = parseInt(hex, 16);
-  return [(n>>16)&255, (n>>8)&255, n&255];
+  if (hex.length===3) hex = hex.split('').map(c=>c+c).join('');
+  const n = parseInt(hex,16);
+  return [(n>>16)&255,(n>>8)&255,n&255];
 }
-function darken(hex, amount = 20) {
-  let [r,g,b] = hexToRgb(hex);
-  r = Math.max(0, r-amount); g = Math.max(0, g-amount); b = Math.max(0, b-amount);
-  return '#' + [r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('');
-}
-function lighten(hex, amount = 230) {
-  let [r,g,b] = hexToRgb(hex);
-  r = Math.min(255, Math.round(r+(255-r)*(amount/255)));
-  g = Math.min(255, Math.round(g+(255-g)*(amount/255)));
-  b = Math.min(255, Math.round(b+(255-b)*(amount/255)));
-  return '#' + [r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('');
-}
+function darken(hex, a=20) { let [r,g,b]=hexToRgb(hex); return '#'+[Math.max(0,r-a),Math.max(0,g-a),Math.max(0,b-a)].map(x=>x.toString(16).padStart(2,'0')).join(''); }
+function lighten(hex, a=230) { let [r,g,b]=hexToRgb(hex); return '#'+[Math.min(255,Math.round(r+(255-r)*(a/255))),Math.min(255,Math.round(g+(255-g)*(a/255))),Math.min(255,Math.round(b+(255-b)*(a/255)))].map(x=>x.toString(16).padStart(2,'0')).join(''); }
 function applyThemeColor(hex) {
   const root = document.documentElement;
   const [r,g,b] = hexToRgb(hex);
   root.style.setProperty('--primary', hex);
   root.style.setProperty('--primary-rgb', `${r},${g},${b}`);
-  root.style.setProperty('--primary-dark', darken(hex, 25));
-  root.style.setProperty('--primary-light', lighten(hex, 230));
+  root.style.setProperty('--primary-dark', darken(hex,25));
+  root.style.setProperty('--primary-light', lighten(hex,230));
   root.style.setProperty('--login-bg1', hex);
-  root.style.setProperty('--login-bg2', darken(hex, 20));
+  root.style.setProperty('--login-bg2', darken(hex,20));
   branding.primaryColor = hex;
-  if (window.myChart) window.myChart.data.datasets[0].backgroundColor = hex, window.myChart.update();
+  if (window.myChart) { window.myChart.data.datasets[0].backgroundColor = hex; window.myChart.update(); }
 }
 
 // ===== EXTRAÇÃO DE CORES =====
 function extractColorsFromImage(imgEl) {
   return new Promise(resolve => {
     const canvas = document.getElementById('colorCanvas');
-    const SIZE = 80;
-    canvas.width = SIZE; canvas.height = SIZE;
+    canvas.width = 80; canvas.height = 80;
     const ctx = canvas.getContext('2d');
-    ctx.drawImage(imgEl, 0, 0, SIZE, SIZE);
-    const data = ctx.getImageData(0, 0, SIZE, SIZE).data;
-
-    // Quantização simples: agrupar pixels em cubos de cor
+    ctx.drawImage(imgEl, 0, 0, 80, 80);
+    const data = ctx.getImageData(0,0,80,80).data;
     const buckets = {};
-    for (let i = 0; i < data.length; i += 4) {
-      const a = data[i+3];
-      if (a < 30) continue; // ignorar transparentes
-      const r = Math.round(data[i]   / 32) * 32;
-      const g = Math.round(data[i+1] / 32) * 32;
-      const b = Math.round(data[i+2] / 32) * 32;
-      // Ignorar tons muito claros (quase branco) e muito escuros (quase preto)
-      const brightness = (r + g + b) / 3;
-      if (brightness > 230 || brightness < 20) continue;
-      // Ignorar tons de cinza (r≈g≈b)
-      const maxC = Math.max(r,g,b), minC = Math.min(r,g,b);
-      if (maxC - minC < 30) continue;
-      const key = `${r},${g},${b}`;
-      buckets[key] = (buckets[key] || 0) + 1;
+    for (let i=0;i<data.length;i+=4) {
+      if (data[i+3]<30) continue;
+      const r=Math.round(data[i]/32)*32, g=Math.round(data[i+1]/32)*32, b=Math.round(data[i+2]/32)*32;
+      const br=(r+g+b)/3;
+      if (br>230||br<20) continue;
+      if (Math.max(r,g,b)-Math.min(r,g,b)<30) continue;
+      const k=`${r},${g},${b}`; buckets[k]=(buckets[k]||0)+1;
     }
-
-    const sorted = Object.entries(buckets).sort((a,b) => b[1]-a[1]);
-    const topColors = sorted.slice(0, 12).map(([key]) => {
-      const [r,g,b] = key.split(',').map(Number);
-      return '#' + [r,g,b].map(x => x.toString(16).padStart(2,'0')).join('');
-    });
-
-    // Filtrar cores muito similares
+    const sorted = Object.entries(buckets).sort((a,b)=>b[1]-a[1]);
+    const top = sorted.slice(0,12).map(([k])=>'#'+k.split(',').map(Number).map(x=>x.toString(16).padStart(2,'0')).join(''));
     const distinct = [];
-    for (const c of topColors) {
-      const [r1,g1,b1] = hexToRgb(c);
-      const tooClose = distinct.some(d => {
-        const [r2,g2,b2] = hexToRgb(d);
-        return Math.abs(r1-r2)+Math.abs(g1-g2)+Math.abs(b1-b2) < 80;
-      });
-      if (!tooClose) distinct.push(c);
-      if (distinct.length >= 6) break;
+    for (const c of top) {
+      const [r1,g1,b1]=hexToRgb(c);
+      if (!distinct.some(d=>{const [r2,g2,b2]=hexToRgb(d);return Math.abs(r1-r2)+Math.abs(g1-g2)+Math.abs(b1-b2)<80;})) distinct.push(c);
+      if (distinct.length>=6) break;
     }
     resolve(distinct.length ? distinct : ['#1a56db']);
   });
 }
 
 function renderPalette(colors) {
-  const row = document.getElementById('paletteRow');
   selectedSwatchColor = colors[0];
-  row.innerHTML = colors.map((c, i) => `
-    <div class="palette-swatch ${i===0?'selected':''}" 
-         style="background:${c};" 
-         title="${c}"
-         onclick="selectSwatch(this, '${c}')">
-    </div>
+  document.getElementById('paletteRow').innerHTML = colors.map((c,i)=>`
+    <div class="palette-swatch ${i===0?'selected':''}" style="background:${c};" title="${c}" onclick="selectSwatch(this,'${c}')"></div>
   `).join('');
 }
-
 window.selectSwatch = (el, color) => {
-  document.querySelectorAll('.palette-swatch').forEach(s => s.classList.remove('selected'));
+  document.querySelectorAll('.palette-swatch').forEach(s=>s.classList.remove('selected'));
   el.classList.add('selected');
   selectedSwatchColor = color;
 };
 
-// ===== BRANDING — APLICAR =====
+// ===== BRANDING =====
 function applyBranding() {
-  const hasLogo = !!branding.logoDataUrl;
+  const has = !!branding.logoDataUrl;
   const name = branding.companyName || 'Desligamento RH';
-
-  // Header
-  document.getElementById('headerLogoImg').src = hasLogo ? branding.logoDataUrl : '';
-  document.getElementById('headerLogoImg').style.display = hasLogo ? 'block' : 'none';
-  document.getElementById('headerLogoIcon').style.display = hasLogo ? 'none' : 'flex';
+  ['headerLogoImg','loginLogoImg','formBannerLogo','previewLogoImg'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){el.src=has?branding.logoDataUrl:'';el.style.display=has?'block':'none';}
+  });
+  ['headerLogoIcon','loginLogoIcon','previewLogoIcon'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.style.display=has?'none':'flex';
+  });
   document.getElementById('headerLogoText').textContent = name;
-
-  // Login
-  document.getElementById('loginLogoImg').src = hasLogo ? branding.logoDataUrl : '';
-  document.getElementById('loginLogoImg').style.display = hasLogo ? 'block' : 'none';
-  document.getElementById('loginLogoIcon').style.display = hasLogo ? 'none' : 'flex';
   document.getElementById('loginCompanyName').textContent = name;
-
-  // Formulário banner
+  if(document.getElementById('formBannerName')) document.getElementById('formBannerName').textContent = name;
+  if(document.getElementById('previewCompanyName')) document.getElementById('previewCompanyName').textContent = name;
   const banner = document.getElementById('formBanner');
-  if (hasLogo) {
-    document.getElementById('formBannerLogo').src = branding.logoDataUrl;
-    document.getElementById('formBannerName').textContent = name;
-    banner.classList.add('visible');
-  } else {
-    banner.classList.remove('visible');
-  }
-
-  // Pré-visualização
-  document.getElementById('previewLogoImg').src = hasLogo ? branding.logoDataUrl : '';
-  document.getElementById('previewLogoImg').style.display = hasLogo ? 'block' : 'none';
-  document.getElementById('previewLogoIcon').style.display = hasLogo ? 'none' : 'flex';
-  document.getElementById('previewCompanyName').textContent = name;
-
+  if(banner) has ? banner.classList.add('visible') : banner.classList.remove('visible');
   applyThemeColor(branding.primaryColor);
 }
 
-// ===== UPLOAD DE LOGO =====
-document.getElementById('logoFileInput').addEventListener('change', handleLogoFile);
-
+// ===== UPLOAD LOGO =====
+document.getElementById('logoFileInput').addEventListener('change', e=>{const f=e.target.files[0];if(f)processLogoFile(f);});
 const uploadArea = document.getElementById('logoUploadArea');
-uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('drag'); });
-uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('drag'));
-uploadArea.addEventListener('drop', e => {
-  e.preventDefault(); uploadArea.classList.remove('drag');
-  const file = e.dataTransfer.files[0];
-  if (file) processLogoFile(file);
-});
-
-function handleLogoFile(e) {
-  const file = e.target.files[0];
-  if (file) processLogoFile(file);
-}
+uploadArea.addEventListener('dragover', e=>{e.preventDefault();uploadArea.classList.add('drag');});
+uploadArea.addEventListener('dragleave', ()=>uploadArea.classList.remove('drag'));
+uploadArea.addEventListener('drop', e=>{e.preventDefault();uploadArea.classList.remove('drag');const f=e.dataTransfer.files[0];if(f)processLogoFile(f);});
 
 function processLogoFile(file) {
-  if (!file.type.startsWith('image/')) return toast('Selecione um arquivo de imagem válido.', 'danger');
+  if (!file.type.startsWith('image/')) return toast('Selecione uma imagem válida.','danger');
   const reader = new FileReader();
   reader.onload = async e => {
-    const dataUrl = e.target.result;
-    branding.logoDataUrl = dataUrl;
+    branding.logoDataUrl = e.target.result;
     branding.logoFileName = file.name;
-
-    // Mostrar preview
-    document.getElementById('logoPreviewImg').src = dataUrl;
+    document.getElementById('logoPreviewImg').src = e.target.result;
     document.getElementById('logoFileName').textContent = file.name;
     document.getElementById('logoPreviewWrap').classList.add('visible');
     document.getElementById('logoUploadArea').style.display = 'none';
-
-    // Extrair cores
     const img = new Image();
     img.onload = async () => {
       const colors = await extractColorsFromImage(img);
       renderPalette(colors);
       document.getElementById('paletteCard').style.display = 'block';
-      // Aplicar a primeira cor automaticamente
-      if (colors.length) {
-        applyThemeColor(colors[0]);
-        selectedSwatchColor = colors[0];
-      }
+      if (colors.length) { applyThemeColor(colors[0]); selectedSwatchColor = colors[0]; }
       applyBranding();
-      toast('Logomarca carregada! Selecione a cor principal e clique em Aplicar.', 'success');
+      toast('Logomarca carregada! Selecione a cor e aplique.','success');
     };
-    img.src = dataUrl;
+    img.src = e.target.result;
   };
   reader.readAsDataURL(file);
 }
 
-document.getElementById('btnRemoverLogo').addEventListener('click', () => {
-  branding.logoDataUrl = null;
-  branding.logoFileName = null;
+document.getElementById('btnRemoverLogo').addEventListener('click', ()=>{
+  branding.logoDataUrl = null; branding.logoFileName = null;
   document.getElementById('logoPreviewWrap').classList.remove('visible');
   document.getElementById('logoUploadArea').style.display = 'block';
   document.getElementById('logoFileInput').value = '';
   document.getElementById('paletteCard').style.display = 'none';
-  applyBranding();
-  toast('Logomarca removida.', 'success');
+  applyBranding(); toast('Logomarca removida.','success');
 });
-
-document.getElementById('btnAplicarCor').addEventListener('click', () => {
-  if (!selectedSwatchColor) return toast('Selecione uma cor primeiro.', 'danger');
-  applyThemeColor(selectedSwatchColor);
-  applyBranding();
-  toast('Cor aplicada com sucesso!', 'success');
+document.getElementById('btnAplicarCor').addEventListener('click', ()=>{
+  if (!selectedSwatchColor) return toast('Selecione uma cor.','danger');
+  applyThemeColor(selectedSwatchColor); applyBranding(); toast('Cor aplicada!','success');
 });
-
-document.getElementById('btnResetarCor').addEventListener('click', () => {
-  selectedSwatchColor = '#1a56db';
-  branding.primaryColor = '#1a56db';
-  applyThemeColor('#1a56db');
-  applyBranding();
-  document.querySelectorAll('.palette-swatch').forEach(s => s.classList.remove('selected'));
-  toast('Cor restaurada para o padrão.', 'success');
+document.getElementById('btnResetarCor').addEventListener('click', ()=>{
+  selectedSwatchColor='#1a56db'; branding.primaryColor='#1a56db';
+  applyThemeColor('#1a56db'); applyBranding();
+  document.querySelectorAll('.palette-swatch').forEach(s=>s.classList.remove('selected'));
+  toast('Cor restaurada para o padrão.','success');
 });
-
-document.getElementById('btnSalvarNome').addEventListener('click', () => {
+document.getElementById('btnSalvarNome').addEventListener('click', ()=>{
   const nome = document.getElementById('nomeEmpresa').value.trim();
-  if (!nome) return toast('Digite o nome da empresa.', 'danger');
-  branding.companyName = nome;
-  applyBranding();
-  toast('Nome da empresa atualizado!', 'success');
+  if (!nome) return toast('Digite o nome da empresa.','danger');
+  branding.companyName = nome; applyBranding(); toast('Nome atualizado!','success');
 });
 
 // ===== LOGIN =====
 document.getElementById('btnEntrar').addEventListener('click', handleLogin);
-document.getElementById('loginPass').addEventListener('keydown', e => { if (e.key === 'Enter') handleLogin(); });
-
+document.getElementById('loginPass').addEventListener('keydown', e=>{if(e.key==='Enter')handleLogin();});
 function handleLogin() {
-  const u = document.getElementById('loginUser').value.trim();
-  const p = document.getElementById('loginPass').value;
-  if (!u || !p) return toast('Preencha usuário e senha.', 'danger');
-  const found = localUsers.find(x => x.username === u && x.password === p);
-  if (!found) return toast('Usuário ou senha inválidos.', 'danger');
+  const u=document.getElementById('loginUser').value.trim(), p=document.getElementById('loginPass').value;
+  if (!u||!p) return toast('Preencha usuário e senha.','danger');
+  const found = localUsers.find(x=>x.username===u&&x.password===p);
+  if (!found) return toast('Usuário ou senha inválidos.','danger');
   usuarioLogado = { username: found.username, role: found.role };
   onLoginSucesso();
 }
-
 function onLoginSucesso() {
   document.getElementById('loginScreen').style.display = 'none';
   document.getElementById('appScreen').classList.add('active');
   const r = usuarioLogado.role;
   document.getElementById('userName').textContent = usuarioLogado.username;
-  const roleBadge = document.getElementById('userRole');
-  roleBadge.textContent = r === 'MASTER' ? 'Master' : r === 'OPERADORES' ? 'Operador' : 'Usuário';
-  roleBadge.className = 'role-badge role-' + r;
+  const rb = document.getElementById('userRole');
+  rb.textContent = r==='MASTER'?'Master':r==='OPERADORES'?'Operador':'Usuário';
+  rb.className = 'role-badge role-'+r;
   document.getElementById('userAvatar').textContent = usuarioLogado.username[0].toUpperCase();
-  document.getElementById('sidebarAdminSection').style.display = r === 'MASTER' ? 'block' : 'none';
-  document.getElementById('sidebarDashSection').style.display = (r === 'MASTER' || r === 'OPERADORES') ? 'block' : 'none';
+  document.getElementById('sidebarAdminSection').style.display = r==='MASTER'?'block':'none';
+  document.getElementById('sidebarDashSection').style.display = (r==='MASTER'||r==='OPERADORES')?'block':'none';
   navTo('formulario');
 }
-
-document.getElementById('btnLogout').addEventListener('click', () => {
+document.getElementById('btnLogout').addEventListener('click', ()=>{
   usuarioLogado = null;
   document.getElementById('appScreen').classList.remove('active');
   document.getElementById('loginScreen').style.display = 'flex';
-  document.getElementById('loginUser').value = '';
-  document.getElementById('loginPass').value = '';
+  document.getElementById('loginUser').value='';
+  document.getElementById('loginPass').value='';
 });
 
 // ===== NAVEGAÇÃO =====
 function navTo(page) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
-  document.getElementById('page-' + page).classList.add('active');
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-link').forEach(l=>l.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
   const link = document.querySelector(`.sidebar-link[data-page="${page}"]`);
   if (link) link.classList.add('active');
-  if (page === 'formulario') renderFormulario();
-  if (page === 'perguntas') renderPerguntas();
-  if (page === 'usuarios') renderUsuarios();
-  if (page === 'dashboard') renderDashboard();
+  if (page==='formulario') renderFormulario();
+  if (page==='perguntas') renderPerguntas();
+  if (page==='usuarios') renderUsuarios();
+  if (page==='dashboard') renderDashboard();
+  if (page==='colaboradores') renderColaboradores();
+  if (page==='relatorios') renderRelatorios();
+}
+document.querySelectorAll('.sidebar-link').forEach(l=>l.addEventListener('click',()=>navTo(l.dataset.page)));
+
+// ===== COLABORADORES =====
+function renderColaboradores(filter='') {
+  const tbody = document.getElementById('colabTbody');
+  const list = filter ? colaboradores.filter(c=>
+    c.nome.toLowerCase().includes(filter.toLowerCase())||c.matricula.includes(filter)
+  ) : colaboradores;
+  if (!list.length) {
+    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;color:var(--text-muted);padding:24px;">Nenhum colaborador encontrado.</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = list.map(c=>`
+    <tr>
+      <td><span style="font-weight:600;color:var(--primary);">${c.matricula}</span></td>
+      <td style="font-weight:500;">${c.nome}</td>
+      <td>${c.admissao||'—'}</td>
+      <td>${c.local||'—'}</td>
+      <td>${c.turno||'—'}</td>
+      <td>${c.filial||'—'}</td>
+      <td>${c.gestor||'—'}</td>
+      <td>${c.gerente||'—'}</td>
+      <td>${usuarioLogado?.role==='MASTER'?`<button class="btn btn-danger btn-sm" onclick="excluirColab('${c.matricula}')"><i class="ti ti-trash"></i></button>`:'—'}</td>
+    </tr>
+  `).join('');
 }
 
-document.querySelectorAll('.sidebar-link').forEach(l => {
-  l.addEventListener('click', () => navTo(l.dataset.page));
+document.getElementById('searchColab').addEventListener('input', e=>renderColaboradores(e.target.value));
+
+document.getElementById('btnCadastrarColab').addEventListener('click', ()=>{
+  const mat = document.getElementById('cMatricula').value.trim();
+  const nome = document.getElementById('cNome').value.trim();
+  if (!mat||!nome) return toast('Matrícula e nome são obrigatórios.','danger');
+  if (colaboradores.some(c=>c.matricula===mat)) return toast('Matrícula já cadastrada.','danger');
+  colaboradores.push({
+    matricula: mat, nome,
+    admissao: document.getElementById('cAdmissao').value||'',
+    local: document.getElementById('cLocal').value.trim()||'',
+    turno: document.getElementById('cTurno').value.trim()||'',
+    filial: document.getElementById('cFilial').value.trim()||'',
+    gestor: document.getElementById('cGestor').value.trim()||'',
+    gerente: document.getElementById('cGerente').value.trim()||'',
+  });
+  ['cMatricula','cNome','cAdmissao','cLocal','cTurno','cFilial','cGestor','cGerente'].forEach(id=>document.getElementById(id).value='');
+  renderColaboradores();
+  toast('Colaborador cadastrado!','success');
 });
 
-// ===== FORMULÁRIO =====
+window.excluirColab = mat => {
+  if (!confirm('Remover este colaborador?')) return;
+  colaboradores = colaboradores.filter(c=>c.matricula!==mat);
+  renderColaboradores();
+  toast('Colaborador removido.','success');
+};
+
+document.getElementById('btnExportarColabs').addEventListener('click', exportarColaboradores);
+document.getElementById('btnExportarColabsRel').addEventListener('click', exportarColaboradores);
+
+function exportarColaboradores() {
+  const rows = [['Matrícula','Nome','Data Admissão','Local','Turno','Filial','Gestor','Gerente']];
+  colaboradores.forEach(c=>rows.push([c.matricula,c.nome,c.admissao,c.local,c.turno,c.filial,c.gestor,c.gerente]));
+  downloadXLSX(rows, 'Colaboradores', 'colaboradores_desligados.xlsx');
+  toast('Excel de colaboradores baixado!','success');
+}
+
+// ===== FORMULÁRIO — BUSCA COLABORADOR =====
+document.getElementById('btnBuscarColab').addEventListener('click', buscarColaborador);
+document.getElementById('fMatricula').addEventListener('keydown', e=>{if(e.key==='Enter')buscarColaborador();});
+
+function buscarColaborador() {
+  const mat = document.getElementById('fMatricula').value.trim();
+  if (!mat) return toast('Digite a matrícula para buscar.','danger');
+  const c = colaboradores.find(x=>x.matricula===mat);
+  if (!c) { toast('Matrícula não encontrada. Preencha os campos manualmente.',''); return; }
+
+  const fields = {fNome:c.nome, fAdmissao:c.admissao, fLocal:c.local, fTurno:c.turno, fFilial:c.filial, fGestor:c.gestor, fGerente:c.gerente};
+  const autoLabels = {fAdmissao:'admissaoAuto',fLocal:'localAuto',fTurno:'turnoAuto',fFilial:'filialAuto',fGestor:'gestorAuto',fGerente:'gerenteAuto'};
+
+  Object.entries(fields).forEach(([id, val])=>{
+    const el = document.getElementById(id);
+    if (el) {
+      el.value = val||'';
+      if (val) {
+        el.disabled = true;
+        const labelSpan = document.getElementById(autoLabels[id]);
+        if (labelSpan) labelSpan.innerHTML = '<span class="auto-filled-badge"><i class="ti ti-database" style="font-size:10px;"></i> Auto</span>';
+      }
+    }
+  });
+  document.getElementById('fNome').disabled = !!c.nome;
+  toast(`Colaborador "${c.nome}" carregado automaticamente!`,'success');
+}
+
+function limparCamposColab() {
+  ['fNome','fAdmissao','fLocal','fTurno','fFilial','fGestor','fGerente'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){el.value='';el.disabled=false;}
+  });
+  ['admissaoAuto','localAuto','turnoAuto','filialAuto','gestorAuto','gerenteAuto'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.innerHTML='';
+  });
+  document.getElementById('fMatricula').value='';
+}
+
+document.getElementById('fMotivo').addEventListener('change', ()=>{
+  const val = document.getElementById('fMotivo').value;
+  document.getElementById('motivoOutroWrap').style.display = val==='Outro'?'block':'none';
+});
+
+// ===== FORMULÁRIO — RENDER PERGUNTAS =====
 function renderFormulario() {
   const body = document.getElementById('formBody');
   if (!perguntas.length) {
     body.innerHTML = '<div class="empty"><i class="ti ti-file-off"></i><p>Nenhuma pergunta cadastrada ainda.</p></div>';
     return;
   }
-  body.innerHTML = perguntas.map((p, i) => `
+  body.innerHTML = perguntas.map((p,i)=>`
     <div class="question-card">
-      <div class="question-num">Pergunta ${i + 1}</div>
-      <div class="question-text">${p.text}</div>
-      <div class="question-textarea">
-        <textarea id="resp_${i}" rows="3" placeholder="Escreva sua resposta aqui..."></textarea>
+      <div class="question-num">
+        Pergunta ${i+1}
+        <span class="question-type-badge type-${p.tipo}">${p.tipo==='aberta'?'Aberta':p.tipo==='multipla'?'Múltipla escolha':'Escala 1–10'}</span>
       </div>
+      <div class="question-text">${p.text}</div>
+      ${renderPerguntaInput(p, i)}
+    </div>
+  `).join('');
+
+  // Inicializar sliders
+  perguntas.forEach((p,i)=>{
+    if (p.tipo==='escala') {
+      const slider = document.getElementById(`slider_${i}`);
+      const display = document.getElementById(`scaleVal_${i}`);
+      if (slider && display) {
+        slider.addEventListener('input', ()=>{ display.textContent=slider.value; syncScaleBtns(i,slider.value); });
+      }
+    }
+  });
+}
+
+function renderPerguntaInput(p, i) {
+  if (p.tipo==='aberta') return `<div style="margin-top:12px;"><textarea id="resp_${i}" rows="3" placeholder="Escreva sua resposta aqui..."></textarea></div>`;
+  if (p.tipo==='multipla') {
+    const type = p.selecao||'radio';
+    return `<div class="mc-options">${(p.opcoes||[]).map((op,j)=>`
+      <label class="mc-option">
+        <input type="${type}" name="mc_${i}" value="${j}" id="mc_${i}_${j}">
+        <label for="mc_${i}_${j}">${op}</label>
+      </label>
+    `).join('')}</div>`;
+  }
+  if (p.tipo==='escala') return `
+    <div class="scale-wrap">
+      <div class="scale-bar-row">${Array.from({length:10},(_,k)=>`
+        <button type="button" class="scale-bar-btn" id="sbtn_${i}_${k+1}" onclick="setScale(${i},${k+1})">${k+1}</button>
+      `).join('')}</div>
+      <input type="range" class="scale-slider" id="slider_${i}" min="1" max="10" value="5" style="display:none;">
+      <div class="scale-value-display" id="scaleVal_${i}">—</div>
+    </div>`;
+  return '';
+}
+
+window.setScale = (qi, val) => {
+  document.getElementById(`scaleVal_${qi}`).textContent = val;
+  syncScaleBtns(qi, val);
+};
+
+function syncScaleBtns(qi, val) {
+  for(let k=1;k<=10;k++) {
+    const btn = document.getElementById(`sbtn_${qi}_${k}`);
+    if(btn) btn.classList.toggle('active', k<=parseInt(val));
+  }
+}
+
+document.getElementById('btnSalvarRespostas').addEventListener('click', ()=>{
+  if (!usuarioLogado) return;
+  const mat = document.getElementById('fMatricula').value.trim();
+  const nome = document.getElementById('fNome').value.trim();
+  const dataDeslig = document.getElementById('fDataDeslig').value;
+  const motivo = document.getElementById('fMotivo').value;
+  if (!nome) return toast('Informe o nome do colaborador.','danger');
+  if (!dataDeslig) return toast('Informe a data de desligamento.','danger');
+  if (!motivo) return toast('Informe o motivo do desligamento.','danger');
+
+  const answers = perguntas.map((p,i)=>{
+    if (p.tipo==='aberta') return document.getElementById(`resp_${i}`)?.value.trim()||'';
+    if (p.tipo==='escala') return document.getElementById(`scaleVal_${i}`)?.textContent||'';
+    if (p.tipo==='multipla') {
+      const type = p.selecao||'radio';
+      if (type==='radio') {
+        const sel = document.querySelector(`input[name="mc_${i}"]:checked`);
+        return sel ? p.opcoes[parseInt(sel.value)] : '';
+      } else {
+        const sels = [...document.querySelectorAll(`input[name="mc_${i}"]:checked`)];
+        return sels.map(s=>p.opcoes[parseInt(s.value)]).join('; ');
+      }
+    }
+    return '';
+  });
+
+  const colab = colaboradores.find(c=>c.matricula===mat)||{};
+  respostas.push({
+    author: usuarioLogado.username,
+    matricula: mat, nome,
+    admissao: document.getElementById('fAdmissao').value||colab.admissao||'',
+    local: document.getElementById('fLocal').value||colab.local||'',
+    turno: document.getElementById('fTurno').value||colab.turno||'',
+    filial: document.getElementById('fFilial').value||colab.filial||'',
+    gestor: document.getElementById('fGestor').value||colab.gestor||'',
+    gerente: document.getElementById('fGerente').value||colab.gerente||'',
+    dataDesligamento: dataDeslig,
+    motivo: motivo==='Outro'?(document.getElementById('fMotivoOutro').value||'Outro'):motivo,
+    answers,
+    createdAt: new Date().toISOString(),
+  });
+
+  toast('Respostas enviadas com sucesso!','success');
+  limparCamposColab();
+  document.getElementById('fDataDeslig').value='';
+  document.getElementById('fMotivo').value='';
+  renderFormulario();
+});
+
+// ===== PERGUNTAS ADMIN =====
+// Type selector
+document.querySelectorAll('.type-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    novaPergTipo = btn.dataset.type;
+    const mcBuilder = document.getElementById('mcBuilder');
+    if (novaPergTipo==='multipla') { mcBuilder.style.display='block'; if(!mcOpcoes.length){mcOpcoes=['',''];renderMcBuilder();} }
+    else { mcBuilder.style.display='none'; }
+  });
+});
+
+function renderMcBuilder() {
+  const list = document.getElementById('optionsList');
+  list.innerHTML = mcOpcoes.map((op,i)=>`
+    <div class="option-row">
+      <span style="font-size:12px;font-weight:600;color:var(--primary);min-width:20px;">${i+1}.</span>
+      <input type="text" value="${op}" placeholder="Opção ${i+1}..." oninput="mcOpcoes[${i}]=this.value">
+      ${mcOpcoes.length>2?`<button class="btn btn-outline-danger btn-sm" onclick="removeOption(${i})"><i class="ti ti-x"></i></button>`:''}
     </div>
   `).join('');
 }
 
-document.getElementById('btnSalvarRespostas').addEventListener('click', () => {
-  if (!usuarioLogado) return;
-  const answers = perguntas.map((_, i) => {
-    const el = document.getElementById(`resp_${i}`);
-    return el ? el.value.trim() : '';
-  });
-  if (answers.every(a => !a)) return toast('Preencha pelo menos uma resposta antes de enviar.', 'danger');
-  respostas.push({ author: usuarioLogado.username, answers, createdAt: new Date().toISOString() });
-  toast('Respostas enviadas com sucesso!', 'success');
-  renderFormulario();
+document.getElementById('btnAddOption').addEventListener('click', ()=>{
+  mcOpcoes.push(''); renderMcBuilder();
+});
+window.removeOption = i => { mcOpcoes.splice(i,1); renderMcBuilder(); };
+
+document.getElementById('btnAdicionarPergunta').addEventListener('click', ()=>{
+  if (usuarioLogado?.role !== 'MASTER') return toast('Apenas MASTER pode gerenciar perguntas.','danger');
+  const text = document.getElementById('novaPergunta').value.trim();
+  if (!text) return toast('Digite a pergunta antes de adicionar.','danger');
+  const perg = { id: 'q'+Date.now(), text, tipo: novaPergTipo };
+  if (novaPergTipo==='multipla') {
+    const opcoesFiltradas = mcOpcoes.filter(o=>o.trim());
+    if (opcoesFiltradas.length<2) return toast('Adicione pelo menos 2 opções de resposta.','danger');
+    perg.selecao = document.getElementById('mcTipoSelecao').value;
+    perg.opcoes = opcoesFiltradas;
+    mcOpcoes = ['',''];
+    renderMcBuilder();
+  }
+  perguntas.push(perg);
+  document.getElementById('novaPergunta').value = '';
+  renderPerguntas();
+  toast('Pergunta adicionada!','success');
 });
 
-// ===== PERGUNTAS =====
 function renderPerguntas() {
   const el = document.getElementById('listaPerguntas');
   if (!perguntas.length) {
     el.innerHTML = '<div class="empty"><i class="ti ti-list-search"></i><p>Nenhuma pergunta cadastrada.</p></div>';
     return;
   }
-  el.innerHTML = perguntas.map((p, i) => `
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);">
-      <div style="display:flex;align-items:center;gap:12px;">
-        <span style="font-size:12px;font-weight:600;color:var(--primary);background:var(--primary-light);padding:2px 8px;border-radius:20px;">Q${i+1}</span>
-        <span style="font-size:14px;">${p.text}</span>
+  el.innerHTML = perguntas.map((p,i)=>`
+    <div class="perg-admin-card">
+      <div class="perg-admin-header">
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+          <span style="font-size:12px;font-weight:600;color:var(--primary);background:var(--primary-light);padding:2px 8px;border-radius:20px;">Q${i+1}</span>
+          <span class="question-type-badge type-${p.tipo}">${p.tipo==='aberta'?'Aberta':p.tipo==='multipla'?'Múltipla':'Escala 1–10'}</span>
+        </div>
+        <div class="perg-admin-info" style="margin-left:10px;">
+          <div class="perg-admin-text">${p.text}</div>
+          ${p.tipo==='multipla'?`<div class="perg-admin-sub">${p.selecao==='checkbox'?'Múltiplas respostas':'Única resposta'} — ${p.opcoes.length} opções: ${p.opcoes.join(', ')}</div>`:''}
+          ${p.tipo==='escala'?`<div class="perg-admin-sub">Escala numérica de 1 a 10</div>`:''}
+        </div>
+        ${usuarioLogado?.role==='MASTER'?`<button class="btn btn-danger btn-sm" onclick="excluirPergunta('${p.id}')"><i class="ti ti-trash"></i></button>`:''}
       </div>
-      ${usuarioLogado?.role === 'MASTER' ? `<button class="btn btn-danger btn-sm" onclick="excluirPergunta('${p.id}')"><i class="ti ti-trash"></i></button>` : ''}
     </div>
   `).join('');
 }
 
-document.getElementById('btnAdicionarPergunta').addEventListener('click', () => {
-  if (usuarioLogado?.role !== 'MASTER') return toast('Apenas MASTER pode gerenciar perguntas.', 'danger');
-  const text = document.getElementById('novaPergunta').value.trim();
-  if (!text) return toast('Digite a pergunta antes de adicionar.', 'danger');
-  perguntas.push({ id: 'q' + Date.now(), text });
-  document.getElementById('novaPergunta').value = '';
-  renderPerguntas();
-  toast('Pergunta adicionada!', 'success');
-});
-
 window.excluirPergunta = id => {
   if (!confirm('Excluir esta pergunta?')) return;
-  perguntas = perguntas.filter(p => p.id !== id);
+  perguntas = perguntas.filter(p=>p.id!==id);
   renderPerguntas();
-  toast('Pergunta removida.', 'success');
+  toast('Pergunta removida.','success');
 };
 
 // ===== USUÁRIOS =====
 function renderUsuarios() {
   const tbody = document.getElementById('usersTbody');
-  if (!localUsers.length) {
-    tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:var(--text-muted);padding:24px;">Nenhum usuário cadastrado.</td></tr>';
-    return;
-  }
-  tbody.innerHTML = localUsers.map(u => `
+  if (!localUsers.length) { tbody.innerHTML='<tr><td colspan="3" style="text-align:center;color:var(--text-muted);padding:24px;">Nenhum usuário.</td></tr>'; return; }
+  tbody.innerHTML = localUsers.map(u=>`
     <tr>
       <td>
         <div style="display:flex;align-items:center;gap:10px;">
@@ -941,45 +1155,35 @@ function renderUsuarios() {
         </div>
       </td>
       <td><span class="role-badge role-${u.role}">${u.role==='MASTER'?'Master':u.role==='OPERADORES'?'Operador':'Usuário'}</span></td>
-      <td>
-        ${usuarioLogado?.role==='MASTER' && usuarioLogado.username!==u.username
-          ? `<button class="btn btn-danger btn-sm" onclick="excluirUsuario('${u.username}')"><i class="ti ti-trash"></i> Remover</button>`
-          : '<span style="color:var(--text-light);font-size:13px;">—</span>'}
-      </td>
+      <td>${usuarioLogado?.role==='MASTER'&&usuarioLogado.username!==u.username
+        ?`<button class="btn btn-danger btn-sm" onclick="excluirUsuario('${u.username}')"><i class="ti ti-trash"></i> Remover</button>`
+        :'<span style="color:var(--text-light);font-size:13px;">—</span>'}</td>
     </tr>
   `).join('');
 }
 
-document.getElementById('btnCriarUsuario').addEventListener('click', () => {
-  if (usuarioLogado?.role !== 'MASTER') return toast('Apenas MASTER pode criar usuários.', 'danger');
-  const username = document.getElementById('novoUser').value.trim();
-  const password = document.getElementById('novoPass').value;
-  const role = document.getElementById('novoRole').value;
-  if (!username || !password) return toast('Preencha usuário e senha.', 'danger');
-  if (localUsers.some(u => u.username === username)) return toast('Este nome de usuário já existe.', 'danger');
-  localUsers.push({ username, password, role });
-  document.getElementById('novoUser').value = '';
-  document.getElementById('novoPass').value = '';
-  renderUsuarios();
-  toast('Usuário criado com sucesso!', 'success');
+document.getElementById('btnCriarUsuario').addEventListener('click', ()=>{
+  if (usuarioLogado?.role!=='MASTER') return toast('Apenas MASTER pode criar usuários.','danger');
+  const username=document.getElementById('novoUser').value.trim(), password=document.getElementById('novoPass').value, role=document.getElementById('novoRole').value;
+  if (!username||!password) return toast('Preencha usuário e senha.','danger');
+  if (localUsers.some(u=>u.username===username)) return toast('Usuário já existe.','danger');
+  localUsers.push({username,password,role});
+  document.getElementById('novoUser').value=''; document.getElementById('novoPass').value='';
+  renderUsuarios(); toast('Usuário criado!','success');
 });
 
 window.excluirUsuario = username => {
-  if (!confirm(`Remover o usuário "${username}"?`)) return;
-  localUsers = localUsers.filter(u => u.username !== username);
-  renderUsuarios();
-  toast('Usuário removido.', 'success');
+  if (!confirm(`Remover "${username}"?`)) return;
+  localUsers = localUsers.filter(u=>u.username!==username);
+  renderUsuarios(); toast('Usuário removido.','success');
 };
 
 // ===== DASHBOARD =====
 let myChart = null;
-
 function renderDashboard() {
-  const total = respostas.length;
-  const totalQ = perguntas.length;
-  const comConteudo = respostas.reduce((acc, r) => acc + r.answers.filter(a => a.length > 3).length, 0);
-  const taxa = total ? Math.round((comConteudo / (total * Math.max(totalQ,1))) * 100) : 0;
-
+  const total = respostas.length, totalQ = perguntas.length;
+  const comConteudo = respostas.reduce((acc,r)=>acc+r.answers.filter(a=>a&&a.length>0).length,0);
+  const taxa = total ? Math.round((comConteudo/(total*Math.max(totalQ,1)))*100) : 0;
   document.getElementById('statsGrid').innerHTML = `
     <div class="stat-card"><div class="stat-label">Entrevistas realizadas</div><div class="stat-value">${total}</div></div>
     <div class="stat-card"><div class="stat-label">Perguntas ativas</div><div class="stat-value">${totalQ}</div></div>
@@ -987,39 +1191,74 @@ function renderDashboard() {
       <div class="progress-bar"><div class="progress-fill" style="width:${taxa}%"></div></div>
     </div>
   `;
-
   const canvas = document.getElementById('graficoRespostas');
   const empty = document.getElementById('dashboardEmpty');
+  if (!total) { canvas.style.display='none'; empty.style.display='block'; if(myChart){myChart.destroy();myChart=null;} return; }
+  canvas.style.display='block'; empty.style.display='none';
+  if (myChart) myChart.destroy();
+  const data = perguntas.map((_,i)=>respostas.filter(r=>r.answers[i]&&r.answers[i].length>0).length);
+  myChart = new Chart(canvas.getContext('2d'), {
+    type:'bar',
+    data:{
+      labels:perguntas.map(p=>p.text.length>40?p.text.substring(0,40)+'…':p.text),
+      datasets:[{label:'Respostas recebidas',data,backgroundColor:branding.primaryColor,borderRadius:6}]
+    },
+    options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:1},grid:{color:'#f3f4f6'}},x:{grid:{display:false}}}}
+  });
+}
 
-  if (!total) {
-    canvas.style.display = 'none';
-    empty.style.display = 'block';
-    if (myChart) { myChart.destroy(); myChart = null; }
+// ===== EXPORTAR ENTREVISTAS =====
+document.getElementById('btnExportarEntrevistas').addEventListener('click', exportarEntrevistas);
+
+function exportarEntrevistas() {
+  if (!respostas.length) return toast('Nenhuma entrevista preenchida ainda.','danger');
+  const headers = ['Matrícula','Nome','Data Admissão','Local','Turno','Filial','Gestor','Gerente','Data Desligamento','Motivo Desligamento',...perguntas.map((_,i)=>`Q${i+1}: ${perguntas[i].text.substring(0,40)}`), 'Preenchido por','Data/Hora'];
+  const rows = [headers];
+  respostas.forEach(r=>{
+    rows.push([
+      r.matricula||'',r.nome||'',r.admissao||'',r.local||'',r.turno||'',r.filial||'',r.gestor||'',r.gerente||'',
+      r.dataDesligamento||'',r.motivo||'',
+      ...r.answers,
+      r.author, new Date(r.createdAt).toLocaleString('pt-BR')
+    ]);
+  });
+  downloadXLSX(rows, 'Entrevistas', 'entrevistas_desligamento.xlsx');
+  toast('Excel de entrevistas baixado!','success');
+}
+
+// ===== EXCEL DOWNLOAD =====
+function downloadXLSX(rows, sheetName, filename) {
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+  // Auto-width
+  const colWidths = rows[0].map((_,i)=>({wch:Math.max(...rows.map(r=>(r[i]||'').toString().length),10)}));
+  ws['!cols'] = colWidths;
+  XLSX.utils.book_append_sheet(wb, ws, sheetName);
+  XLSX.writeFile(wb, filename);
+}
+
+// ===== PRÉVIA RELATÓRIOS =====
+function renderRelatorios() {
+  const el = document.getElementById('previaEntrevistas');
+  if (!respostas.length) {
+    el.innerHTML = '<div class="empty"><i class="ti ti-inbox"></i><p>Nenhuma entrevista enviada ainda.</p></div>';
     return;
   }
-  canvas.style.display = 'block';
-  empty.style.display = 'none';
-
-  const ctx = canvas.getContext('2d');
-  if (myChart) myChart.destroy();
-
-  const data = perguntas.map((_, i) => respostas.filter(r => r.answers[i] && r.answers[i].length > 3).length);
-
-  myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: perguntas.map(p => p.text.length > 40 ? p.text.substring(0, 40) + '…' : p.text),
-      datasets: [{ label: 'Respostas recebidas', data, backgroundColor: branding.primaryColor, borderRadius: 6 }]
-    },
-    options: {
-      responsive: true,
-      plugins: { legend: { display: false } },
-      scales: {
-        y: { beginAtZero: true, ticks: { stepSize: 1 }, grid: { color: '#f3f4f6' } },
-        x: { grid: { display: false } }
-      }
-    }
-  });
+  el.innerHTML = `<div class="table-wrap"><table>
+    <thead><tr>
+      <th>Matrícula</th><th>Nome</th><th>Data Desligamento</th><th>Motivo</th><th>Preenchido por</th><th>Data/Hora</th>
+    </tr></thead>
+    <tbody>${respostas.map(r=>`
+      <tr>
+        <td><b>${r.matricula||'—'}</b></td>
+        <td>${r.nome||'—'}</td>
+        <td>${r.dataDesligamento||'—'}</td>
+        <td>${r.motivo||'—'}</td>
+        <td>${r.author}</td>
+        <td style="font-size:12px;color:var(--text-muted);">${new Date(r.createdAt).toLocaleString('pt-BR')}</td>
+      </tr>
+    `).join('')}</tbody>
+  </table></div>`;
 }
 </script>
 </body>
